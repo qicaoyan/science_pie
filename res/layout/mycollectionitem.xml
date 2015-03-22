@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+     >
+	<ImageButton 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_margin="10dip"
+	    android:src="@drawable/wodeshoucangyuandian"
+	    android:background="@color/white"
+	    android:scaleType="fitCenter"
+	    android:layout_alignParentLeft="true"
+	    android:layout_centerVertical="true"
+	    android:id="@+id/myCollectionYuanDian"
+	    />
+	<TextView 
+	    android:layout_width="match_parent"
+	    android:layout_height="80dip"
+	    android:layout_marginTop="20dip"
+	    android:gravity="center_vertical"
+        android:ellipsize="end"
+        android:maxLines="3"
+	    android:id="@+id/myCollectionItemTitle"
+	    android:text="北京市关于征集2014年中央文化产业发展专项资金一般项目的通知"
+	    android:layout_alignParentRight="true"
+	    android:layout_centerVertical="true"
+	    android:layout_toRightOf="@id/myCollectionYuanDian"
+	    android:background="@color/white"
+	    
+	    />
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/myCollectionItemsTime"
+	    android:text="4小时"
+	    android:layout_alignParentTop="true"
+	    android:layout_alignParentRight="true"
+	    android:background="@color/white"
+	    />
+</RelativeLayout>
