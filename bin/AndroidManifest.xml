@@ -28,6 +28,7 @@
 	  <!--<uses-permission android:name="getui.permission.GetuiService.第三方包名" />  -->
     <uses-permission android:name="getui.permission.GetuiService.com.example.com" />
     
+    <user-permission android:name = "android.permission.SYSTEM_ALERT_WINDOW"/>
     
 	<!-- 自定义权限 -->
 	<!-- <permission
@@ -281,6 +282,17 @@
 		 android:configChanges="keyboardHidden|orientation|screenSize"
 		 android:exported="true"
 		 android:screenOrientation="portrait" />
+		 
+		 
+		 
+		 
+		 <service 
+		     android:name="com.science.services.FloatWindowService"
+		     >
+		     
+		     
+		 </service>
+		 
     </application>
 
 </manifest>

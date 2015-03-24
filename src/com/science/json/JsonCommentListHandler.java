@@ -85,25 +85,27 @@ public class JsonCommentListHandler {
 		        	Map<String, Object> map=new HashMap<String, Object>();
 		        	
 		        	//评论按照三级--二级--一级顺序显示
-		        	CommentUtil fir_comment = new CommentUtil(temp.getString(CommentUtil.customername),
-		        			                                  temp.getString(CommentUtil.content),
-		        			                                  temp.getString(CommentUtil.time),
-		        			                                  temp.getInt(CommentUtil.commentid),
-		        			                                  temp.getInt(CommentUtil.customerid));//第一级评论
-		        	CommentUtil sec_comment = new CommentUtil(temp.getString(CommentUtil.sec_commentname),
-		        			                                  temp.getString(CommentUtil.sec_content),
-		        			                                  temp.getString(CommentUtil.time),
-		        			                                  DefaultUtil.INAVAILABLE,
-		        			                                  DefaultUtil.INAVAILABLE
-		        			                                  );
-		        	CommentUtil thr_comment = new CommentUtil(temp.getString(CommentUtil.thir_commentname),
-		        			                                  temp.getString(CommentUtil.thir_content),
-		        			                                  temp.getString(CommentUtil.time),
-		        			                                  DefaultUtil.INAVAILABLE,
-		        			                                  DefaultUtil.INAVAILABLE
-		        			                                  );
+//		        	CommentUtil fir_comment = new CommentUtil(temp.getString(CommentUtil.customername),
+//		        			                                  temp.getString(CommentUtil.content),
+//		        			                                  temp.getString(CommentUtil.time),
+//		        			                                  temp.getInt(CommentUtil.commentid),
+//		        			                                  temp.getInt(CommentUtil.customerid));//第一级评论
+//		        	CommentUtil sec_comment = new CommentUtil(temp.getString(CommentUtil.sec_commentname),
+//		        			                                  temp.getString(CommentUtil.sec_content),
+//		        			                                  temp.getString(CommentUtil.time),
+//		        			                                  DefaultUtil.INAVAILABLE,
+//		        			                                  DefaultUtil.INAVAILABLE
+//		        			                                  );
+//		        	CommentUtil thr_comment = new CommentUtil(temp.getString(CommentUtil.thir_commentname),
+//		        			                                  temp.getString(CommentUtil.thir_content),
+//		        			                                  temp.getString(CommentUtil.time),
+//		        			                                  DefaultUtil.INAVAILABLE,
+//		        			                                  DefaultUtil.INAVAILABLE
+//		        			                                  );
 		        	
-		        	CommentUtil comment = new CommentUtil(fir_comment,sec_comment,thr_comment);
+		        	
+		        	
+		        	CommentUtil comment = new CommentUtil(temp);
 		        	
 //		        	map.put(CommentUtil.commentid, temp.getInt(CommentUtil.commentid));
 //		        	map.put(CommentUtil.customerid, temp.getInt(CommentUtil.customerid));

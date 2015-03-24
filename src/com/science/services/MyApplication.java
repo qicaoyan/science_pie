@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.science.activity.Android_DialogActivity.MyThread;
 import com.science.json.JsonLoginHandler;
+import com.science.util.DefaultUtil;
 import com.science.util.Url;
 
 import android.R.string;
@@ -27,10 +28,11 @@ public class MyApplication extends Application{
 	public static Map<String,String> my_keywords = null;
 	static MyApplication instance;
 	public  String [] keywords=null;
+	public static String user_name = DefaultUtil.EMPTY;	//存储当前的用户名
 	public  static List<StringBuffer> non_null_keywords_list = new ArrayList<StringBuffer>();
-	static MyApplication getInstance() {
+	public static MyApplication getInstance() {
 
-		
+	
 	return	instance;
 
 	}
@@ -70,7 +72,7 @@ public class MyApplication extends Application{
 				con.connect();
 				InputStream input = con.getInputStream();
 				sidString=jsonLoginHandler.getListItems(input);
-				
+				user_name = name;	
 				return sidString;
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block

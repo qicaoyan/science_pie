@@ -2,12 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+                  android:focusable="true"
+        android:focusableInTouchMode="true">
     
     <RelativeLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/light_blue"
-        android:paddingTop="10dip">
+        android:paddingTop="10dip"
+    >
         
         <com.science.view.MyImageButton
             android:id="@+id/go_back"
@@ -53,7 +56,8 @@
     
     
     <RelativeLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+  >
         
         <ListView android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,23 +77,7 @@
             android:layout_alignParentBottom="true"
             android:gravity="center_vertical">
             
-            <com.science.view.MyImageButton
-                android:id="@+id/clip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_clip"
-                android:background="@color/transparent"
-                android:paddingLeft="10dip"
-                />
-            
-            <com.science.view.MyImageButton
-                android:id="@+id/emoji"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_emoji"
-                android:background="@color/transparent"
-                android:layout_marginLeft="15dip"
-            />
+
             <RelativeLayout 
                 android:layout_width="225dip"
                 android:layout_height="wrap_content"
@@ -108,18 +96,21 @@
                 android:paddingRight="10dip"
                 android:layout_centerVertical="true"
                 android:background="@color/transparent"
-                android:textColor="@color/text_light_gray"
+                android:textColor="@color/text_dark_gray"
+                android:textColorHint="@color/text_light_gray"
+                android:id="@+id/comment_input_box"
              />
             </RelativeLayout>
             
             
             <com.science.view.MyImageButton
-                android:id="@+id/voice"
+                android:id="@+id/send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_voice"
+                android:src="@drawable/send_disable"
                 android:background="@color/transparent"
                 android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip"
             />  
             
         </LinearLayout>
