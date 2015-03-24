@@ -15,6 +15,7 @@ import com.science.util.Url;
 
 import android.R.string;
 import android.app.Application;
+import android.provider.Settings;
 import android.util.Log;
 
 public class MyApplication extends Application{
@@ -27,8 +28,9 @@ public class MyApplication extends Application{
 	public static Map<String,String> my_keywords = null;
 	static MyApplication instance;
 	public  String [] keywords=null;
+	public String androidId;
 	public  static List<StringBuffer> non_null_keywords_list = new ArrayList<StringBuffer>();
-	static MyApplication getInstance() {
+	public static MyApplication getInstance() {
 
 		
 	return	instance;
@@ -46,6 +48,7 @@ public class MyApplication extends Application{
 			}
 		}
 		instance= this;
+		androidId = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID); 
 	}
 
 	public  String Login(String name,String pass)
@@ -94,6 +97,9 @@ public class MyApplication extends Application{
 			str+="&";
 			str+="sid=";
 			str+=this.sidString;
+			str+="&";
+			str+="androidId=";
+			str+=this.androidId;
 			return str;
 		}
 		else {

@@ -31,6 +31,7 @@ public class Url {
 	public static String UpdateKeywords=Url.BASEURL+"personalTags/setPersonalTags?tagsString=";
 	public static String addCollection=Url.BASEURL+"/collection/addCollection?";
 	public static String removeCollection=Url.BASEURL+"/collection/deleteCollection?";
+	public static String getCollection=Url.BASEURL+"/collection/getCollection?";
 	
 	public static String CommentList = Url.BASEURL + "comment/getComment?";
 	public static final int MAX_ID = Integer.MAX_VALUE;

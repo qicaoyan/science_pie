@@ -21,6 +21,7 @@ import cn.sharesdk.sina.weibo.SinaWeibo;
 
 import com.example.science.R;
 import com.igexin.sdk.PushManager;
+import com.igexin.sdk.Tag;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.science.http.HttpUtil;
 import com.science.json.JsonDownLoadsKeywords;
@@ -42,6 +43,7 @@ import android.os.Parcelable;
 import android.app.Activity;
 import android.app.AlertDialog;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
@@ -130,6 +132,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         myApplication=(MyApplication)this.getApplication();
+        
+        Toast.makeText(MainActivity.this, myApplication.androidId, Toast.LENGTH_LONG).show();
         functionManage=new FunctionManage(MainActivity.this);
      // �����ޱ��ⴰ��
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -162,8 +166,11 @@ public class MainActivity extends Activity {
         
         UpdateKeyWordsState();
         
-
+        Tag[] temp=new Tag[2];
+        temp[0]=new Tag();
+        temp[0].setName("test");
         PushManager.getInstance().initialize(this.getApplicationContext());
+       // PushManager.getInstance().setTag(this,temp);
     }
 
 		@Override
