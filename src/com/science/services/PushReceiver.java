@@ -48,13 +48,15 @@ public class PushReceiver extends BroadcastReceiver {
 					String name=AppUtil.BlockCodeToBlockText(id);
 					
 					
-					Intent intentContent=new Intent(context,CommonContentActivity.class);
-					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					intent.putExtra("url", url);//传递数据
-					intent.putExtra("title", name);
-					intent.putExtra("act_class", name);
-					//intent.setAction("com.science.CommonContentActivity");
-					context.startActivity(intent);
+					//Intent intentContent=new Intent(context,CommonContentActivity.class);
+					Intent intentContent=new Intent();
+					intentContent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					intentContent.putExtra("url", url);//传递数据
+					intentContent.putExtra("title", name);
+					intentContent.putExtra("act_class", "热点新闻");
+					intentContent.setClass(context, CommonContentActivity.class);
+					intentContent.setAction("com.science.CommonContentActivity");
+					context.startActivity(intentContent);
 					
 					Log.d("GetuiSdkDemo", "Got Payload:" + data);
 //					if (GetuiSdkDemoActivity.tLogView != null)
