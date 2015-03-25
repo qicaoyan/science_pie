@@ -93,7 +93,13 @@
         </activity>
          <activity
             android:name="com.science.activity.ProjectApplyActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" 
+            >"
+        </activity>
+        <activity
+            android:name="com.science.activity.CoopResearchActivity"
+            android:screenOrientation="portrait" 
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
             android:name="com.science.activity.CommentDetailActivity"

@@ -542,7 +542,8 @@ public class MainActivity extends Activity {
 				   startActivity(intent1);
 				break;
 			case R.id.mainPageImageView3:
-				
+				Intent intent2 = new Intent(MainActivity.this, CoopResearchActivity.class);
+				   startActivity(intent2);
 				break;
 			case R.id.mainPageImageView4:
 				
