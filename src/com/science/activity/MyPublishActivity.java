@@ -1,19 +1,29 @@
 package com.science.activity;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.example.science.R;
+import com.science.json.JsonGetCollectionHandler;
+import com.science.json.JsonGetMyPublishNeedHandler;
 import com.science.services.MyApplication;
 import com.science.util.AppUtil;
 import com.science.util.AsyncImageLoader;
+import com.science.util.Url;
 import com.science.util.AsyncImageLoader.ImageCallback;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -47,6 +57,9 @@ public class MyPublishActivity extends Activity {
 	private List<Map<String,Object>> resourceList=null;
 	private List<Map<String, Object>> needList=null;
 	
+	private MyHandler handler;
+	private JsonGetMyPublishNeedHandler jsonGetMyPublishNeedHandler;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -67,6 +80,8 @@ public class MyPublishActivity extends Activity {
 	private void InitVariable()
 	{
 		pageViews = new ArrayList<View>(); 
+		jsonGetMyPublishNeedHandler=new JsonGetMyPublishNeedHandler(); 
+		handler=new MyHandler();
 		
 	}
 	
@@ -116,7 +131,7 @@ public class MyPublishActivity extends Activity {
 		map1.put("abstract", "项目摘要");
 		resourceList.add(map1);
 		
-		resourceListView.setAdapter(new MyAdapte(resourceList));
+		needListView.setAdapter(new MyAdapte(resourceList));
 	}
 	
 	private void SetListener()
@@ -124,6 +139,12 @@ public class MyPublishActivity extends Activity {
 		viewPager.setOnPageChangeListener(onPageChangeListener);
 		mypublishresource.setOnClickListener(titleOnClickListener);
 		mypublisneed.setOnClickListener(titleOnClickListener);
+	}
+	
+	private void GetMyNeed()
+	{
+		MyThreadGetMyNeed myThreadGetMyNeed=new MyThreadGetMyNeed();
+		new Thread(myThreadGetMyNeed).start();
 	}
 	
 	private View.OnClickListener titleOnClickListener=new View.OnClickListener() {
@@ -236,21 +257,19 @@ public class MyPublishActivity extends Activity {
 	    } 
 	 
 	 private class MyAdapte extends BaseAdapter
-	 {
-		 private List<Map<String, Object>> list=null;
-		AsyncImageLoader asyncImageLoader = new AsyncImageLoader(
-					AppUtil.ITEM_IMG_WIDTH, AppUtil.ITEM_IMG_HEIGHT);
+	{
+		 private List<Map<String, Object>> myList=null;
 		 
 		 public MyAdapte(List<Map<String, Object>> L)
 		 {
-			 list=L;
+			 myList=L;
 		 }
 
-		 @Override
+			@Override
 			public int getCount() {
 				// TODO Auto-generated method stub
-				if (list!=null) {
-					return list.size();
+				if (myList!=null) {
+					return myList.size();
 				}
 				else {
 					return 0;
@@ -260,8 +279,8 @@ public class MyPublishActivity extends Activity {
 			@Override
 			public Object getItem(int arg0) {
 				// TODO Auto-generated method stub
-				if (list!=null) {
-					return list.get(arg0);
+				if (myList!=null) {
+					return myList.get(arg0);
 				}
 				else {
 					return null;
@@ -273,59 +292,79 @@ public class MyPublishActivity extends Activity {
 				// TODO Auto-generated method stub
 				return 0;
 			}
-		@Override
-		public View getView(final int position, View convertView, ViewGroup parent) {
 
-//			convertView = getLayoutInflater().inflate(R.layout.mypublishitems,
-//					null);
-//			TextView title=(TextView)convertView.findViewById(R.id.mypublishitemtitle);
-//			TextView time=(TextView)convertView.findViewById(R.id.mypublishitemtime);
-//			TextView abs=(TextView)convertView.findViewById(R.id.mypublishitemabstract);
-//			
-//			final ImageButton icon=(ImageButton)convertView.findViewById(R.id.mypublisitmeicon);
-//			
-//			String strtitle=(String) list.get(position).get("title");
-//			String strTime=(String)list.get(position).get("time");
-//			String urlString=(String)list.get(position).get("url");
-//			String strAbs=(String)list.get(position).get("abstract");
-//			
-//			
-//			title.setText(strtitle);
-//			time.setText(strTime);
-//			abs.setText(strAbs);
-//			
-//			Drawable db=(Drawable)list.get(position).get("drawable");
-//			if (db!=null) {
-//				//icon.setImageDrawable(db);
-//				icon.setBackground(db);
-//			}
-//			else {
-//				Drawable cachedImage = asyncImageLoader.loadDrawable(
-//						urlString, new ImageCallback() {
-//							
-//							@Override
-//							public void imageLoaded(Drawable imageDrawable, String imageUrl) {
-//								// TODO Auto-generated method stub
-//								if (icon != null && imageDrawable != null) {
-//									//icon.setImageDrawable(imageDrawable);
-//									icon.setBackground(imageDrawable);
-//									list.get(position).put("drawable", imageDrawable);
-//									// Log.e("在回调里面设置好图片", "liushuai");
-//								} else {
-//									try {
-//										icon.setImageResource(R.drawable.sync);
-//										
-//										// Log.e("在回调里面设置了默认的图片", "liushuai");
-//									} catch (Exception e) {
-//										
-//									}
-//								}
-//							}
-//						});
-//			}
-
-			return convertView;
+			@Override
+			public View getView(int position, View convertView, ViewGroup arg2) {
+				// TODO Auto-generated method stub
+				convertView = getLayoutInflater().inflate(R.layout.mycollectionitem,
+						null);
+				TextView title=(TextView)convertView.findViewById(R.id.myCollectionItemTitle);
+				TextView time=(TextView)convertView.findViewById(R.id.myCollectionItemsTime);
+				
+				String strtitle=(String) myList.get(position).get("title");
+				String strTime=(String)myList.get(position).get("time");
+				
+				title.setText(strtitle);
+				time.setText(strTime);
+				return convertView;
+			}
+			
 		}
-		 
-	 }
+	 
+	 private class MyThreadGetMyNeed implements Runnable
+	    {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				URL url;
+				try {
+					url = new URL(myApplication.ComposeToken(Url.getCollection));
+					URLConnection con = url.openConnection();
+					con.connect();
+					InputStream input = con.getInputStream();
+					needList=jsonGetMyPublishNeedHandler.getListItems(input);
+					if (needList!=null) {
+						handler.sendEmptyMessage(2);
+					}
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+	    }
+		
+		private class MyHandler extends Handler {
+
+	    	@Override
+	    	public void dispatchMessage(Message msg) {
+	    		// TODO Auto-generated method stub
+	    		super.dispatchMessage(msg);
+	    	}
+
+	    	@Override
+	    	public void handleMessage(Message msg) {
+	    		if (msg.what == 2) {
+	    			needListView.setAdapter(new MyAdapte(needList));
+				} 
+	    		super.handleMessage(msg);
+	    	}
+
+	    	@Override
+	    	public boolean sendMessageAtTime(Message msg, long uptimeMillis) {
+	    		// TODO Auto-generated method stub
+	    		return super.sendMessageAtTime(msg, uptimeMillis);
+	    	}
+
+	    	@Override
+	    	public String toString() {
+	    		// TODO Auto-generated method stub
+	    		return super.toString();
+	    	}
+		}
+	    	
 }

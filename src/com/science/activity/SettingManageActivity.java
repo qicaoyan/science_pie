@@ -23,6 +23,7 @@ public class SettingManageActivity extends Activity{
 	private LinearLayout myInfo=null;
 	private LinearLayout myCollection=null;
 	private LinearLayout myPublish=null;
+	private LinearLayout myMessage=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,6 +53,7 @@ public class SettingManageActivity extends Activity{
 		myInfo=(LinearLayout)findViewById(R.id.settingmyinfo);
 		myCollection=(LinearLayout)findViewById(R.id.settingmycollection);
 		myPublish=(LinearLayout)findViewById(R.id.settingpublish);
+		myMessage=(LinearLayout)findViewById(R.id.settingmymessage);
 	}
 	
 	private void InitData()
@@ -72,6 +74,7 @@ public class SettingManageActivity extends Activity{
 		myInfo.setOnClickListener(onClickListener);
 		myCollection.setOnClickListener(onClickListener);
 		myPublish.setOnClickListener(onClickListener);
+		myMessage.setOnClickListener(onClickListener);
 	}
 	
 	private View.OnClickListener onClickListener=new OnClickListener() {
@@ -91,6 +94,10 @@ public class SettingManageActivity extends Activity{
 			case R.id.settingpublish:
 				Intent publish=new Intent(SettingManageActivity.this,MyPublishActivity.class);
 				startActivity(publish);
+				break;
+			case R.id.settingmymessage:
+				Intent message=new Intent(SettingManageActivity.this,MyMessageActivity.class);
+				startActivity(message);
 				break;
 			default:
 				break;
