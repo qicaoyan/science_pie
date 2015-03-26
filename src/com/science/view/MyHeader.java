@@ -12,10 +12,14 @@ import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -33,15 +37,33 @@ public class MyHeader extends LinearLayout {
 	public ImageButton setting;
 	private MyApplication application;
 	private FunctionManage fm;
+	
+	private Drawable corner_left_side_fill;
+	private Drawable corner_left_side_null;
+	private Drawable corner_right_side_fill;
+	private Drawable corner_right_side_null;
+	private Drawable rect_middle_fill;
+	private Drawable rect_middle_null;
+	
+	private float header_all_btn_prop;//所有按钮的比重
+	private float header_btn_ratio;//按钮的比率
+	private int screen_width;
+	private int header_btn_all_width;
 	public MyHeader(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.header, this);  
         application = MyApplication.getInstance();
+        headContent=context;
         InitView();
         fm = new FunctionManage(context);
-        headContent=context;
+        
+        
+        
+        
+        
+        
 	}
 
 
@@ -72,8 +94,20 @@ public class MyHeader extends LinearLayout {
         fm = new FunctionManage(context);
 	}
 	
+	
+	
+	
+	
+	
 	private void InitView()
 	{
+		header_all_btn_prop = 500.0f/720.f;
+		WindowManager wm = (WindowManager) headContent.getSystemService(Context.WINDOW_SERVICE);
+		screen_width = wm.getDefaultDisplay().getWidth();
+		header_btn_all_width = (int) (screen_width*header_all_btn_prop);
+		
+		
+
 		
 		tv=(TextView)this.findViewById(R.id.headertitle);
 		headerContentView=(LinearLayout)this.findViewById(R.id.headcontent);
@@ -117,7 +151,27 @@ public class MyHeader extends LinearLayout {
 	
 	public Boolean SetHeaderButtons(String [] str)
 	{
-		headerContentView.setPadding(0, 0, 0, 40);
+		int length = str.length;
+		if(length <= 2)
+		{	
+			corner_left_side_fill = getResources().getDrawable(R.drawable.corner_left_side_white);
+			corner_left_side_null = getResources().getDrawable(R.drawable.corner_left_side_transparent);
+			corner_right_side_fill = getResources().getDrawable(R.drawable.corner_right_side_white);
+			corner_right_side_null = getResources().getDrawable(R.drawable.corner_right_side_transparent);
+			rect_middle_fill = getResources().getDrawable(R.drawable.rect_middle_white);	
+			rect_middle_null = getResources().getDrawable(R.drawable.rect_middle_transparent);
+		}
+		else{
+			corner_left_side_fill = getResources().getDrawable(R.drawable.corner_left_side_white_small);
+			corner_left_side_null = getResources().getDrawable(R.drawable.corner_left_side_transparent_small);
+			corner_right_side_fill = getResources().getDrawable(R.drawable.corner_right_side_white_small);
+			corner_right_side_null = getResources().getDrawable(R.drawable.corner_right_side_transparent_small);
+			rect_middle_fill = getResources().getDrawable(R.drawable.rect_middle_white_small);
+			rect_middle_null = getResources().getDrawable(R.drawable.rect_middle_transparent_small);
+
+		}
+		
+		headerContentView.setPadding(0, 0, 0, 20);
 		
 		if (str!=null&&str.length>1) {
 			
@@ -127,21 +181,24 @@ public class MyHeader extends LinearLayout {
 			
 			for(int i=0;i<str.length;i++) {
 				headButtons[i]=new Button(headerContentView.getContext());
-				LayoutParams lParams=new LayoutParams(0, 0, 1);
-				//headButtons[i].setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+				int head_btn_width = header_btn_all_width/length;
+                //int head_btn_height = (int) (header_btn_ratio*head_btn_width);
+				headButtons[i].setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
 				headButtons[i].setTextColor(Color.WHITE);
 				headButtons[i].setText(str[i]);
 				headButtons[i].setTextSize(15);
+				headButtons[i].setGravity(Gravity.CENTER);
+				headButtons[i].setPadding(0, 3, 0, 3);
 				headButtons[i].setMinWidth(0);
 				headButtons[i].setMinHeight(0);
 				headButtons[i].setMinimumWidth(0);
 				headButtons[i].setMinimumHeight(0);
                 if(i == 0)
-                	headButtons[i].setBackground(getResources().getDrawable(R.drawable.left_corner_btn_empty));
+                	headButtons[i].setBackground(corner_left_side_null);
                 else if(i == str.length - 1)
-                	headButtons[i].setBackground(getResources().getDrawable(R.drawable.right_corner_btn_empty));
+                	headButtons[i].setBackground(corner_right_side_null);
                 else
-                	headButtons[i].setBackground(getResources().getDrawable(R.drawable.rect_btn_empty));
+                	headButtons[i].setBackground(rect_middle_null);
                 //headButtions[i].setBackground(background)
 				//headButtions[i].setLayoutParams(lParams);
 				headButtons[i].setId(i);
@@ -174,11 +231,11 @@ public class MyHeader extends LinearLayout {
 		for(int i=0;i<headButtons.length;i++)
 		{
 			if(i == 0)
-			    headButtons[i].setBackground(getResources().getDrawable(R.drawable.left_corner_btn_empty));
+			    headButtons[i].setBackground(corner_left_side_null);
 			else if(i == headButtons.length - 1)
-				headButtons[i].setBackground(getResources().getDrawable(R.drawable.right_corner_btn_empty));
+				headButtons[i].setBackground(corner_right_side_null);
 			else
-				headButtons[i].setBackground(getResources().getDrawable(R.drawable.rect_btn_empty));
+				headButtons[i].setBackground(rect_middle_null);
 		   
 			headButtons[i].setTextColor(Color.WHITE);
 		}
@@ -187,11 +244,11 @@ public class MyHeader extends LinearLayout {
 		headButtons[index].setTextColor(getResources().getColor(R.color.light_blue));
 		
 		if(index == 0)
-			headButtons[index].setBackground(getResources().getDrawable(R.drawable.left_corner_btn_fill));
+			headButtons[index].setBackground(corner_left_side_fill);
 		else if(index == headButtons.length - 1)
-			headButtons[index].setBackground(getResources().getDrawable(R.drawable.right_corner_btn_fill));
+			headButtons[index].setBackground(corner_right_side_fill);
 		else
-			headButtons[index].setBackground(getResources().getDrawable(R.drawable.rect_btn_fill));
+			headButtons[index].setBackground(rect_middle_fill);
 		
 		return true;
 	}
@@ -205,11 +262,11 @@ public class MyHeader extends LinearLayout {
 				for(int i=0;i<headButtons.length;i++)
 				{
 					if(i == 0)
-					    headButtons[i].setBackground(getResources().getDrawable(R.drawable.left_corner_btn_empty));
+					    headButtons[i].setBackground(corner_left_side_null);
 					else if(i == headButtons.length - 1)
-						headButtons[i].setBackground(getResources().getDrawable(R.drawable.right_corner_btn_empty));
+						headButtons[i].setBackground(corner_right_side_null);
 					else
-						headButtons[i].setBackground(getResources().getDrawable(R.drawable.rect_btn_empty));
+						headButtons[i].setBackground(rect_middle_null);
 				   
 					headButtons[i].setTextColor(Color.WHITE);
 				}
@@ -218,11 +275,11 @@ public class MyHeader extends LinearLayout {
 			headButtons[v.getId()].setTextColor(getResources().getColor(R.color.light_blue));
 			
 			if(v.getId() == 0)
-				headButtons[v.getId()].setBackground(getResources().getDrawable(R.drawable.left_corner_btn_fill));
+				headButtons[v.getId()].setBackground(corner_left_side_fill);
 			else if(v.getId() == headButtons.length - 1)
-				headButtons[v.getId()].setBackground(getResources().getDrawable(R.drawable.right_corner_btn_fill));
+				headButtons[v.getId()].setBackground(corner_right_side_fill);
 			else
-				headButtons[v.getId()].setBackground(getResources().getDrawable(R.drawable.rect_btn_fill));
+				headButtons[v.getId()].setBackground(rect_middle_fill);
 			
 			
 			if (onClickListeners!=null) {

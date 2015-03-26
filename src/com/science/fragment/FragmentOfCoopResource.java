@@ -122,7 +122,7 @@ public class FragmentOfCoopResource extends Fragment{
 	           Bundle savedInstanceState)  
 	    {  
 		    this.activity = this.getActivity();
-	        view = inflater.inflate(R.layout.frag_resource, container, false);  
+	        view = inflater.inflate(R.layout.coop_fragment_resource, container, false);  
 
 
 	        initVariable();
@@ -192,7 +192,7 @@ private void requestData(){
 		
 		
 		//findViewById
-		frag_source_view = activity.getLayoutInflater().from(activity).inflate(R.layout.frag_resource, null);
+		frag_source_view = activity.getLayoutInflater().from(activity).inflate(R.layout.coop_fragment_resource, null);
 		
 		
 		coop_all_btn = (LinearLayout)view.findViewById(R.id.coop_all_layout);

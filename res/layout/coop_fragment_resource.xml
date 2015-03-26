@@ -12,33 +12,35 @@
      android:paddingTop="2dip"
      android:paddingBottom = "2dip">
        
- <LinearLayout
-     android:id="@+id/search_layout"
+ <FrameLayout
+     android:id="@+id/coop_search_layout"
      android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/search_box"
     android:focusable="true"
     android:focusableInTouchMode="true">
    
+
     <ImageView android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:src="@drawable/fangdajing"
-         android:layout_weight="1"
          android:layout_marginLeft="3dip"
-         android:layout_gravity="center_vertical"/>
+         android:layout_centerVertical="true"
+         android:layout_gravity="center_vertical|right"
+         android:layout_marginRight="10dip"/>
      <EditText
          android:id="@+id/search_edit_text"
          android:layout_width="match_parent"
          android:layout_height="match_parent"
          android:background="@null"
-         android:gravity="left|center_vertical"
-         android:layout_weight="9"
          android:paddingLeft="5dip"
+         android:layout_gravity="center"
+         android:gravity="left"
          android:hint="搜索" 
+         android:maxLength="10"
          android:textSize="15sp"/>
 
-
-  </LinearLayout>
+ </FrameLayout>
      
  </LinearLayout>
  <LinearLayout android:layout_width="match_parent"
