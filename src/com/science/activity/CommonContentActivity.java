@@ -2,15 +2,22 @@ package com.science.activity;
 
 import com.example.science.R;
 import com.science.services.FunctionManage;
+import com.science.services.ToastProxy;
+import com.science.util.DefaultUtil;
 import com.science.view.MyHeader;
 import com.science.view.MyImageButton;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.WindowManager.LayoutParams;
 import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -18,6 +25,7 @@ import android.webkit.WebSettings.LayoutAlgorithm;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class CommonContentActivity extends Activity{
@@ -28,14 +36,20 @@ public class CommonContentActivity extends Activity{
 	private MyImageButton shoucang_btn;
 	private MyImageButton comment_btn;
 	private MyImageButton share_btn;
+	private MyImageButton like_btn;
+	private MyImageButton email_btn;
 	private boolean shoucang;//true表示已收藏，false表示未收藏
 	private boolean like;//true表示点赞，false取消点赞
     private String  act_class;
     private String title;
     private Intent intent;
     private String theme;
+    private int article_type;
+    private int article_id;
     //function fm
     private FunctionManage fm;
+    
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -48,6 +62,8 @@ public class CommonContentActivity extends Activity{
 		String value = intent.getStringExtra("url");
 		act_class = intent.getStringExtra("act_class");
 		theme = intent.getStringExtra("theme");
+		article_type = intent.getIntExtra("article_type", DefaultUtil.INAVAILABLE);
+		article_id = intent.getIntExtra("article_id", DefaultUtil.INAVAILABLE);
 		setContentView(main);
 		initView();
 		setListener();
@@ -81,9 +97,11 @@ public class CommonContentActivity extends Activity{
 		}
 		go_back_btn = (MyImageButton)findViewById(R.id.go_back);
 		shoucang_btn = (MyImageButton)findViewById(R.id.shoucang);
-		comment_btn = (MyImageButton)findViewById(R.id.doc_comment_btn);
+		comment_btn = (MyImageButton)findViewById(R.id.common_comment_btn);
 		shoucang_btn.setDrawable(getResources().getDrawable(R.drawable.shoucang_a), getResources().getDrawable(R.drawable.shoucang_b));
 		share_btn = (MyImageButton)findViewById(R.id.share);
+		like_btn = (MyImageButton) findViewById(R.id.common_like_btn);
+		email_btn = (MyImageButton) findViewById(R.id.common_email_btn);
 		go_back_btn.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -111,6 +129,26 @@ public class CommonContentActivity extends Activity{
 		});
 		
 		
+		//点击喜欢按钮出来悬浮窗
+		like_btn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				
+				View v = findViewById(R.id.common_bottom_layout);
+				v.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), 
+						  View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+				int height = v.getMeasuredHeight();
+				ToastProxy toast = new ToastProxy(CommonContentActivity.this);
+				toast.setGravity(Gravity.BOTTOM|Gravity.LEFT, 0, height);
+				toast.setToastView(CommonContentActivity.this, "喜欢  + 1", ToastProxy.LENGTH_SHORT);
+				toast.show();
+			}
+			
+		});
+		
+		
 	    comment_btn.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -118,6 +156,9 @@ public class CommonContentActivity extends Activity{
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
 				intent.putExtra("theme",theme);
+				intent.putExtra("article_type", article_type);
+				Log.i("article_type", ""+article_type);
+				intent.putExtra("article_id", article_id);
 				intent.setClass(CommonContentActivity.this, CommentDetailActivity.class);
 				startActivity(intent);
 			}
@@ -180,5 +221,7 @@ public class CommonContentActivity extends Activity{
 	        
 	    });
 	}
+	
+	
 	
 }

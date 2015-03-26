@@ -5,6 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.science.interfaces.OnShowMoreListener;
 
 import android.graphics.Color;
@@ -31,6 +34,9 @@ public class CommentUtil implements Comparable{
 	public static final String customername = "customername";
 	public static final String content = "content";
 	public static final String time = "time";
+	public static final String parentname = "parent_name";
+	public static final String parentcontent = "parentcontent";
+	public static final String likenum = "like_num";
 	public static final int MAX_COMMENT_WORDS_NUM = 10;
 	
 	
@@ -47,7 +53,11 @@ public class CommentUtil implements Comparable{
 	public CommentUtil sec_comment = null;
 	public CommentUtil thr_comment = null;
 	public TextView tv = null;
-	
+	public int mark;//标志当前是几级评论
+	public int comment_like_num = DefaultUtil.ZERO;
+	public String comment_parent_name = DefaultUtil.NULL;
+	public String comment_parent_content = DefaultUtil.NULL;
+	public boolean like = false;//标志是否已经喜欢了
 	private int pos1 = DefaultUtil.INAVAILABLE,
 			    pos2 = DefaultUtil.INAVAILABLE,
 			    pos3 = DefaultUtil.INAVAILABLE,
@@ -67,19 +77,53 @@ public class CommentUtil implements Comparable{
 	 * 
 	 */
 	
+	/***
+	 * 
+	 * @param obj接受JSONObject参数
+	 */
+	public CommentUtil(JSONObject obj){
+		
+		if(null == obj)
+			return;
+		try {
+			int comment_id = Integer.parseInt(obj.getString(commentid));
+			int customer_id = Integer.parseInt(obj.getString(customerid));
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
-	public CommentUtil(String customer_name,String comment_content,String comment_time,int comment_id,int customer_id)
+	
+	
+	
+	
+	public CommentUtil(int comment_id,int customer_id,String customer_name,
+			            String comment_time,String comment_content,int comment_like_num,
+			            String comment_parent_name,String comment_parent_content)
 	{
-		this.customer_name = customer_name;
-		this.comment_content = comment_content;
-		this.comment_time = comment_time;
 		this.comment_id = comment_id;
 		this.customer_id = customer_id;
+		this.customer_name = customer_name;
+		this.comment_time = comment_time;
+		this.comment_content = comment_content;
+		this.comment_like_num = comment_like_num;
+		this.comment_parent_name = comment_parent_name;
+		this.comment_parent_content = comment_parent_content;
+		
 	}
 	
 	public CommentUtil()
 	{
 	}
+	
+	
+	
+	
 	
 	public CommentUtil(CommentUtil fir_comment,CommentUtil sec_comment,CommentUtil thr_comment)
 	{
@@ -103,6 +147,7 @@ public class CommentUtil implements Comparable{
 			this.comment_time = this.thr_comment.comment_time;
 			this.customer_name = this.thr_comment.customer_name;
 			this.comment_content += this.thr_comment.comment_content;
+			this.mark = 3;
 		}
 		
 		
@@ -115,6 +160,7 @@ public class CommentUtil implements Comparable{
 				this.comment_time = this.sec_comment.comment_time;
 				this.customer_name = this.sec_comment.customer_name;
 				this.comment_content +=   this.sec_comment.comment_content;
+				this.mark = 2;
 			}
 			else
 			{
@@ -123,6 +169,8 @@ public class CommentUtil implements Comparable{
 				pos2 = this.comment_content.length() - 1;
 			    this.comment_content += this.sec_comment.comment_content;
 			}
+			
+			
 		}
 		
 		if(this.fir_comment != null)
@@ -132,6 +180,7 @@ public class CommentUtil implements Comparable{
 				this.comment_time = this.fir_comment.comment_time;
 				this.customer_name = this.fir_comment.customer_name;
 				this.comment_content = this.fir_comment.comment_content;
+				this.mark = 1;
 			}
 			else
 			{
@@ -141,9 +190,12 @@ public class CommentUtil implements Comparable{
 			    this.comment_content += this.fir_comment.comment_content;
 			}
 			
+			this.comment_id = this.fir_comment.comment_id;
+			this.customer_id = this.fir_comment.customer_id;
 		}
 		
 		
+
 		total_words_len = this.comment_content.length();
 		setCommentText();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMMM-dddd HH:mm:ss");

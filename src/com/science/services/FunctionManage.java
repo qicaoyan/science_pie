@@ -34,7 +34,6 @@ public class FunctionManage {
 	public JsonDownLoadsKeywords jsonDownLoadsKeywords;
 	public String name=null;
 	public String pass=null;
-	
 	public OnekeyShare oks=null;
 
 	

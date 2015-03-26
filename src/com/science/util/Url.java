@@ -33,6 +33,8 @@ public class Url {
 	public static String removeCollection=Url.BASEURL+"/collection/deleteCollection?";
 	
 	public static String CommentList = Url.BASEURL + "comment/getComment?";
+	public static String ReleaseComment = Url.BASEURL + "comment/setComment?";
+	public static String DeleteComment = Url.BASEURL + "comment/deleteComment?";
 	public static final int MAX_ID = Integer.MAX_VALUE;
 //	public static String HOTPAGEURL0="http://10.107.7.48:8080/hot/hotList?typeId=0&plateId=";
 //	public static String HOTPAGEURL1="http://10.107.7.48:8080/hot/hotList?typeId=0&plateId=";
@@ -96,4 +98,38 @@ public class Url {
     	return composeUrl(Url.CommentList,"sid=",MyApplication.sidString,"&articleType=",Integer.toString(article_type),
     			          "&articleId=",Integer.toString(article_id),"&id=",Integer.toString(comment_id));
     }
+    
+    /***
+     * 
+     * @param comment_id (INT 这是第二层和第三层回复需要提供的,第一层可填-1) 
+     * @param root_id    (INT 同上，这是第一层回复的customerid吗,第一层可填-1) 
+     * @param article_type (INT) 
+     * @param article_id  (INT) 
+     * @param mark        (INT 0表示前面无回复，1表示前面有一个回复。2表示前面有两个回复) 
+     * @param content      (INT 0表示前面无回复，1表示前面有一个回复。2表示前面有两个回复) 
+     * @return
+     */
+    public static String compseReleaseCommentUrl(int comment_id,int root_id,int article_type,int article_id,int mark,String content){
+    	
+    	content = URLEncoder.encode(content);
+    	return composeUrl(Url.ReleaseComment,"sid=",MyApplication.sidString,"&commentid=",Integer.toString(comment_id),
+    			           "&rootid=",Integer.toString(root_id),"&articleType=",Integer.toString(article_type),
+    			           "&articleId=",Integer.toString(article_id),"&mark=",Integer.toString(mark),
+    			           "&content=",content);
+    	
+    }
+    
+    
+    /**
+     * 
+     * @param comment_id 表明删除的评论（源评论）
+     * @param mark  表明当前是多少级  (INT 0表示前面无回复，1表示前面有一个回复,2表示前面有两个回复)
+     * @return
+     */
+    public static String composeDeleteCommentUrl(int comment_id,int mark)
+    {
+    	return composeUrl(Url.DeleteComment,"sid=",MyApplication.sidString,"&commentid=",
+    			          Integer.toString(comment_id),"&mark=",Integer.toString(mark));
+    }
+    
 }

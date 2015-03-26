@@ -588,6 +588,7 @@ public class MainActivity extends Activity {
 				intent.setClass(MainActivity.this, HotPageListActivity.class);//从哪里跳到哪里
 				intent.putExtra("block", "0");//传递数据
 				intent.putExtra("title",getResources().getString(R.string.hotpage_title1));
+
 				startActivity(intent);
 				return;
 			}
@@ -609,12 +610,22 @@ public class MainActivity extends Activity {
 //				   startActivity(intent);
 //			}
 			String url=list0.get(arg2).get("filename");
+
 			Log.v("test", url);
 			Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
 			intent.setClass(MainActivity.this, CommonContentActivity.class);//从哪里跳到哪里
 			intent.putExtra("url", url);//传递数据
 			intent.putExtra("title",getResources().getString(R.string.hotpage_title1));
 			intent.putExtra("act_class", "热点新闻");
+			
+			//传递到CommonContent页面中
+			intent.putExtra("article_type", 0);
+			int article_id = Integer.parseInt(list0.get(arg2).get("id"));
+			intent.putExtra("article_id", article_id);
+			String theme = list0.get(arg2).get("title");
+			
+			
+			intent.putExtra("theme", theme);
 			startActivity(intent);
 			
 		}
@@ -658,6 +669,12 @@ public class MainActivity extends Activity {
 			intent.putExtra("url", url);//传递数据
 			intent.putExtra("title",getResources().getString(R.string.hotpage_title2));
 			intent.putExtra("act_class", "热点新闻");
+			//传递到CommonContent页面中
+			intent.putExtra("article_type", 0);
+			int article_id = Integer.parseInt(list1.get(arg2).get("id"));
+			intent.putExtra("article_id", article_id);
+			String theme = list1.get(arg2).get("title");
+			intent.putExtra("theme", theme);
 			startActivity(intent);
 			
 		}
@@ -700,6 +717,13 @@ public class MainActivity extends Activity {
 			intent.putExtra("url", url);//传递数据
 			intent.putExtra("title",getResources().getString(R.string.hotpage_title3));
 			intent.putExtra("act_class", "热点新闻");
+			
+			//传递到CommonContent页面中
+			intent.putExtra("article_type", 0);
+			int article_id = Integer.parseInt(list2.get(arg2).get("id"));
+			intent.putExtra("article_id", article_id);
+			String theme = list2.get(arg2).get("title");
+			intent.putExtra("theme", theme);
 			startActivity(intent);
 		}
 	};
@@ -743,6 +767,13 @@ public class MainActivity extends Activity {
 			intent.putExtra("url", url);//传递数据
 			intent.putExtra("title",getResources().getString(R.string.hotpage_title4));
 			intent.putExtra("act_class", "热点新闻");
+			
+			//传递到CommonContent页面中
+			intent.putExtra("article_type", 0);
+			int article_id = Integer.parseInt(list3.get(arg2).get("id"));
+			intent.putExtra("article_id", article_id);
+			String theme = list3.get(arg2).get("title");
+			intent.putExtra("theme", theme);
 			startActivity(intent);
 		}
 	};

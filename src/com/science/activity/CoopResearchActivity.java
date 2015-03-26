@@ -1,5 +1,6 @@
 package com.science.activity;
 import com.example.science.R;
+
 import com.science.fragment.FragmentOfCoopPaper;
 import com.science.fragment.FragmentOfCoopResource;
 import com.science.view.MyHeader;

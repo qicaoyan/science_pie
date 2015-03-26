@@ -81,6 +81,7 @@ public class JsonHotPageMainHandler {
 		        	map.put("title", temp.getString("title"));
 		        	map.put("imgurl",temp.getString("img_url"));
 		        	map.put("filename", temp.getString("file_url"));
+		        	map.put("id", temp.getString("id"));
 		        	list.add(map);
 		        }
 		        return list;
