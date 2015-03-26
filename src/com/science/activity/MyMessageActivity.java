@@ -1,15 +1,24 @@
 package com.science.activity;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.example.science.R;
+import com.science.json.JsonGetMyMessageHandler;
 import com.science.services.MyApplication;
+import com.science.util.Url;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -25,6 +34,8 @@ public class MyMessageActivity extends Activity {
 	private TextView headertitle;
 	private ListView myListView=null;
 	private List<Map<String, Object>> myList;
+	private JsonGetMyMessageHandler jsonGetMyMessageHandler=null;
+	private MyHandler handler=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,16 +51,20 @@ public class MyMessageActivity extends Activity {
 		InitViews();
 		InitData();
 		SetListener();
+		
+		GetMyCollection();
 	}
 	
 	private void InitVariable()
 	{
 		//myListView=new MyListView(MyCollectionActivity.this);
-		myList=new ArrayList<Map<String,Object>>();
-		Map<String , Object> map1=new HashMap<String, Object>();
-		map1.put("title", "北京市关于征集2014年中央文化产业发展专项资金一般项目的通知");
-		map1.put("time", "4天前");
-		myList.add(map1);
+		jsonGetMyMessageHandler=new JsonGetMyMessageHandler();
+		handler=new MyHandler();
+//		myList=new ArrayList<Map<String,Object>>();
+//		Map<String , Object> map1=new HashMap<String, Object>();
+//		map1.put("title", "北京市关于征集2014年中央文化产业发展专项资金一般项目的通知");
+//		map1.put("time", "4天前");
+//		myList.add(map1);
 
 	}
 	
@@ -62,7 +77,7 @@ public class MyMessageActivity extends Activity {
 	
 	private void InitData()
 	{
-		myListView.setAdapter(new myAdapte());
+		//myListView.setAdapter(new myAdapte());
 		headertitle.setText("我的消息");
 		headerback.setOnClickListener(new OnClickListener() {
 			
@@ -79,6 +94,11 @@ public class MyMessageActivity extends Activity {
 		//myInfo.setOnClickListener(onClickListener);
 	}
 	
+	private void GetMyCollection()
+	{
+		MyThreadGetMyMessage myThreadGetMyMessaage=new MyThreadGetMyMessage();
+		new Thread(myThreadGetMyMessaage).start();
+	}
 	private class myAdapte extends BaseAdapter
 	{
 
@@ -118,8 +138,8 @@ public class MyMessageActivity extends Activity {
 			TextView title=(TextView)convertView.findViewById(R.id.myCollectionItemTitle);
 			TextView time=(TextView)convertView.findViewById(R.id.myCollectionItemsTime);
 			
-			String strtitle=(String) myList.get(position).get("title");
-			String strTime=(String)myList.get(position).get("time");
+			String strtitle=(String) myList.get(position).get("message");
+			String strTime=(String)myList.get(position).get("date");
 			
 			title.setText(strtitle);
 			time.setText(strTime);
@@ -127,4 +147,61 @@ public class MyMessageActivity extends Activity {
 		}
 		
 	}
+
+	private class MyThreadGetMyMessage implements Runnable
+    {
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			URL url;
+			try {
+				url = new URL(myApplication.ComposeToken(Url.getMessage));
+				URLConnection con = url.openConnection();
+				con.connect();
+				InputStream input = con.getInputStream();
+				myList=jsonGetMyMessageHandler.getListItems(input);
+				if (myList!=null) {
+					handler.sendEmptyMessage(2);
+				}
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+    }
+	
+	private class MyHandler extends Handler {
+
+    	@Override
+    	public void dispatchMessage(Message msg) {
+    		// TODO Auto-generated method stub
+    		super.dispatchMessage(msg);
+    	}
+
+    	@Override
+    	public void handleMessage(Message msg) {
+    		if (msg.what == 2) {
+    			myListView.setAdapter(new myAdapte());
+			} 
+    		super.handleMessage(msg);
+    	}
+
+    	@Override
+    	public boolean sendMessageAtTime(Message msg, long uptimeMillis) {
+    		// TODO Auto-generated method stub
+    		return super.sendMessageAtTime(msg, uptimeMillis);
+    	}
+
+    	@Override
+    	public String toString() {
+    		// TODO Auto-generated method stub
+    		return super.toString();
+    	}
+    	
+    }
 }

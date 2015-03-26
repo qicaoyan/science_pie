@@ -56,6 +56,8 @@ public class PushReceiver extends BroadcastReceiver {
 					intentContent.putExtra("act_class", "热点新闻");
 					intentContent.setClass(context, CommonContentActivity.class);
 					intentContent.setAction("com.science.CommonContentActivity");
+					
+					Thread.sleep(2000);
 					context.startActivity(intentContent);
 					
 					Log.d("GetuiSdkDemo", "Got Payload:" + data);
@@ -63,6 +65,9 @@ public class PushReceiver extends BroadcastReceiver {
 //						GetuiSdkDemoActivity.tLogView.append(data + "\n");
 					Toast.makeText(context, "透传测试"+data, Toast.LENGTH_LONG).show();
 				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

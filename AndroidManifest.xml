@@ -84,6 +84,7 @@
         </activity>
         <activity
             android:name="com.science.activity.CommonContentActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait" >
         	<intent-filter>
                 <action android:name="com.science.CommonContentActivity" />
