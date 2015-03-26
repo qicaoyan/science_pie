@@ -74,9 +74,10 @@
         <activity
             android:name="com.science.activity.Android_DialogActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode ="stateUnspecified|adjustPan"
              >
             <intent-filter>
-                <action android:name="com.science.loginactivity" />
+                <action android:name="com.science.intent.action.LOGIN" />
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

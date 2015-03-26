@@ -1,5 +1,10 @@
 package com.science.database;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,6 +29,9 @@ public class DBManager {
 		return c;
 	}
 
+	
+	
+	
 	/**
 	 * 执行�?次带条件的查�?
 	 * 
@@ -89,13 +97,42 @@ public class DBManager {
 	 * @param content_name
 	 *            该收藏记录的详细内容的html在什么地�?
 	 */
-	public void addOneCollection(int type, String id, String title,
-			String description, String imgs) {
+	public void addOneCollection(int type, int id, String title,
+			String description, String url) {
 		String sqlString = "INSERT INTO collection VALUES(?, ?, ?, ?, ?)";
-		Object[] projection = new Object[] { type, id, title, description, imgs };
+		Object[] projection = new Object[] { type, id, title, description, url };
 		db.execSQL(sqlString, projection);
 	}
 
+	
+	
+	
+	public List<Map<String,Object>> queryAllCollection()
+	{
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		Cursor c = queryAllCollections();
+		while(c.moveToNext())
+		{
+			int type = c.getInt(c.getColumnIndex("type"));
+			int id = c.getInt(c.getColumnIndex("id"));
+			String title = c.getString(c.getColumnIndex("title"));
+			String description = c.getString(c.getColumnIndex("description"));
+			String url = c.getString(c.getColumnIndex("url"));
+			Map map = new HashMap<String,Object>();
+			map.put("article_type", type);
+			map.put("article_id", id);
+			map.put("title", title);
+			map.put("description", description);
+			map.put("url", url);
+			list.add(map);
+		}
+		
+		return list;
+		
+	}
+	
+	
+	
 	/**
 	 * 向存放博客和博客的作者关系的表中添加�?条新的记�?
 	 * 
@@ -132,23 +169,23 @@ public class DBManager {
 	 * @param id
 	 *            收藏的ID
 	 */
-	public void dropOneCollection(int type, String id) {
-		if (type == CollectionItem.TYPE_BLOG) {
-			db.delete("blog_copyright", "blog_id=?", new String[] { id });
-		} else if (type == CollectionItem.TYPE_NEWSPAPER) {
-			db.delete("newspaper_content_cancomment", "newspaper_content_id=?",
-					new String[] { id });
-		}
-		Cursor c = getExecSqlCursor("collection", new String[] { "imgs" },
-				"id=?", new String[] { id });
-		String imgPath = FileAccess.getFolderByCollectionType(type);
-		while (c.moveToNext()) {
-			imgPath += c.getString(c.getColumnIndex("imgs"));
-			Log.i("--collection img path--", imgPath);
-		}
-		FileAccess.deleteFile(imgPath);
+	public void dropOneCollection(int type, int id) {
+//		if (type == CollectionItem.TYPE_BLOG) {
+//			db.delete("blog_copyright", "blog_id=?", new String[] { id });
+//		} else if (type == CollectionItem.TYPE_NEWSPAPER) {
+//			db.delete("newspaper_content_cancomment", "newspaper_content_id=?",
+//					new String[] { id });
+//		}
+//		Cursor c = getExecSqlCursor("collection", new String[] { "imgs" },
+//				"id=?", new String[] { id });
+//		String imgPath = FileAccess.getFolderByCollectionType(type);
+//		while (c.moveToNext()) {
+//			imgPath += c.getString(c.getColumnIndex("imgs"));
+//			Log.i("--collection img path--", imgPath);
+//		}
+//		FileAccess.deleteFile(imgPath);
 		db.delete("collection", "type=? AND id=?",
-				new String[] { String.valueOf(type), id });
+				new String[] { String.valueOf(type), Integer.toString(id) });
 	}
 
 	/**

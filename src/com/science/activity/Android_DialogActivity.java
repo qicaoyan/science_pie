@@ -20,7 +20,9 @@ import com.example.science.R;
 import com.science.json.JsonLoginHandler;
 import com.science.services.FunctionManage;
 import com.science.services.MyApplication;
+import com.science.util.RegisterUtil;
 import com.science.util.Url;
+import com.science.view.MyImageButton;
 
 import android.R.integer;
 import android.app.Activity;
@@ -216,8 +218,63 @@ public class Android_DialogActivity extends Activity {
 				case R.id.logindialogregister:
 					//ShareContent();
 					//functionManage.showShare();
-					Intent intent=new Intent(Android_DialogActivity.this, RegisterActivity.class);
-					startActivity(intent);
+					//Intent intent=new Intent(Android_DialogActivity.this, RegisterActivity.class);
+					//startActivity(intent);
+					
+					AlertDialog.Builder builder;
+					builder = new AlertDialog.Builder(Android_DialogActivity.this);
+					LayoutInflater inflater = getLayoutInflater().from(Android_DialogActivity.this);
+					final View layout = inflater.inflate(R.layout.register_dialog, null);
+					builder.setView(layout);
+					final AlertDialog dialog = builder.create();
+					dialog.show();
+					
+					MyImageButton cancel_btn = (MyImageButton) layout.findViewById(R.id.register_cacel);
+					cancel_btn.setOnClickListener(new OnClickListener(){
+
+						@Override
+						public void onClick(View arg0) {
+							// TODO Auto-generated method stub
+							dialog.dismiss();
+						}
+						
+					});
+					
+					
+					MyImageButton finish_register_btn = (MyImageButton) layout.findViewById(R.id.finish_register_btn);
+					
+	
+					finish_register_btn.setOnClickListener(new OnClickListener(){
+
+						RegisterUtil reg = RegisterUtil.getInstance();
+						
+						
+						@Override
+						public void onClick(View arg0) {
+							// TODO Auto-generated method stub
+							String account = ((EditText)layout.findViewById(R.id.account_input_box)).getText().toString();
+							String password1 = ((EditText)layout.findViewById(R.id.password_input_box)).getText().toString();
+							String password2 = ((EditText)layout.findViewById(R.id.ensure_password_input_box)).getText().toString();
+							String email = ((EditText)layout.findViewById(R.id.email_input_box)).getText().toString();
+							
+							RegisterUtil.OnRegisterListener listener = new RegisterUtil.OnRegisterListener(){
+
+								@Override
+								public void onRegister(int result) {
+									// TODO Auto-generated method stub
+									if(result == RegisterUtil.RESULT_OK)
+									{
+										dialog.dismiss();
+									}
+								}
+								
+							};
+							reg.register(Android_DialogActivity.this,account,password1,password2,email,listener);
+						    
+							
+						}
+						
+					});
 					break;
 				case R.id.logindialogfogetpassword:
 					

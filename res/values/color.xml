@@ -31,4 +31,5 @@
     <color name="translucent_gray">#88b7b7b7</color>
     <color name="background_light_gray">#dfe2e7</color>
     <color name="translucent_mask_gray">#66676b6c</color>
+    <color name="fast_register_color">#204f7d</color>
 </resources>

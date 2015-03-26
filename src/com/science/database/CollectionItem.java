@@ -43,4 +43,8 @@ public class CollectionItem {
 		this.imgs = imgs;
 	}
 	
+	
+    
+	
+	
 }

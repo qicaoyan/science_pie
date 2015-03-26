@@ -3,6 +3,8 @@ package com.science.util;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import android.util.Log;
+
 import com.science.services.MyApplication;
 
 public class Url {
@@ -36,6 +38,11 @@ public class Url {
 	public static String ReleaseComment = Url.BASEURL + "comment/setComment?";
 	public static String DeleteComment = Url.BASEURL + "comment/deleteComment?";
 	public static final int MAX_ID = Integer.MAX_VALUE;
+	
+	public static String RegisterURL = Url.BASEURL + "Register/register?";
+	
+	public static String AddShoucangURL = Url.BASEURL + "collection/addCollection?";
+	public static String DeleteShoucangURL = Url.BASEURL + "collection/deleteCollection?";
 //	public static String HOTPAGEURL0="http://10.107.7.48:8080/hot/hotList?typeId=0&plateId=";
 //	public static String HOTPAGEURL1="http://10.107.7.48:8080/hot/hotList?typeId=0&plateId=";
 //	public static String HOTPAGEURL2="http://10.107.7.48:8080/hot/hotList?typeId=0&plateId=";
@@ -109,27 +116,90 @@ public class Url {
      * @param content      (INT 0表示前面无回复，1表示前面有一个回复。2表示前面有两个回复) 
      * @return
      */
-    public static String compseReleaseCommentUrl(int comment_id,int root_id,int article_type,int article_id,int mark,String content){
-    	
-    	content = URLEncoder.encode(content);
-    	return composeUrl(Url.ReleaseComment,"sid=",MyApplication.sidString,"&commentid=",Integer.toString(comment_id),
-    			           "&rootid=",Integer.toString(root_id),"&articleType=",Integer.toString(article_type),
-    			           "&articleId=",Integer.toString(article_id),"&mark=",Integer.toString(mark),
-    			           "&content=",content);
-    	
-    }
+//    public static String compseReleaseCommentUrl(int comment_id,int root_id,int article_type,int article_id,int mark,String content){
+//    	
+//    	content = URLEncoder.encode(content);
+//    	return composeUrl(Url.ReleaseComment,"sid=",MyApplication.sidString,"&commentid=",Integer.toString(comment_id),
+//    			           "&rootid=",Integer.toString(root_id),"&articleType=",Integer.toString(article_type),
+//    			           "&articleId=",Integer.toString(article_id),"&mark=",Integer.toString(mark),
+//    			           "&content=",content);
+//    	
+//    }
+    
+    
+    
+  /**
+   * 
+   * @param upper_comment (INT 对文章评论，提供-1;对评论评论，提供相应commentid)
+   * @param upper_customer (INT 对文章评论，提供-1;对评论评论，提供相应customerid) 
+   * @param article_type
+   * @param article_id
+   * @param content
+   * @return
+   */
+    
+  public static String compseReleaseCommentUrl(int upper_comment,int upper_customer,int article_type,int article_id,String content){
+	
+	content = URLEncoder.encode(content);
+	return composeUrl(Url.ReleaseComment,"sid=",MyApplication.sidString,"&upper_comment=",Integer.toString(upper_comment),
+			           "&upper_customer=",Integer.toString(upper_customer),"&articleType=",Integer.toString(article_type),
+			           "&articleId=",Integer.toString(article_id),
+			           "&content=",content);
+	
+}
+    
+    
+    
+    
+    
     
     
     /**
      * 
      * @param comment_id 表明删除的评论（源评论）
-     * @param mark  表明当前是多少级  (INT 0表示前面无回复，1表示前面有一个回复,2表示前面有两个回复)
+     *
      * @return
      */
-    public static String composeDeleteCommentUrl(int comment_id,int mark)
+    public static String composeDeleteCommentUrl(int comment_id)
     {
     	return composeUrl(Url.DeleteComment,"sid=",MyApplication.sidString,"&commentid=",
-    			          Integer.toString(comment_id),"&mark=",Integer.toString(mark));
+    			          Integer.toString(comment_id));
     }
+    
+    
+    public static String composeRegisterUrl(String nickname,String password,String email){
+    	
+    	return composeUrl(Url.RegisterURL,"sid=",MyApplication.sidString,"&username=",email,
+    			         "&nickname=",nickname,"&password=",password);
+    }
+    
+    
+    
+    
+    public static String composeAddShoucangUrl(int article_type,int article_id,String url,String title){
+    	
+    	try {
+			url = URLEncoder.encode(url,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return composeUrl(Url.AddShoucangURL,"sid=",MyApplication.sidString,
+    			          "&articleType=",Integer.toString(article_type),
+    			          "&articleId=",Integer.toString(article_id),
+         		          "&url=",url,"&title=",title);
+    
+    }
+    
+    
+    public static String composeDeleteShoucangUrl(int article_type,int article_id)
+    {
+       	return composeUrl(Url.DeleteShoucangURL,"sid=",MyApplication.sidString,
+		          "&articleType=",Integer.toString(article_type),
+		          "&articleId=",Integer.toString(article_id));
+    }
+    
+    
+    
     
 }

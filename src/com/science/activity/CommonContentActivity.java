@@ -2,12 +2,16 @@ package com.science.activity;
 
 import com.example.science.R;
 import com.science.services.FunctionManage;
+import com.science.services.MyApplication;
 import com.science.services.ToastProxy;
 import com.science.util.DefaultUtil;
+import com.science.util.ShoucangUtil;
 import com.science.view.MyHeader;
 import com.science.view.MyImageButton;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
@@ -22,6 +26,7 @@ import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebSettings.LayoutAlgorithm;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -46,9 +51,10 @@ public class CommonContentActivity extends Activity{
     private String theme;
     private int article_type;
     private int article_id;
+    private String url;
     //function fm
     private FunctionManage fm;
-    
+    private ShoucangUtil shoucang_util;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +65,15 @@ public class CommonContentActivity extends Activity{
 		main=(LinearLayout)inflater.inflate(R.layout.commoncontent, null); 
 		
 		intent = this.getIntent();
-		String value = intent.getStringExtra("url");
+		url = intent.getStringExtra("url");
 		act_class = intent.getStringExtra("act_class");
 		theme = intent.getStringExtra("theme");
 		article_type = intent.getIntExtra("article_type", DefaultUtil.INAVAILABLE);
 		article_id = intent.getIntExtra("article_id", DefaultUtil.INAVAILABLE);
+		
+		fm = new FunctionManage(this);
+		
+		
 		setContentView(main);
 		initView();
 		setListener();
@@ -72,10 +82,13 @@ public class CommonContentActivity extends Activity{
 
 		setWebView();
 		
-		webView.loadUrl(value);
+		webView.loadUrl(url);
 		
 		//初始化未收藏
-		shoucang = false;
+		shoucang_util = new ShoucangUtil(this);
+		shoucang = checkShoucang();
+		shoucang_btn.updateButtonState(shoucang);
+		
 
 	}
 	
@@ -102,6 +115,12 @@ public class CommonContentActivity extends Activity{
 		share_btn = (MyImageButton)findViewById(R.id.share);
 		like_btn = (MyImageButton) findViewById(R.id.common_like_btn);
 		email_btn = (MyImageButton) findViewById(R.id.common_email_btn);
+
+		//LayoutInflater inflater = getLayoutInflater();
+	}
+	
+	private void setListener()
+	{
 		go_back_btn.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -117,15 +136,63 @@ public class CommonContentActivity extends Activity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-			    if(shoucang)
-			       shoucang = false;
-			    else
-			    	shoucang = true;
-			    
-			    shoucang_btn.updateButtonState(shoucang);
+				
+				
+				
+				MyApplication application = MyApplication.getInstance();
+				if(!application.IsLogin())
+				{
+					fm.Login();
+				}
+				else
+				{
+				
+
+				ShoucangUtil.OnShoucangListener listener = new ShoucangUtil.OnShoucangListener() {
+					
+					@Override
+					public void onShoucang(int result) {
+						// TODO Auto-generated method stub
+						switch(result){
+						case ShoucangUtil.RESULT_ADD_OK:
+							shoucang = true;
+							shoucang_btn.updateButtonState(true);
+							//收藏至本地
+							shoucang_util.addToLocalShoucang(article_type, article_id, theme, "四天前", url);
+							toastAtBottom("收藏成功");
+							break;
+						case ShoucangUtil.RESULT_ADD_FAIL:
+							toastAtBottom("收藏失败");
+							break;
+						case ShoucangUtil.RESULT_DELETE_OK:
+							shoucang = false;
+							shoucang_btn.updateButtonState(false);
+							shoucang_util.dropFromLocalShoucang(article_type, article_id);
+							toastAtBottom("取消收藏");
+							break;
+						case ShoucangUtil.RESULT_DELETE_FAIL:
+							toastAtBottom("无法取消收藏");
+							break;
+						}
+					}
+				};
+				shoucang_util.setOnShoucangListener(listener);
+				if(!shoucang)
+			    {
 			    	
-			}
+					shoucang_util.addShoucang(article_type, article_id, url, theme);
+			    }
+			    else
+			    {
+			    	shoucang_util.deleteShoucang(article_type, article_id);
+			    	//shoucang = true;
+			    }
+			    
+			   
+			    	
+			  }
 			
+			}
 		});
 		
 		
@@ -136,14 +203,8 @@ public class CommonContentActivity extends Activity{
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				
-				View v = findViewById(R.id.common_bottom_layout);
-				v.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), 
-						  View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-				int height = v.getMeasuredHeight();
-				ToastProxy toast = new ToastProxy(CommonContentActivity.this);
-				toast.setGravity(Gravity.BOTTOM|Gravity.LEFT, 0, height);
-				toast.setToastView(CommonContentActivity.this, "喜欢  + 1", ToastProxy.LENGTH_SHORT);
-				toast.show();
+				toastAtBottom("喜欢    +  1");
+
 			}
 			
 		});
@@ -166,7 +227,7 @@ public class CommonContentActivity extends Activity{
 	    });
 	    
 	    
-	    fm = new FunctionManage(this);
+	    
 	    share_btn.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -178,13 +239,44 @@ public class CommonContentActivity extends Activity{
 	    	
 	    });
 	    
-		//LayoutInflater inflater = getLayoutInflater();
+	    
+	    
+	    
+	    email_btn.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				EditText edit_box = new EditText(CommonContentActivity.this);
+				//edit_box.setText(other_tag_str);
+				edit_box.setHint("请输入邮箱");
+				new AlertDialog.Builder(CommonContentActivity.this)
+				.setTitle("发送文章到邮箱")
+				.setIcon(android.R.drawable.ic_dialog_info)
+				.setView(edit_box)
+				.setPositiveButton("发送", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						//other_tag_str = other_input_ed.getText().toString();
+						//other_tag_tv.setText(other_tag_str);
+					}
+				})
+				.setNegativeButton("取消",null)
+				.show();
+			}
+	    	
+	    });
 	}
 	
-	private void setListener()
+	
+	public boolean checkShoucang()
 	{
-		
+		return shoucang_util.containInShoucang(article_type, article_id);
 	}
+	
+	
+	
 	
 	private void setWebView()
 	{
@@ -223,5 +315,16 @@ public class CommonContentActivity extends Activity{
 	}
 	
 	
+	public void toastAtBottom(CharSequence info){
+		
+		View v = findViewById(R.id.common_bottom_layout);
+		v.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), 
+				  View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+		int height = v.getMeasuredHeight();
+		ToastProxy toast = new ToastProxy(CommonContentActivity.this);
+		toast.setGravity(Gravity.BOTTOM|Gravity.LEFT, 0, height);
+		toast.setToastView(CommonContentActivity.this, info, ToastProxy.LENGTH_SHORT);
+		toast.show();
+	}
 	
 }

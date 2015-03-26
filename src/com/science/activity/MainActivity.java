@@ -587,7 +587,7 @@ public class MainActivity extends Activity {
 				intent.setClass(MainActivity.this, HotPageListActivity.class);//从哪里跳到哪里
 				intent.putExtra("block", "0");//传递数据
 				intent.putExtra("title",getResources().getString(R.string.hotpage_title1));
-
+                
 				startActivity(intent);
 				return;
 			}
@@ -610,7 +610,6 @@ public class MainActivity extends Activity {
 //			}
 			String url=list0.get(arg2).get("filename");
 
-			Log.v("test", url);
 			Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
 			intent.setClass(MainActivity.this, CommonContentActivity.class);//从哪里跳到哪里
 			intent.putExtra("url", url);//传递数据

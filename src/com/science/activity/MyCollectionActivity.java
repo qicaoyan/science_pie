@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.example.science.R;
 import com.science.services.MyApplication;
+import com.science.util.ShoucangUtil;
 import com.science.view.MyListView;
 
 import android.app.Activity;
@@ -49,11 +50,13 @@ public class MyCollectionActivity extends Activity {
 	private void InitVariable()
 	{
 		//myListView=new MyListView(MyCollectionActivity.this);
-		myList=new ArrayList<Map<String,Object>>();
-		Map<String , Object> map1=new HashMap<String, Object>();
-		map1.put("title", "北京市关于征集2014年中央文化产业发展专项资金一般项目的通知");
-		map1.put("time", "4天前");
-		myList.add(map1);
+		//myList=new ArrayList<Map<String,Object>>();
+		ShoucangUtil shoucang_util = new ShoucangUtil(this);
+		myList = shoucang_util.getLocalShoucangList();
+		//Map<String , Object> map1=new HashMap<String, Object>();
+		//map1.put("title", "北京市关于征集2014年中央文化产业发展专项资金一般项目的通知");
+		//map1.put("time", "4天前");
+		//myList.add(map1);
 
 	}
 	
@@ -123,8 +126,7 @@ public class MyCollectionActivity extends Activity {
 			TextView time=(TextView)convertView.findViewById(R.id.myCollectionItemsTime);
 			
 			String strtitle=(String) myList.get(position).get("title");
-			String strTime=(String)myList.get(position).get("time");
-			
+			String strTime=(String)myList.get(position).get("description");
 			title.setText(strtitle);
 			time.setText(strTime);
 			return convertView;

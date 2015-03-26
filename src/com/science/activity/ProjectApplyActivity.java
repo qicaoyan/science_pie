@@ -232,7 +232,7 @@ private void requestData(){
 		
 		//设置proj_apply的header
 		proj_apply_header.SetHeaderText("项目申请");
-		String[] header_btn_strs = {"热门推荐","即将到期","项目解读"};
+		String[] header_btn_strs = {"热点项目","创业项目","项目解读","即将到期"};
 		proj_apply_header.SetHeaderButtons(header_btn_strs);
 		
 		proj_list_view = (ListView)findViewById(R.id.proj_list_view);

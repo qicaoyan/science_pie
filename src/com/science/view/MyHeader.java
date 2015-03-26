@@ -5,6 +5,8 @@ import java.net.ContentHandler;
 import com.example.science.R;
 import com.science.activity.MainActivity;
 import com.science.activity.SettingManageActivity;
+import com.science.services.FunctionManage;
+import com.science.services.MyApplication;
 
 import android.R.integer;
 import android.app.Activity;
@@ -29,16 +31,17 @@ public class MyHeader extends LinearLayout {
 	public Context headContent=null;
 	public ImageButton home_btn;
 	public ImageButton setting;
+	private MyApplication application;
+	private FunctionManage fm;
 	public MyHeader(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.header, this);
-        
-//        imageView=(ImageView) findViewById(R.id.imageView1);
-//        textView=(TextView)findViewById(R.id.textView1);
-        headContent=context;
+        inflater.inflate(R.layout.header, this);  
+        application = MyApplication.getInstance();
         InitView();
+        fm = new FunctionManage(context);
+        headContent=context;
 	}
 
 
@@ -49,8 +52,11 @@ public class MyHeader extends LinearLayout {
         inflater.inflate(R.layout.header, this);
 //        imageView=(ImageView) findViewById(R.id.imageView1);
 //        textView=(TextView)findViewById(R.id.textView1);
+
         headContent=context;
        InitView();
+       application = MyApplication.getInstance();
+       fm = new FunctionManage(context);
 	}
 
 	public MyHeader(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -62,6 +68,8 @@ public class MyHeader extends LinearLayout {
 //        textView=(TextView)findViewById(R.id.textView1);
         headContent=context;
         InitView();
+        application = MyApplication.getInstance();
+        fm = new FunctionManage(context);
 	}
 	
 	private void InitView()
@@ -87,7 +95,10 @@ public class MyHeader extends LinearLayout {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				headContent.startActivity(new Intent(headContent,SettingManageActivity.class));
+				if(application.IsLogin())		
+					headContent.startActivity(new Intent(headContent,SettingManageActivity.class));
+				else
+					fm.Login();
 				//((Activity) headContent).finish();
 			}
 		});

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -24,4 +24,84 @@
         <item name="android:minHeight">16dip</item>
         <item name="android:maxHeight">16dip</item>
     </style>
+    
+        
+        
+     <style name = "register_edittext_style"> 
+         <item name = "android:background">@drawable/register_input_box</item>
+     </style>
+     
+     <!-- 表示姓名或者单位/学校的样式 -->
+     <style name = "release_edittext_style1">
+         <item name = "android:background">@drawable/release_common_box</item>
+         <item name = "android:textSize">15sp</item>
+         <item name = "android:textColorHint">@color/text_light_gray</item>
+         <item name = "android:paddingLeft">10dip</item>
+         <item name = "android:textColor">@color/text_dark_gray</item>
+     </style>
+     
+      <!-- 表示专业或者联系方式-->
+    <style name = "release_edittext_style2">
+         <item name = "android:background">@drawable/release_common_box</item>
+         <item name = "android:textSize">15sp</item>
+         <item name = "android:textColorHint">@color/text_light_gray</item>
+         <item name = "android:paddingLeft">20dip</item>
+         <item name = "android:textColor">@color/text_dark_gray</item>
+     </style>
+     
+     
+     
+         
+      <!-- 表示历往资历-->
+    <style name = "release_edittext_style3">
+         <item name = "android:background">@null</item>
+         <item name = "android:textSize">15sp</item>
+         <item name = "android:textColorHint">@color/text_light_gray</item>
+         <item name = "android:paddingLeft">20dip</item>
+         <item name = "android:paddingTop">20dip</item>
+         <item name = "android:gravity">left|top</item>
+         <item name = "android:textColor">@color/text_dark_gray</item>
+     </style>
+     
+    
+    
+    
+    
+     <!-- 表示身份、职务、地域的选择框 -->
+     <style name="release_select_style1">
+         <item name="android:background">@drawable/release_common_box</item>
+     </style>
+      <!-- 表示人数 -->
+     <style name="release_select_style2">
+         <item name="android:background">@drawable/release_common_box</item>
+         <item name="android:paddingLeft">2dip</item>
+          <item name="android:gravity">center_vertical</item>
+     </style>
+     
+     <!-- 表示名称、类型、型号等-->
+     <style name="release_select_style3">
+     <item name="android:background">@drawable/release_common_box</item>
+         <item name="android:paddingLeft">2dip</item>
+         <item name="android:gravity">center_vertical</item>
+     </style>
+     
+     <!-- 表示选择框或者输入框中的提示信息的字体 -->
+     <style name = "release_text_style1">
+         
+         <item name = "android:textColor">@color/text_light_gray</item>
+          <item name = "android:textSize">15sp</item>
+     </style>
+     
+     
+    <!-- 表示人数 -->
+     <style name = "release_text_style2">
+         
+         <item name = "android:textColor">@color/text_light_gray</item>
+          <item name = "android:textSize">10sp</item>
+     </style>
+     
+     <style name = "release_check_style1">
+         <item name = "android:background">@drawable/shape_check_box</item>
+     </style>
+     
 </resources>
