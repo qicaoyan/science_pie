@@ -32,9 +32,10 @@ public class MyHeader extends LinearLayout {
 	public String [] headcontent=null;
 	public Button[] headButtons=null;
 	public View.OnClickListener[] onClickListeners=null;
-	public Context headContent=null;
 	public ImageButton home_btn;
 	public ImageButton setting;
+	private Context headContent;
+
 	private MyApplication application;
 	private FunctionManage fm;
 	
@@ -49,13 +50,16 @@ public class MyHeader extends LinearLayout {
 	private float header_btn_ratio;//按钮的比率
 	private int screen_width;
 	private int header_btn_all_width;
+
 	public MyHeader(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         inflater.inflate(R.layout.header, this);  
         application = MyApplication.getInstance();
         headContent=context;
+
         InitView();
         fm = new FunctionManage(context);
         
@@ -75,7 +79,9 @@ public class MyHeader extends LinearLayout {
 //        imageView=(ImageView) findViewById(R.id.imageView1);
 //        textView=(TextView)findViewById(R.id.textView1);
 
+
         headContent=context;
+
        InitView();
        application = MyApplication.getInstance();
        fm = new FunctionManage(context);
@@ -88,7 +94,6 @@ public class MyHeader extends LinearLayout {
         inflater.inflate(R.layout.header, this);
 //        imageView=(ImageView) findViewById(R.id.imageView1);
 //        textView=(TextView)findViewById(R.id.textView1);
-        headContent=context;
         InitView();
         application = MyApplication.getInstance();
         fm = new FunctionManage(context);
@@ -117,8 +122,8 @@ public class MyHeader extends LinearLayout {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				headContent.startActivity(new Intent(headContent,MainActivity.class));
-				((Activity) headContent).finish();
+				getContext().startActivity(new Intent(getContext(),MainActivity.class));
+				((Activity) getContext()).finish();
 			}
 			
 		});
@@ -129,10 +134,12 @@ public class MyHeader extends LinearLayout {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+
 				if(application.IsLogin())		
 					headContent.startActivity(new Intent(headContent,SettingManageActivity.class));
 				else
 					fm.Login();
+
 				//((Activity) headContent).finish();
 			}
 		});

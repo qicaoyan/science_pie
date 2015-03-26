@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
+import android.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -283,4 +284,49 @@ public class AppUtil {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));  
         listView.setLayoutParams(params);  
     } 
+    
+    public static String BlockCodeToBlockText(String code)
+    {
+    	String name="";
+    	switch (Integer.parseInt(code)) {
+    	
+		case 0:
+			 name="科技新闻/趋势";
+			break;
+		case 1:
+			 name="项目申报心得";
+			break;
+		case 2:
+			name="项目解读/动态";
+			break;
+		case 3:
+			name="热门需求";
+			break;
+		case 101:
+			name="热门项目";
+			break;
+		case 102:
+			name="即将到期项目";
+			break;
+		case 103:
+			name="项目解读";
+			break;
+		case 201:
+			name="中文文献";
+			break;
+		case 202:
+			name="英文文献";
+			break;
+		case 203:
+			name="工作文献";
+			break;
+		case 204:
+			name="NSF";
+			break;
+		default:
+			break;
+		}
+    	
+    	return name;
+    }
 }
