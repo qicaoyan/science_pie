@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:id="@+id/frag_paper_relative">
+    
+<LinearLayout 
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:background="@drawable/shape_light_blue"
+     android:gravity="center"
+     android:paddingTop="2dip"
+     android:paddingBottom = "2dip">
+       
+ <LinearLayout
+     android:id="@+id/search_layout"
+     android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/search_box">
+   
+    <ImageView android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:src="@drawable/fangdajing"
+         android:layout_weight="1"
+         android:layout_marginLeft="3dip"
+         android:layout_gravity="center_vertical"/>
+     <EditText
+         android:id="@+id/search_edit_text"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:background="@null"
+         android:gravity="left|center_vertical"
+         android:layout_weight="9"
+         android:paddingLeft="5dip"
+         android:hint="搜索" 
+         android:textSize="15sp"/>
+
+
+  </LinearLayout>
+     
+ </LinearLayout>
+
+
+<ListView
+   
+    android:id="@+id/frag_paper_list_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="30dip"
+    android:layout_marginBottom="30dip">
+    
+</ListView>
+
+
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_background1"
+    android:layout_alignParentBottom="true"
+    
+    android:orientation="horizontal"
+    >
+    
+    
+    <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_weight="1">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="理论研究"
+            android:textSize="18dip"
+            android:textColor="@color/white"></TextView>
+            
+           
+            
+        
+    </LinearLayout>
+    
+    
+    
+    
+    <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_weight="1">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="临床实践"
+            android:textSize="18dip"
+            android:textColor="@color/white"></TextView>
+           
+        
+    </LinearLayout>
+    
+    
+    
+   <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_weight="1">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="数据分析"
+            android:textSize="18dip"
+            android:textColor="@color/white"></TextView>
+           
+        
+    </LinearLayout>
+    
+    
+    
+    
+</LinearLayout>
+
+
+
+
+</RelativeLayout>
