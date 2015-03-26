@@ -65,7 +65,7 @@
         android:gravity="center_vertical"
         android:layout_marginTop="10dip">
        <!-- 身份选择框 -->
-       <include layout="@layout/embed_select_box"/>
+       <include layout="@layout/embed_release_select_box"/>
        
          <!-- 空布局 -->
        <TextView android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
        
        
        <!-- 职务 -->
-       <include layout="@layout/embed_select_box"/>
+       <include layout="@layout/embed_release_select_box"/>
        
        <!-- 空布局 -->
        <TextView android:layout_width="wrap_content"
@@ -82,7 +82,7 @@
            android:layout_weight="1"/>
        
         <!-- 地域 -->
-      <include layout="@layout/embed_select_box"/>
+      <include layout="@layout/embed_release_select_box"/>
        
   
     
@@ -103,7 +103,7 @@
        
         <EditText android:layout_width="108dip"
             android:layout_height="40dip"
-            style="@style/release_edittext_style2"
+            style="@style/release_edittext_style1"
             android:hint="专业"/>
         
        <!-- 空布局 -->
@@ -112,7 +112,7 @@
            android:layout_weight="1"/>
         
         <EditText
-            style="@style/release_edittext_style2"
+            style="@style/release_edittext_style1"
             android:layout_width="210dip"
             android:layout_height="40dip"
             android:hint="联系方式（手机号/邮箱）)" />
@@ -143,7 +143,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="历往资历"
-        style = "@style/release_edittext_style3"/>  
+        style = "@style/release_edittext_style2"/>  
       </RelativeLayout> 
 
     
@@ -166,27 +166,8 @@
             />
         
        <!-- 人数-->
-       <LinearLayout 
-           android:layout_width="50dip"
-           android:layout_height="22dip"
-           style = "@style/release_select_style2"
-           android:id="@+id/release_people_num_layout"
-           android:layout_marginLeft="10dip">
-           
-           <TextView android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               style = "@style/release_text_style2"
-               android:text="人数"/>
-           <com.science.view.MyImageButton
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:background="@drawable/icon_release_extend"
-               android:layout_marginLeft="5dip"
-               android:id="@+id/release_people_num_extend_btn"/>
-           
-       </LinearLayout>
-        
-        
+
+        <include layout="@layout/embed_release_select_box"/>
         
     </LinearLayout>
    
@@ -221,25 +202,19 @@
        
         
         <!-- 名称 -->
-           <LinearLayout 
-           android:layout_width="80dip"
-           android:layout_height="30dip"
-           style = "@style/release_select_style3"
-           >
-           
-           <TextView android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               style = "@style/release_text_style1"
-               android:text="名称"/>
-           <com.science.view.MyImageButton
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:background="@drawable/icon_release_extend"
-               android:layout_marginLeft="5dip"
-               android:id="@+id/release_area_btn"/>
-           
-       </LinearLayout>
-        
+        <include layout="@layout/embed_release_select_box"/>
+        <!-- 类型 -->
+        <EditText android:id="@+id/release_device_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/release_edittext_style3"
+            android:text="类型"/>
+        <!-- 型号 -->
+        <EditText android:id="@+id/release_device_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/release_edittext_style3"
+            android:text="型号"/>
     </LinearLayout>
     
     

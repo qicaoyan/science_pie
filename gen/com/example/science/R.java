@@ -557,14 +557,14 @@ public final class R {
         public static final int registerusername=0x7f0a00b2;
         public static final int registerzhiye=0x7f0a00b7;
         public static final int release_area_btn=0x7f0a0031;
-        public static final int release_check_has_device=0x7f0a003c;
+        public static final int release_check_has_device=0x7f0a003a;
         public static final int release_check_has_team=0x7f0a0039;
+        public static final int release_device_style=0x7f0a003b;
+        public static final int release_device_version=0x7f0a003c;
         public static final int release_experience=0x7f0a0038;
         public static final int release_header=0x7f0a0033;
         public static final int release_name=0x7f0a0035;
         public static final int release_organization=0x7f0a0036;
-        public static final int release_people_num_extend_btn=0x7f0a003b;
-        public static final int release_people_num_layout=0x7f0a003a;
         public static final int release_photo=0x7f0a0034;
         public static final int release_select_box_layout=0x7f0a0030;
         public static final int release_upload_pic=0x7f0a0037;
@@ -611,7 +611,7 @@ public final class R {
         public static final int doc_list_item=0x7f030005;
         public static final int document_express=0x7f030006;
         public static final int documenttagitem=0x7f030007;
-        public static final int embed_select_box=0x7f030008;
+        public static final int embed_release_select_box=0x7f030008;
         public static final int float_view=0x7f030009;
         public static final int fragment_release=0x7f03000a;
         public static final int header=0x7f03000b;
@@ -792,16 +792,16 @@ public final class R {
         public static final int progress=0x7f080002;
         public static final int register_edittext_style=0x7f080003;
         public static final int release_check_style1=0x7f08000c;
-        /**  表示姓名或者单位/学校的样式 
+        /**  表示姓名或者单位/学校的样式   垂直居中，并且距离左边界10dip
          */
         public static final int release_edittext_style1=0x7f080004;
-        /**  表示专业或者联系方式
+        /**  表示历往资历  大的编辑框
          */
         public static final int release_edittext_style2=0x7f080005;
-        /**  表示历往资历
+        /**  居中类型的编辑框 
          */
         public static final int release_edittext_style3=0x7f080006;
-        /**  表示身份、职务、地域的选择框 
+        /**  表示身份、职务、地域的选择框   
          */
         public static final int release_select_style1=0x7f080007;
         /**  表示人数 

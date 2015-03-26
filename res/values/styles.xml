@@ -31,7 +31,7 @@
          <item name = "android:background">@drawable/register_input_box</item>
      </style>
      
-     <!-- 表示姓名或者单位/学校的样式 -->
+     <!-- 表示姓名或者单位/学校的样式   垂直居中，并且距离左边界10dip-->
      <style name = "release_edittext_style1">
          <item name = "android:background">@drawable/release_common_box</item>
          <item name = "android:textSize">15sp</item>
@@ -40,20 +40,12 @@
          <item name = "android:textColor">@color/text_dark_gray</item>
      </style>
      
-      <!-- 表示专业或者联系方式-->
-    <style name = "release_edittext_style2">
-         <item name = "android:background">@drawable/release_common_box</item>
-         <item name = "android:textSize">15sp</item>
-         <item name = "android:textColorHint">@color/text_light_gray</item>
-         <item name = "android:paddingLeft">20dip</item>
-         <item name = "android:textColor">@color/text_dark_gray</item>
-     </style>
-     
+
      
      
          
-      <!-- 表示历往资历-->
-    <style name = "release_edittext_style3">
+      <!-- 表示历往资历  大的编辑框-->
+    <style name = "release_edittext_style2">
          <item name = "android:background">@null</item>
          <item name = "android:textSize">15sp</item>
          <item name = "android:textColorHint">@color/text_light_gray</item>
@@ -65,9 +57,18 @@
      
     
     
+    <!-- 居中类型的编辑框 -->
+   <style name = "release_edittext_style3">
+         <item name = "android:background">@null</item>
+         <item name = "android:textSize">15sp</item>
+         <item name = "android:textColorHint">@color/text_light_gray</item>
+         <item name = "android:gravity">center</item>
+         <item name = "android:textColor">@color/text_dark_gray</item>
+     </style>
     
     
-     <!-- 表示身份、职务、地域的选择框 -->
+    
+     <!-- 表示身份、职务、地域的选择框   -->
      <style name="release_select_style1">
          <item name="android:background">@drawable/release_common_box</item>
      </style>
