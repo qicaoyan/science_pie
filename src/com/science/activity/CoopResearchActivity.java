@@ -1,8 +1,8 @@
 package com.science.activity;
 import com.example.science.R;
 
-import com.science.fragment.FragmentOfCoopPaper;
-import com.science.fragment.FragmentOfCoopResource;
+import com.science.fragment.CoopPaperFragment;
+import com.science.fragment.CoopResourceFragment;
 import com.science.view.MyHeader;
 import com.science.view.MyImageButton;
 import android.app.Activity;
@@ -27,8 +27,8 @@ public class CoopResearchActivity extends Activity  {
 
 	private MyImageButton mTabResource;  
 	private MyImageButton mTabPaper;  
-	private FragmentOfCoopResource mResource;  
-	private FragmentOfCoopPaper mPaper;
+	private CoopResourceFragment mResource;  
+	private CoopPaperFragment mPaper;
 	
 	private MyHeader coop_header = null;
 
@@ -75,7 +75,7 @@ public class CoopResearchActivity extends Activity  {
 	{
 		FragmentManager fm = getFragmentManager();
 		FragmentTransaction transaction = fm.beginTransaction();
-		mResource = new FragmentOfCoopResource();
+		mResource = new CoopResourceFragment();
 		transaction.replace(R.id.id_content, mResource);
 		transaction.commit();
 	}

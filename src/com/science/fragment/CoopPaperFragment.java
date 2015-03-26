@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 
 
-public class FragmentOfCoopPaper extends Fragment{
+public class CoopPaperFragment extends Fragment{
 	 @Override  
 	   public View onCreateView(LayoutInflater inflater, ViewGroup container,  
 	           Bundle savedInstanceState)  

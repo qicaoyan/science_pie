@@ -1,7 +1,7 @@
 package com.science.fragment;
 
 
-import java.io.File;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -17,14 +17,14 @@ import com.example.science.R;
 import com.science.activity.CommonContentActivity;
 
 
+import com.science.item.Cooper;
 import com.science.json.JsonProgramListHandler;
 import com.science.json.JsonProjectSelectListHandler;
 import com.science.model.FirstClassItem;
 import com.science.model.SecondClassItem;
 import com.science.services.MyApplication;
 import com.science.util.Url;
-import com.science.view.MyHeader;
-import com.science.view.MyImageButton;
+
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -46,7 +46,7 @@ import android.view.animation.RotateAnimation;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
+
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -54,36 +54,21 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import com.science.adapter.CoopListAdapter;
 
 
 
-
-public class FragmentOfCoopResource extends Fragment{
+public class CoopResourceFragment extends Fragment{
 	
 	private View view;
-	private MyApplication myApplication=null;
 
-	
-	
 	private LinearLayout main=null;
-	private String arrowState="";
-	//private ProgressBar projectprogramProgressBar=null;
-	private View moreView=null;
 	private String strUrl=null;
 	private String str_url_proj_src;
 
-	private MyImageButton fold_btn1;
-	private MyImageButton fold_btn2;
-	private MyImageButton[] proj_btns;
 	private WindowManager wm;
 	private Context context;
 
-	private MyImageButton mTabResource;  
-	private MyImageButton mTabPaper;  
-	private FragmentOfCoopResource mResource;  
-	private FragmentOfCoopPaper mPaper;
-	
-	
 	private int screen_width;
 	private int screen_height;
 	
@@ -95,23 +80,22 @@ public class FragmentOfCoopResource extends Fragment{
 	private View      coop_area_pop_view;
 	private View      coop_all_btn;
 	private View      coop_area_btn;
-	private View      frag_source_view;
-	private MyHeader  proj_apply_header;
 	private PopupWindow  coop_all_pop_win;
 	private PopupWindow   coop_area_pop_win;
+	//private CoopListAdapter coop_list_adapter;
 	private CoopListAdapter coop_list_adapter;
 	private CoopAllAdapter first_adapter;
 	private CoopAllNextAdapter second_adapter;
     private CoopAreaAdapter coop_area_adapter;
-	private View proj_more_view;
+	private View cooper_more_view;
 	private JsonProgramListHandler json = null;
 	private JsonProjectSelectListHandler json_select = null;
 	private MyApplication application;
-	private static final int UPDATE_TAG_VIEW = 0x00; 
-	private static final int UPDATE_TAG_VIEW2 = 0x01; 
+
+	
     private static final int UPDATE_COOP_LIST = 0x02;
     
-	private List<Map<String,String>> coop_list;
+	private List<Cooper> coop_list;
 	private List<FirstClassItem> coop_all_list;
 	private List<SecondClassItem> coop_all_next_list;
     private List<FirstClassItem> coop_area_list;
@@ -143,7 +127,7 @@ public class FragmentOfCoopResource extends Fragment{
 	{
 		
 		
-		moreView = activity.getLayoutInflater().inflate(R.layout.moredata, null);
+		
 		strUrl=Url.ProjectListBase;
 		str_url_proj_src = Url.ProjectUsual;
 		context = activity;
@@ -173,9 +157,16 @@ public class FragmentOfCoopResource extends Fragment{
 	        coop_area_list.add(new FirstClassItem(3,"广州",null));
 	        
 	        
-	        
+	       
 	        /*设置coop_list_adapter*/
-	        coop_list_adapter = new CoopListAdapter();
+	        //Cooper cooper = new Cooper(activity,null,0,"班瑞克","教授","团队10人","清华大学天体物理学博士生导师");
+	        coop_list = new ArrayList<Cooper>();
+	        coop_list.add(new Cooper(activity,null,0,"James","教授","团队10人","清华大学天体物理学博士生导师"));
+	        coop_list.add(new Cooper(activity,null,1,"James","教授","团队10人","清华大学天体物理学博士生导师"));
+	        coop_list.add(new Cooper(activity,null,2,"James","教授","团队10人","清华大学天体物理学博士生导师"));
+	        coop_list.add(new Cooper(activity,null,3,"James","教授","团队10人","清华大学天体物理学博士生导师"));
+	        coop_list.add(new Cooper(activity,null,4,"James","教授","团队10人","清华大学天体物理学博士生导师"));
+	        coop_list_adapter = new CoopListAdapter(activity,coop_list);
 	}
 	
 	
@@ -192,38 +183,29 @@ private void requestData(){
 		
 		
 		//findViewById
-		frag_source_view = activity.getLayoutInflater().from(activity).inflate(R.layout.coop_fragment_resource, null);
+		
 		
 		
 		coop_all_btn = (LinearLayout)view.findViewById(R.id.coop_all_layout);
 		coop_area_btn = (LinearLayout)view.findViewById(R.id.coop_area_layout);
-		//proj_apply_header = (MyHeader) findViewById(R.id.proj_apply_header);
-		
-		//设置proj_apply的header
-//		proj_apply_header.SetHeaderText("项目申请");
-//		String[] header_btn_strs = {"热门推荐","即将到期","项目解读"};
-//		proj_apply_header.SetHeaderButtons(header_btn_strs);
-		//View frag_source_view = getLayoutInflater().from(this).inflate(R.layout.frag_resource, null);
-		coop_list_view = (ListView)frag_source_view.findViewById(R.id.frag_resource_list_view);
-		Log.i("test_coop", "~~~~~~~~~~~");
-		coop_list_view.setCacheColorHint(Color.argb(255, 0, 0, 0));
-		Log.i("test_coop", "~~~~000000~~~~");
-		coop_list_view.setSelector(R.drawable.list_item_selector);
-		Log.i("test_coop", "~~~~1111111~~~~");
 
+		coop_list_view = (ListView)view.findViewById(R.id.coop_fragment_resource_list);
+		coop_list_view.setCacheColorHint(Color.argb(255, 0, 0, 0));
+		coop_list_view.setSelector(R.drawable.list_item_selector);
 		coop_list_view.setOnItemClickListener(coop_item_click_listener);
+		coop_list_view.setAdapter(coop_list_adapter);
+		
 		/*加载更多按钮*/
 		//proj_more_view = (LinearLayout) getLayoutInflater().inflate(R.layout.listmoredata, null);
-		coop_all_pop_view = activity.getLayoutInflater().inflate(R.layout.pop_view_for_proj_src, null);
-		coop_area_pop_view = activity.getLayoutInflater().inflate(R.layout.pop_view_for_proj_type, null);
-		coop_all_list_view = (ListView) coop_all_pop_view.findViewById(R.id.proj_src_list_view);
-		Log.i("test_coop", "~~~~2222222~~~~");
+		coop_all_pop_view = activity.getLayoutInflater().inflate(R.layout.common_secondary_pop_view, null);
+		coop_area_pop_view = activity.getLayoutInflater().inflate(R.layout.common_stair_pop_view, null);
+		coop_all_list_view = (ListView) coop_all_pop_view.findViewById(R.id.common_secondary_pop_list);
 		first_adapter = new CoopAllAdapter(activity,coop_all_list);
 		coop_all_list_view.setAdapter(first_adapter);
 		
-	     coop_all_next_list_view = (ListView) coop_all_pop_view.findViewById(R.id.proj_src_next_list_view);
-	     coop_all_next_list = new ArrayList<SecondClassItem>();
-	     coop_all_next_list.addAll(coop_all_list.get(0).getSecondList());
+	    coop_all_next_list_view = (ListView) coop_all_pop_view.findViewById(R.id.common_secondary_pop_next_list);
+	    coop_all_next_list = new ArrayList<SecondClassItem>();
+	    coop_all_next_list.addAll(coop_all_list.get(0).getSecondList());
 	     
 	     //设置coop_all_list_view和coop_all_new_list_view的比例
 	     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
@@ -234,10 +216,9 @@ private void requestData(){
 	     
 	     second_adapter = new CoopAllNextAdapter(activity, coop_all_next_list);
 	     coop_all_next_list_view.setAdapter(second_adapter);
-	     Log.i("test_coop", "~~~~333333~~~~");
 	     
 	     //proj_type处理
-	     coop_area_list_view = (ListView)coop_area_pop_view.findViewById(R.id.proj_type_list_view);
+	     coop_area_list_view = (ListView)coop_area_pop_view.findViewById(R.id.common_stair_pop_view_list);
 	     coop_area_adapter = new CoopAreaAdapter(activity,coop_area_list);
 	     coop_area_list_view.setAdapter(coop_area_adapter);
 	   //左侧ListView点击事件
@@ -308,9 +289,7 @@ private void requestData(){
 	                second_adapter.setSelectedPosition(position);
 	                second_adapter.notifyDataSetChanged();
 	                
-	                GetProjectThread get_proj_thread = new GetProjectThread(0);
-	                new Thread(get_proj_thread).start();
-	                handleResult(firstId, secondId, selectedName);
+
 	            }
 	        });
 	     
@@ -346,8 +325,6 @@ private void requestData(){
 	                
 	                coop_area_adapter.notifyDataSetChanged();
 	                coop_area_adapter.setSelectedPosition(position);
-	                GetProjectThread get_proj_thread = new GetProjectThread(0);
-	                new Thread(get_proj_thread).start();
 	               // handleResult(firstId, secondId, selectedName);
 	            }
 	        });
@@ -433,7 +410,7 @@ private void requestData(){
 					Log.i("strUrl", strUrl);
 					if(temp != null)
 					{
-						coop_list = temp;
+						//coop_list = temp;
 						Log.i("temp?==0","temp!=0");
 						handler.sendEmptyMessage(UPDATE_COOP_LIST);
 						
@@ -455,49 +432,7 @@ private void requestData(){
 
 	  
 	  
-	  private class GetProjectThread implements Runnable
-		{
-			private int index = 0;
-			
-			public GetProjectThread(int temp)
-			{
-				index = temp;
-			}
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				
-				URL url;
-				try{
-
-					url = new URL(str_url_proj_src);
-					URLConnection con = url.openConnection();
-					con.connect();
-					InputStream input = con.getInputStream();
-					List<Map<String,String>> temp = null;
-					temp = json_select.getListItems(input);
-					
-					if(temp != null)
-					{
-						coop_list = temp;
-						handler.sendEmptyMessage(6);
-						Log.i("temp?==0","temp!=0");
-					}else
-					{
-						handler.sendEmptyMessage(3);
-						
-					}
-				}catch(MalformedURLException e)
-				{
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-		}
+	
 
 	 
 	  
@@ -514,7 +449,7 @@ private void requestData(){
 					Log.i("proj_apply","here!");
 					
 					coop_list_view.setAdapter(coop_list_adapter);
-					coop_list_view.addFooterView(proj_more_view);
+					coop_list_view.addFooterView(cooper_more_view);
 					Log.i("add footer view", "added");
 					break;
 				case 3:
@@ -523,9 +458,9 @@ private void requestData(){
 				case 6:
 					
 					coop_list_adapter.notifyDataSetChanged();
-					coop_list_adapter = new CoopListAdapter();
+					coop_list_adapter = new CoopListAdapter(activity,coop_list);
 					coop_list_view.setAdapter(coop_list_adapter);
-					coop_list_view.addFooterView(proj_more_view);
+					coop_list_view.addFooterView(cooper_more_view);
 					break;
 					
 				}
@@ -535,17 +470,6 @@ private void requestData(){
 	  public void setOnClickListener()
 		{
 
-	      //设置头部按钮的点击事件
-		   OnClickListener onHeaderButtonClickListener = new OnClickListener()
-		   {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-			}
-			   
-		   };	   
 
 		   
 	        //设置coop_all_btn点击弹出事件
@@ -615,61 +539,6 @@ private void requestData(){
 		
 		
 
-		private class CoopListAdapter extends BaseAdapter
-		{
-
-			@Override
-			public int getCount() {
-				// TODO Auto-generated method stub
-				return coop_list.size();
-			}
-
-			@Override
-			public Object getItem(int item) {
-				// TODO Auto-generated method stub
-				return item;
-			}
-
-			@Override
-			public long getItemId(int id) {
-				// TODO Auto-generated method stub
-				return id;
-			}
-
-			@Override
-			public View getView(int position, View convertView, ViewGroup parent) {
-				// TODO Auto-generated method stub
-				
-				LayoutInflater inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				View view = inflater.inflate(R.layout.proj_list_item, null);
-				TextView proj_title_text = (TextView) view.findViewById(R.id.proj_title);
-				String title = coop_list.get(position).get("title");
-				proj_title_text.setText(title);
-				
-				TextView proj_start_time = (TextView) view.findViewById(R.id.start_time);
-				String start_time = coop_list.get(position).get("startTime");
-				proj_start_time.setText(start_time);
-				
-				TextView proj_end_time = (TextView) view.findViewById(R.id.end_time);
-				String end_time = coop_list.get(position).get("endTime");
-				proj_end_time.setText(end_time);
-				
-				if(convertView == null)
-				{
-					convertView = view;
-				}
-				return convertView;
-			}
-	
-			
-	   public void clearList(List<File> f) {
-                int size = f.size();
-                if (size > 0) {
-                        f.removeAll(f);
-                        coop_list_adapter.notifyDataSetChanged();
-                }
-        }
-		}
 		
 		
 		
@@ -681,13 +550,13 @@ private void requestData(){
 			public void onItemClick(AdapterView<?> parent, View v, int position,
 					long id) {
 				// TODO Auto-generated method stub
-				String url = application.ComposeToken(Url.ProjectContentBaseUrl) + "&id=" + coop_list.get(position).get("id");
-				Log.i("proj_item_url", url);
-				Intent intent = new Intent();//用以传递数据
-				intent.setClass(activity, CommonContentActivity.class);
-				intent.putExtra("url", url);
-				intent.putExtra("act_class", "project");
-				startActivity(intent);
+//				String url = application.ComposeToken(Url.ProjectContentBaseUrl) + "&id=" + coop_list.get(position).get("id");
+//				Log.i("proj_item_url", url);
+//				Intent intent = new Intent();//用以传递数据
+//				intent.setClass(activity, CommonContentActivity.class);
+//				intent.putExtra("url", url);
+//				intent.putExtra("act_class", "project");
+//				startActivity(intent);
 			}
 			
 		};
@@ -696,8 +565,8 @@ private void requestData(){
 		
 		
 		
-		
-		private class CoopAllAdapter extends BaseAdapter{
+		//点击全部按钮弹出listView的adapter
+	   private class CoopAllAdapter extends BaseAdapter{
 			private Context context;
 		    private List<FirstClassItem> list;
 			public CoopAllAdapter(Context context, List<FirstClassItem> list) {
@@ -760,7 +629,7 @@ private void requestData(){
 			
 		
 		
-	private int selectedPosition = 0;
+	           private int selectedPosition = 0;
 
 			    public void setSelectedPosition(int selectedPosition) {
 			        this.selectedPosition = selectedPosition;

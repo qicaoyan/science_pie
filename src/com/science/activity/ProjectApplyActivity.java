@@ -242,14 +242,14 @@ private void requestData(){
 		
 		/*加载更多按钮*/
 		proj_more_view = (LinearLayout) getLayoutInflater().inflate(R.layout.listmoredata, null);
-		proj_src_pop_view = getLayoutInflater().inflate(R.layout.pop_view_for_proj_src, null);
-		proj_type_pop_view = getLayoutInflater().inflate(R.layout.pop_view_for_proj_type, null);
-		proj_src_list_view = (ListView) proj_src_pop_view.findViewById(R.id.proj_src_list_view);
+		proj_src_pop_view = getLayoutInflater().inflate(R.layout.common_secondary_pop_view, null);
+		proj_type_pop_view = getLayoutInflater().inflate(R.layout.common_stair_pop_view, null);
+		proj_src_list_view = (ListView) proj_src_pop_view.findViewById(R.id.common_secondary_pop_list);
 	    
 		first_adapter = new ProjSourceAdapter(this,proj_src_list);
 		proj_src_list_view.setAdapter(first_adapter);
 		
-	     proj_src_next_list_view = (ListView) proj_src_pop_view.findViewById(R.id.proj_src_next_list_view);
+	     proj_src_next_list_view = (ListView) proj_src_pop_view.findViewById(R.id.common_secondary_pop_next_list);
 	     proj_src_next_list = new ArrayList<SecondClassItem>();
 	     proj_src_next_list.addAll(proj_src_list.get(0).getSecondList());
 	     
@@ -258,7 +258,7 @@ private void requestData(){
 	     
 	     
 	     //proj_type处理
-	     proj_type_list_view = (ListView)proj_type_pop_view.findViewById(R.id.proj_type_list_view);
+	     proj_type_list_view = (ListView)proj_type_pop_view.findViewById(R.id.common_stair_pop_view_list);
 	     proj_type_adapter = new ProjTypeAdapter(this,proj_type_list);
 	     proj_type_list_view.setAdapter(proj_type_adapter);
 	   //左侧ListView点击事件
