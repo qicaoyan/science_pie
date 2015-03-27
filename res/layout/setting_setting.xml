@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+   <include
+      
+     layout="@layout/set_common_header"
+    
+    />
+
+ <LinearLayout
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:background="@drawable/shezhikuang"
+     android:layout_marginLeft="20dp"
+     android:layout_marginRight="20dp"
+     android:layout_marginTop="15dp"
+     android:orientation="horizontal"
+  >
+       
+       "
+    <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="账号管理"
+           android:textSize="15sp"
+           android:textColor="@color/text_light_gray"
+           android:layout_gravity="left|center_vertical"
+           android:layout_marginLeft="15dp"
+           
+        />
+    
+    <TextView 
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"/>
+        <com.science.view.MyImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shezhitouxiang" 
+            android:layout_marginRight="10dp"
+            android:layout_gravity="right"
+            >     
+        </com.science.view.MyImageButton>
+        
+        <com.science.view.MyImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/xiangyou" 
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="20dp">
+        </com.science.view.MyImageButton>
+            
+         
+</LinearLayout>
+    
+ 
+ <LinearLayout
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:background="@drawable/shezhikuang"
+     android:layout_marginLeft="20dp"
+     android:layout_marginRight="20dp"
+     android:layout_marginTop="15dp"
+     android:orientation="horizontal"
+  >
+       
+       
+    <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="消息通知"
+           android:textSize="15sp"
+           android:textColor="@color/text_light_gray"
+           android:layout_gravity="left|center_vertical"
+           android:layout_marginLeft="15dp"
+           
+        />
+    
+    <TextView 
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"/>
+       
+        
+        <com.science.view.MyImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/xiangyou" 
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="20dp">
+        </com.science.view.MyImageButton>
+            
+         
+</LinearLayout>
+ 
+ 
+ <LinearLayout
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:background="@drawable/shezhikuang"
+     android:layout_marginLeft="20dp"
+     android:layout_marginRight="20dp"
+     android:layout_marginTop="15dp"
+     android:orientation="horizontal"
+  >
+       
+       
+    <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="联系人"
+           android:textSize="15sp"
+           android:textColor="@color/text_light_gray"
+           android:layout_gravity="left|center_vertical"
+           android:layout_marginLeft="15dp"
+           
+        />
+    
+    <TextView 
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"/>
+       
+        
+        <com.science.view.MyImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/xiangyou" 
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="20dp">
+        </com.science.view.MyImageButton>
+            
+         
+</LinearLayout>
+ 
+ 
+ 
+ <LinearLayout
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:background="@drawable/shezhikuang"
+     android:layout_marginLeft="20dp"
+     android:layout_marginRight="20dp"
+     android:layout_marginTop="15dp"
+     android:orientation="horizontal"
+  >
+       
+       
+    <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="安全"
+           android:textSize="15sp"
+           android:textColor="@color/text_light_gray"
+           android:layout_gravity="left|center_vertical"
+           android:layout_marginLeft="15dp"
+           
+        />
+    
+    <TextView 
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"/>
+       
+        
+        <com.science.view.MyImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/xiangyou" 
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="20dp">
+        </com.science.view.MyImageButton>
+            
+         
+</LinearLayout>
+ 
+ 
+ 
+ <LinearLayout
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:background="@drawable/shezhikuang"
+     android:layout_marginLeft="20dp"
+     android:layout_marginRight="20dp"
+     android:layout_marginTop="15dp"
+     android:orientation="horizontal"
+  >
+       
+       
+    <TextView 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="关于科研派"
+           android:textSize="15sp"
+           android:textColor="@color/text_light_gray"
+           android:layout_gravity="left|center_vertical"
+           android:layout_marginLeft="15dp"
+           
+        />
+    
+    <TextView 
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"/>
+       
+        
+        <com.science.view.MyImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/xiangyou" 
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="20dp">
+        </com.science.view.MyImageButton>
+            
+         
+</LinearLayout>
+ 
+ <com.science.view.MyImageButton
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:background="@drawable/tuichu1"
+     android:layout_gravity="center"
+     android:layout_marginTop="15dp"
+     ></com.science.view.MyImageButton>
+     
+    
+</LinearLayout>
