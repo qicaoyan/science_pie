@@ -64,7 +64,7 @@
 	            android:layout_height="50dip"
 	            android:layout_weight="1"
 	            android:id="@+id/myinfoshenfen"
-	            android:background="@color/white"
+	            android:background="@drawable/spinner_white"
 	            android:gravity="center"
 	            />
 	    </LinearLayout>

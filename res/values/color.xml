@@ -10,7 +10,7 @@
     <color name="sharedialogbackground">#638Ab3</color>
     <color name="keywordstitle">#245b91</color>
     <color name = "hotepagebackground">#ced7e0</color>
-        <color name="settingheaderbg">#38a1de</color>
+    <color name="settingheaderbg">#38a1de</color>
     <color name="settingbg">#ebecf0</color>
     <color name="settingcontentbg">#f7f8fa</color>
     <color name="white"> #ffffff</color> 

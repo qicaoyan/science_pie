@@ -103,11 +103,13 @@
 
 <ListView
    
-    android:id="@+id/frag_resource_list_view"
+    android:id="@+id/coop_fragment_resource_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="0dip"
-    android:layout_marginBottom="30dip">
+    android:layout_marginBottom="30dip"
+    style = "@style/common_list_divider_style"
+    >
     
 </ListView>
 

@@ -1,17 +1,26 @@
 package com.science.activity;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.example.science.R;
+import com.science.json.JsonGetCollectionHandler;
 import com.science.services.MyApplication;
 import com.science.util.ShoucangUtil;
+import com.science.util.Url;
 import com.science.view.MyListView;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -30,6 +39,8 @@ public class MyCollectionActivity extends Activity {
 	private TextView headertitle;
 	private ListView myListView=null;
 	private List<Map<String, Object>> myList;
+	private JsonGetCollectionHandler jsonGetCollectionHandler;
+	private MyHandler handler;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,18 +56,18 @@ public class MyCollectionActivity extends Activity {
 		InitViews();
 		InitData();
 		SetListener();
+		
+		GetMyCollection();
 	}
 	
 	private void InitVariable()
 	{
-		//myListView=new MyListView(MyCollectionActivity.this);
-		//myList=new ArrayList<Map<String,Object>>();
 		ShoucangUtil shoucang_util = new ShoucangUtil(this);
 		myList = shoucang_util.getLocalShoucangList();
-		//Map<String , Object> map1=new HashMap<String, Object>();
-		//map1.put("title", "北京市关于征集2014年中央文化产业发展专项资金一般项目的通知");
-		//map1.put("time", "4天前");
-		//myList.add(map1);
+	
+		jsonGetCollectionHandler=new JsonGetCollectionHandler();
+		handler=new MyHandler();
+
 
 	}
 	
@@ -69,7 +80,7 @@ public class MyCollectionActivity extends Activity {
 	
 	private void InitData()
 	{
-		myListView.setAdapter(new myAdapte());
+		
 		headertitle.setText("我的收藏");
 		headerback.setOnClickListener(new OnClickListener() {
 			
@@ -81,9 +92,17 @@ public class MyCollectionActivity extends Activity {
 		});
 	}
 	
+	
+	
 	private void SetListener()
 	{
 		//myInfo.setOnClickListener(onClickListener);
+	}
+	
+	private void GetMyCollection()
+	{
+		MyThreadGetMyCollection myThreadGetMyCollection=new MyThreadGetMyCollection();
+		new Thread(myThreadGetMyCollection).start();
 	}
 	
 	private class myAdapte extends BaseAdapter
@@ -133,4 +152,61 @@ public class MyCollectionActivity extends Activity {
 		}
 		
 	}
+
+	private class MyThreadGetMyCollection implements Runnable
+    {
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			URL url;
+			try {
+				url = new URL(myApplication.ComposeToken(Url.getCollection));
+				URLConnection con = url.openConnection();
+				con.connect();
+				InputStream input = con.getInputStream();
+				myList=jsonGetCollectionHandler.getListItems(input);
+				if (myList!=null) {
+					handler.sendEmptyMessage(2);
+				}
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+    }
+	
+	private class MyHandler extends Handler {
+
+    	@Override
+    	public void dispatchMessage(Message msg) {
+    		// TODO Auto-generated method stub
+    		super.dispatchMessage(msg);
+    	}
+
+    	@Override
+    	public void handleMessage(Message msg) {
+    		if (msg.what == 2) {
+    			myListView.setAdapter(new myAdapte());
+			} 
+    		super.handleMessage(msg);
+    	}
+
+    	@Override
+    	public boolean sendMessageAtTime(Message msg, long uptimeMillis) {
+    		// TODO Auto-generated method stub
+    		return super.sendMessageAtTime(msg, uptimeMillis);
+    	}
+
+    	@Override
+    	public String toString() {
+    		// TODO Auto-generated method stub
+    		return super.toString();
+    	}
+    	
+    }
 }

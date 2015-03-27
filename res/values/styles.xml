@@ -1,3 +1,37 @@
+
+<!-- 
+
+
+    1、BackgroundColorSpan 背景色 
+    2、ClickableSpan 文本可点击，有点击事件
+    3、ForegroundColorSpan 文本颜色（前景色）
+    4、MaskFilterSpan 修饰效果，如模糊(BlurMaskFilter)、浮雕(EmbossMaskFilter)
+    5、MetricAffectingSpan 父类，一般不用
+    6、RasterizerSpan 光栅效果
+    7、StrikethroughSpan 删除线（中划线）
+    8、SuggestionSpan 相当于占位符
+    9、UnderlineSpan 下划线
+    10、AbsoluteSizeSpan 绝对大小（文本字体）
+    11、DynamicDrawableSpan 设置图片，基于文本基线或底部对齐。
+    12、ImageSpan 图片
+    13、RelativeSizeSpan 相对大小（文本字体）
+    14、ReplacementSpan 父类，一般不用
+    15、ScaleXSpan 基于x轴缩放
+    16、StyleSpan 字体样式：粗体、斜体等
+    17、SubscriptSpan 下标（数学公式会用到）
+    18、SuperscriptSpan 上标（数学公式会用到）
+    19、TextAppearanceSpan 文本外貌（包括字体、大小、样式和颜色）
+    20、TypefaceSpan 文本字体
+    21、URLSpan 文本超链接
+
+
+
+ -->
+
+
+
+
+
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
@@ -30,6 +64,15 @@
      <style name = "register_edittext_style"> 
          <item name = "android:background">@drawable/register_input_box</item>
      </style>
+     
+     
+     <style name = "common_list_divider_style">
+         <item name="android:divider">@color/background_light_gray</item>
+         <item name="android:dividerHeight">1dip</item>
+     </style>
+     
+     
+     
      
      <!-- 表示姓名或者单位/学校的样式   垂直居中，并且距离左边界10dip-->
      <style name = "release_edittext_style1">
@@ -105,6 +148,7 @@
          <item name = "android:background">@drawable/shape_check_box</item>
      </style>
      
+<<<<<<< HEAD
      <!-- 个人设置中的设置字体 -->
      <style name = "setting_setting_text">
           <item name = "android:textColor">@color/text_light_gray</item>
@@ -112,4 +156,38 @@
          <item name = "android:layout_gravity" >left|center_vertical</item>
          <item name = "android:paddingLeft">10dip</item>
          </style>
+=======
+     
+     
+     
+     <!-- 合作研究每个合作者的字体样式-->
+     <style name = "coop_cooper_text_name_style">
+         
+         <item name ="android:textSize">16sp</item>  
+         <item name ="android:textColor">@color/text_dark_gray</item>    
+          
+     </style>
+     
+    
+      <style name = "coop_cooper_text_identity_style">
+         
+         <item name ="android:textSize">15sp</item>  
+         <item name ="android:textColor">@color/text_dark_gray</item>    
+     </style>
+    
+      
+    <style name = "coop_cooper_text_additional_style">
+     <item name ="android:textSize">16sp</item>  
+         <item name ="android:textColor">@color/black</item>    
+          
+     </style>
+      
+    
+   <style name = "coop_cooper_text_introduction_style">
+     <item name ="android:textSize">13sp</item>  
+         <item name ="android:textColor">@color/text_light_gray</item>    
+          
+   </style>
+     
+>>>>>>> 943184c8856ac2aaad4c4168c3cd2db0fa52c502
 </resources>
