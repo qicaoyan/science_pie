@@ -132,7 +132,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         myApplication=(MyApplication)this.getApplication();
-        
+        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {  
+            finish();
+            return;
+         }
         Toast.makeText(MainActivity.this, myApplication.androidId, Toast.LENGTH_LONG).show();
         functionManage=new FunctionManage(MainActivity.this);
      // �����ޱ��ⴰ��

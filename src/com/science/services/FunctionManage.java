@@ -188,5 +188,14 @@ public class FunctionManage {
 			}
 		}
 	
+	private class MyThreadUpdateCid implements Runnable
+	{
 
+		@Override
+		public void run() {
+			
+		}
+		
+
+	}
 }
