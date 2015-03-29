@@ -50,6 +50,7 @@ public class Android_DialogActivity extends Activity {
 		static final int MSG_SHOW_ERROR=5;
 		static final int MSG_SHOW_CANCEL=6;
 	
+		
 		public ProgressDialog p_dialog;  
 		public MyHandler myHandler=null;
 		public String name=null;
