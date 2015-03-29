@@ -62,7 +62,7 @@ public class CommonContentActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		LayoutInflater inflater = getLayoutInflater();  
-		main=(LinearLayout)inflater.inflate(R.layout.commoncontent, null); 
+		main=(LinearLayout)inflater.inflate(R.layout.common_content, null); 
 		
 		intent = this.getIntent();
 		url = intent.getStringExtra("url");

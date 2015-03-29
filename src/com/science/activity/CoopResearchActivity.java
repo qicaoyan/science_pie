@@ -1,23 +1,30 @@
 package com.science.activity;
 import com.example.science.R;
 
+import com.science.adapter.CommonFragmentPagerAdapter;
 import com.science.fragment.CoopPaperFragment;
 import com.science.fragment.CoopResourceFragment;
 import com.science.view.MyHeader;
 import com.science.view.MyImageButton;
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class CoopResearchActivity extends Activity  {
+public class CoopResearchActivity extends FragmentActivity{
 	
 
 
@@ -27,12 +34,16 @@ public class CoopResearchActivity extends Activity  {
 
 	private MyImageButton mTabResource;  
 	private MyImageButton mTabPaper;  
-	private CoopResourceFragment mResource;  
-	private CoopPaperFragment mPaper;
+	private CoopResourceFragment fragment_resource;  
+	private CoopPaperFragment fragment_paper;
 	
 	private MyHeader coop_header = null;
 
-
+    
+    private FragmentManager fm;
+    
+    private ViewPager view_pager;
+    private  CommonFragmentPagerAdapter fragment_adapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -44,7 +55,7 @@ public class CoopResearchActivity extends Activity  {
 		main=(LinearLayout)inflater.inflate(R.layout.coop_research, null); 
 		setContentView(main);
 		//setContentView(R.layout.coop_research);
-
+        
        // 初始化控件和声明事件  
 		//mTabResource = (MyImageButton) findViewById(R.id.coop_resource);  
 		//mTabPaper = (MyImageButton) findViewById(R.id.coop_paper);  
@@ -52,33 +63,77 @@ public class CoopResearchActivity extends Activity  {
         //mTabPaper.setOnClickListener(this);  
  
         coop_header = (MyHeader) findViewById(R.id.coop_header);
-        OnClickListener on_click_listener = new OnClickListener(){
+        OnClickListener on_header_tab_listener = new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				//表明选择资源列表
+				if(v.getId() == 0)
+				{
+					coop_header.SetSelected(0);
+					view_pager.setCurrentItem(0);
+				}
+				else if(v.getId() == 1)
+				{
+					coop_header.SetSelected(1);
+					view_pager.setCurrentItem(1);
+				}
 				
 			}
         	
         };
         coop_header.SetHeaderText("合作研究");
         coop_header.SetHeaderButtons(new String[]{"资源","论文"});
-        coop_header.SetOnHeadButtonClickListener(on_click_listener, 0);
-        coop_header.SetOnHeadButtonClickListener(on_click_listener, 1);
+        coop_header.SetOnHeadButtonClickListener(on_header_tab_listener, 0);
+        coop_header.SetOnHeadButtonClickListener(on_header_tab_listener, 1);
         coop_header.SetSelected(0);
        // 设置默认的Fragment  
         setDefaultFragment();  
+
+        fragment_adapter = new CommonFragmentPagerAdapter(fm,new Fragment[]{fragment_resource,fragment_paper});
+		view_pager = (ViewPager)findViewById(R.id.coop_view_pager);
+		view_pager.setAdapter(fragment_adapter);
+		view_pager.setCurrentItem(0);
+		
+		view_pager.setOnPageChangeListener(new OnPageChangeListener(){
+
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onPageSelected(int position) {
+				// TODO Auto-generated method stub
+				
+				coop_header.SetSelected(position);
+			}
+			
+		});
+		
 		
 	}
 	
 	private void setDefaultFragment()
 	{
-		FragmentManager fm = getFragmentManager();
-		FragmentTransaction transaction = fm.beginTransaction();
-		mResource = new CoopResourceFragment();
-		transaction.replace(R.id.id_content, mResource);
-		transaction.commit();
+		fm = this.getSupportFragmentManager();
+		fragment_resource = new CoopResourceFragment();
+		fragment_paper = new CoopPaperFragment();
 	}
+
+	
+
+	
+	
+
 
 	/*
 	@Override

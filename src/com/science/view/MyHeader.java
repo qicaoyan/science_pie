@@ -62,12 +62,7 @@ public class MyHeader extends LinearLayout {
 
         InitView();
         fm = new FunctionManage(context);
-        
-        
-        
-        
-        
-        
+
 	}
 
 

@@ -26,9 +26,9 @@ import com.example.science.R.layout;
 import com.example.science.R.menu;
 import com.science.interfaces.OnShowMoreListener;
 import com.science.json.JsonCommentListHandler;
+import com.science.model.Comment;
 import com.science.services.FunctionManage;
 import com.science.services.MyApplication;
-import com.science.util.CommentUtil;
 import com.science.util.DefaultUtil;
 import com.science.util.Url;
 import com.science.view.MyImageButton;
@@ -78,7 +78,7 @@ public class CommentDetailActivity extends Activity {
 	private int root_id;
 	private int mark;
 	//private List<Map<String,Object>> comment_list;
-	private List<CommentUtil> comment_list;
+	private List<Comment> comment_list;
 	private JsonCommentListHandler json;
 	private final int LOADING_COMMENT_SUCCEED = 0;
 	private final int LOADING_COMMENT_FAIL = 1;
@@ -124,7 +124,7 @@ public class CommentDetailActivity extends Activity {
     	fm = new FunctionManage(this);
     	comment_num = 5;
     	comment_list_adapter = new CommentListAdapter();
-    	comment_list = new ArrayList<CommentUtil>();
+    	comment_list = new ArrayList<Comment>();
     	json = new JsonCommentListHandler();
     	Intent intent = this.getIntent();
     	comment_theme = intent.getStringExtra("theme");
@@ -376,7 +376,7 @@ public class CommentDetailActivity extends Activity {
 			TextView date_tv = (TextView) v.findViewById(R.id.date_tv);
 			final TextView comment_detail_tv = (TextView) v.findViewById(R.id.comment_detail_tv);
 			
-			CommentUtil cu = comment_list.get(position);
+			Comment cu = comment_list.get(position);
 			if(cu == null)
 				return null;
 			String customer_name = cu.customer_name;
@@ -514,7 +514,7 @@ public class CommentDetailActivity extends Activity {
 					URLConnection conn = url.openConnection();
 					conn.connect();
 					InputStream is = conn.getInputStream();
-					List<CommentUtil> temp = null;
+					List<Comment> temp = null;
 					temp = json.getListItems(is);
 					if(temp != null)
 					{

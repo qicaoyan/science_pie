@@ -79,9 +79,11 @@ public class JsonHotPageMainHandler {
 		        	Map<String, String> map=new HashMap<String, String>();
 		        	Log.v("test",temp.getString("title"));
 		        	map.put("title", temp.getString("title"));
-		        	map.put("imgurl",temp.getString("img_url"));
-		        	map.put("filename", temp.getString("file_url"));
+
 		        	map.put("id", temp.getString("id"));
+
+		        	map.put("imgurl",temp.getString("titlepic"));
+		        	map.put("filename", temp.getString("filename"));
 		        	list.add(map);
 		        }
 		        return list;

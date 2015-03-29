@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:id="@+id/test11">
+    android:id="@+id/test11"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
     
 
       <com.science.view.MyHeader
@@ -18,7 +20,16 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/doc_list_layout">
+    
 
+      <android.support.v4.view.ViewPager
+    android:id="@+id/doc_view_pager"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    </android.support.v4.view.ViewPager>  
+  
+
+<!--  
 <ListView android:id="@+id/doc_list_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -27,7 +38,7 @@
     android:descendantFocusability ="beforeDescendants">"
     
 </ListView>
-
+-->
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true">
@@ -60,8 +71,18 @@
     />
 </RelativeLayout>
 
-<include layout="@layout/documenttagitem"/>
 
+<!--  
+<include layout="@layout/documenttagitem"/>
+-->
+
+  <com.science.view.MyTagView
+    android:id="@+id/doc_tag_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+     />
 
 </RelativeLayout> 
 
