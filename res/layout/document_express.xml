@@ -57,8 +57,6 @@
 </LinearLayout>
 
 
-<<<<<<< HEAD
-=======
 <RelativeLayout 
     android:id="@+id/doc_loading_mask_layout"
     android:layout_width="match_parent"
@@ -72,7 +70,7 @@
     style = "?android:attr/progressBarStyleLarge"
     />
 </RelativeLayout>
->>>>>>> 4e6d26d18eccc078a2a19f6231c17c04e8102ba3
+
 
 <!--  
 <include layout="@layout/documenttagitem"/>

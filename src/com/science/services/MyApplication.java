@@ -30,13 +30,10 @@ public class MyApplication extends Application{
 	public static Map<String,String> my_keywords = null;
 	static MyApplication instance;
 	public  String [] keywords=null;
-<<<<<<< HEAD
-	public static String user_name = DefaultUtil.EMPTY;	//存储当前的用户名
-	public String androidId;
 
-=======
+	public static String user_name = DefaultUtil.EMPTY;	//存储当前的用户名
+
 	public String eid;
->>>>>>> Jamli-master
 	public  static List<StringBuffer> non_null_keywords_list = new ArrayList<StringBuffer>();
 	public static MyApplication getInstance() {
 
@@ -56,15 +53,14 @@ public class MyApplication extends Application{
 			}
 		}
 		instance= this;
-<<<<<<< HEAD
-		androidId = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID); 
+
 		
 		
 		/*生成ResourceDefine 很重要*/
 		ResourceDefine.deriveResourceDefine(getApplicationContext());
-=======
+
 		eid = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID); 
->>>>>>> Jamli-master
+
 	}
 
 	public  String Login(String name,String pass)

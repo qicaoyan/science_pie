@@ -150,7 +150,7 @@
          <item name = "android:background">@drawable/shape_check_box</item>
      </style>
      
-<<<<<<< HEAD
+
      <!-- 个人设置中的设置字体 -->
      <style name = "setting_setting_text">
           <item name = "android:textColor">@color/text_light_gray</item>
@@ -158,7 +158,7 @@
          <item name = "android:layout_gravity" >left|center_vertical</item>
          <item name = "android:paddingLeft">10dip</item>
          </style>
-=======
+
      
      
      
@@ -191,5 +191,4 @@
           
    </style>
      
->>>>>>> 943184c8856ac2aaad4c4168c3cd2db0fa52c502
 </resources>
