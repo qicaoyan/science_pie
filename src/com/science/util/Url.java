@@ -7,16 +7,16 @@ import com.science.services.MyApplication;
 
 public class Url {
 	//public static String BASEURL="http://192.168.1.102:8080/";
-	public static String BASEURL="http://123.57.207.9:80/";
-	public static String HOTPAGEURL0=Url.BASEURL+"hot/hotList?typeId=0&plateId=";
-	public static String HOTPAGEURL1=Url.BASEURL+"hot/hotList?typeId=0&plateId=";
-	public static String HOTPAGEURL2=Url.BASEURL+"hot/hotList?typeId=0&plateId=";
-	public static String HOTPAGEURL3=Url.BASEURL+"hot/hotList?typeId=0&plateId=";
+	public static String BASEURL="http://123.57.207.9/";
+	public static String HOTPAGEURL0=Url.BASEURL+"hot/hotList?typeid=0&classid=";
+	public static String HOTPAGEURL1=Url.BASEURL+"hot/hotList?typeid=0&classid=";
+	public static String HOTPAGEURL2=Url.BASEURL+"hot/hotList?typeid=0&classid=";
+	public static String HOTPAGEURL3=Url.BASEURL+"hot/hotList?typeid=0&classid=";
 	
-	public static String HOTPAGEDETIALURL0=Url.BASEURL+"hot/hotList?typeId=1&plateId=";
-	public static String HOTPAGEDETIALURL1=Url.BASEURL+"hot/hotList?typeId=1&plateId=";
-	public static String HOTPAGEDETIALURL2=Url.BASEURL+"hot/hotList?typeId=1&plateId=";
-	public static String HOTPAGEDETIALURL3=Url.BASEURL+"hot/hotList?typeId=1&plateId=";
+	public static String HOTPAGEDETIALURL0=Url.BASEURL+"hot/hotList?typeid=1&classid=";
+	public static String HOTPAGEDETIALURL1=Url.BASEURL+"hot/hotList?typeid=1&classid=";
+	public static String HOTPAGEDETIALURL2=Url.BASEURL+"hot/hotList?typeid=1&classid=";
+	public static String HOTPAGEDETIALURL3=Url.BASEURL+"hot/hotList?typeid=1&classid=";
 	
 	public static String ProgramList=Url.BASEURL+"GetProject/GetProjectByWeek?";
 	public static String ProjectListBase = Url.BASEURL + "GetProject/GetTopProject?";

@@ -28,7 +28,7 @@ public class MyApplication extends Application{
 	public static Map<String,String> my_keywords = null;
 	static MyApplication instance;
 	public  String [] keywords=null;
-	public String androidId;
+	public String eid;
 	public  static List<StringBuffer> non_null_keywords_list = new ArrayList<StringBuffer>();
 	public static MyApplication getInstance() {
 
@@ -48,7 +48,7 @@ public class MyApplication extends Application{
 			}
 		}
 		instance= this;
-		androidId = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID); 
+		eid = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID); 
 	}
 
 	public  String Login(String name,String pass)
@@ -98,8 +98,8 @@ public class MyApplication extends Application{
 			str+="sid=";
 			str+=this.sidString;
 			str+="&";
-			str+="androidId=";
-			str+=this.androidId;
+			str+="eid=";
+			str+=this.eid;
 			return str;
 		}
 		else {
