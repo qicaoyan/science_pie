@@ -18,7 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.science.util.CommentUtil;
+import com.science.model.Comment;
 import com.science.util.DefaultUtil;
 
 import android.util.Log;
@@ -29,32 +29,32 @@ public class JsonCommentListHandler {
 	public String codeString=null;
 	public String messageString=null;
 	public String reString=null;
-	public List<CommentUtil> list=null;
+	public List<Comment> list=null;
 	
 
 	public JsonCommentListHandler(String str)
 	{
 		json=str;
-		list=new ArrayList<CommentUtil>();
+		list=new ArrayList<Comment>();
 	}
 	
 	public JsonCommentListHandler()
 	{
-		list=new ArrayList<CommentUtil>();
+		list=new ArrayList<Comment>();
 	}
 	
 	public void SetJsonHotPage(String str)
 	{
 		json=str;
-		list=new ArrayList<CommentUtil>();
+		list=new ArrayList<Comment>();
 	}
 	
-	public List<CommentUtil> getList()
+	public List<Comment> getList()
 	{
 		return null;
 	}
 	
-	public List<CommentUtil> getListItems(InputStream input)
+	public List<Comment> getListItems(InputStream input)
 	{
 		
 		Reader reader;
@@ -105,7 +105,7 @@ public class JsonCommentListHandler {
 		        	
 		        	
 		        	
-		        	CommentUtil comment = new CommentUtil(temp);
+		        	Comment comment = new Comment(temp);
 		        	
 //		        	map.put(CommentUtil.commentid, temp.getInt(CommentUtil.commentid));
 //		        	map.put(CommentUtil.customerid, temp.getInt(CommentUtil.customerid));

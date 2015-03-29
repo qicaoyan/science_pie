@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:scrollbars="vertical"
+       >
+
+
+<LinearLayout 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-   <com.science.view.MyHeader 
-       android:id="@+id/release_header"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"/>
-  
-   
    
 
-
-      
-   
    
     <LinearLayout
         android:layout_width = "fill_parent"
@@ -24,7 +24,7 @@
         android:gravity="center_vertical"
         android:layout_marginTop="20dip">
     
-       <ImageView android:id="@+id/release_photo"
+       <ImageView android:id="@+id/release_resource_user_photo"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:src="@drawable/profile_photo"
@@ -36,22 +36,24 @@
             android:layout_weight="1"/>
        
        <EditText
-           android:id="@+id/release_name"
+           android:id="@+id/release_resource_user_name"
            style="@style/release_edittext_style1"
-           android:layout_width="107dip"
-           android:layout_height="38dp" 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" 
            android:hint="姓名"
+           android:layout_marginLeft="5dip"
          />
         <!-- 空布局 --> 
       <TextView android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
        <EditText
-           android:id="@+id/release_organization"
+           android:id="@+id/release_resource_user_college"
            style="@style/release_edittext_style1"
-           android:layout_width="162dip"
-           android:layout_height="38dp" 
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" 
            android:hint="单位/学校"
+           android:layout_marginLeft="5dip"
          />
 
     </LinearLayout>
@@ -65,7 +67,8 @@
         android:gravity="center_vertical"
         android:layout_marginTop="10dip">
        <!-- 身份选择框 -->
-       <include layout="@layout/embed_release_select_box"/>
+       <include layout="@layout/embed_release_select_box"
+           android:id="@+id/release_resource_user_identity"/>
        
          <!-- 空布局 -->
        <TextView android:layout_width="wrap_content"
@@ -74,7 +77,8 @@
        
        
        <!-- 职务 -->
-       <include layout="@layout/embed_release_select_box"/>
+       <include layout="@layout/embed_release_select_box"
+           android:id="@+id/release_resource_user_job"/>
        
        <!-- 空布局 -->
        <TextView android:layout_width="wrap_content"
@@ -82,7 +86,8 @@
            android:layout_weight="1"/>
        
         <!-- 地域 -->
-      <include layout="@layout/embed_release_select_box"/>
+      <include layout="@layout/embed_release_select_box"
+          android:id="@+id/release_resource_user_area"/>
        
   
     
@@ -137,13 +142,7 @@
          android:layout_alignParentBottom="true"
          android:layout_marginRight="10dip"
          android:layout_marginBottom="20dip"
-         />
-      
-     <EditText android:id="@+id/release_experience"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="历往资历"
-        style = "@style/release_edittext_style2"/>  
+         />  
       </RelativeLayout> 
 
     
@@ -166,6 +165,18 @@
             />
         
        <!-- 人数-->
+
+        <EditText
+            android:id="@+id/release_experience"
+            style="@style/release_edittext_style2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="历往资历" >
+
+            <requestFocus />
+        </EditText>
 
         <include layout="@layout/embed_release_select_box"/>
         
@@ -194,7 +205,7 @@
     
     
     
-    <!-- 名称、类型、型号、数量一栏 -->
+    <!-- 名称、类型、型号、数量一栏11111111 -->
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dip"
@@ -215,8 +226,60 @@
             android:layout_height="wrap_content"
             style="@style/release_edittext_style3"
             android:text="型号"/>
+         <include layout="@layout/embed_release_select_box"/>
+         
+         <include layout="@layout/embed_release_select_box"/>
     </LinearLayout>
     
     
     
+    
+        <!-- 名称、类型、型号、数量一栏 222222222-->
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="10dip">
+       
+        
+        <!-- 名称 -->
+        <include layout="@layout/embed_release_select_box"/>
+        <!-- 类型 -->
+        <EditText android:id="@+id/release_device_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/release_edittext_style3"
+            android:text="类型"/>
+        <!-- 型号 -->
+        <EditText android:id="@+id/release_device_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/release_edittext_style3"
+            android:text="型号"/>
+         <include layout="@layout/embed_release_select_box"/>
+         
+         <include layout="@layout/embed_release_select_box"/>
+    </LinearLayout>
+    
+    
+    <TextView android:id="@+id/coop_release_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:text="继续添加"
+        android:textColor="@color/text_light_gray"
+        android:textSize="10sp"/>
+    
+    
+    <com.science.view.MyImageButton 
+        android:id="@+id/coop_finish_release"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/btn_finish_release"
+        android:layout_marginTop="15dip"
+        android:layout_marginBottom="10dip"/>
+    
+    
 </LinearLayout>
+</ScrollView>

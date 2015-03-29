@@ -76,7 +76,7 @@
      
      <!-- 表示姓名或者单位/学校的样式   垂直居中，并且距离左边界10dip-->
      <style name = "release_edittext_style1">
-         <item name = "android:background">@drawable/release_common_box</item>
+         <item name = "android:background">@drawable/shape_corner_box</item>
          <item name = "android:textSize">15sp</item>
          <item name = "android:textColorHint">@color/text_light_gray</item>
          <item name = "android:paddingLeft">10dip</item>
@@ -113,18 +113,18 @@
     
      <!-- 表示身份、职务、地域的选择框   -->
      <style name="release_select_style1">
-         <item name="android:background">@drawable/release_common_box</item>
+         <item name="android:background">@drawable/shape_corner_box</item>
      </style>
       <!-- 表示人数 -->
      <style name="release_select_style2">
-         <item name="android:background">@drawable/release_common_box</item>
+         <item name="android:background">@drawable/shape_corner_box</item>
          <item name="android:paddingLeft">2dip</item>
           <item name="android:gravity">center_vertical</item>
      </style>
      
      <!-- 表示名称、类型、型号等-->
      <style name="release_select_style3">
-     <item name="android:background">@drawable/release_common_box</item>
+     <item name="android:background">@drawable/shape_corner_box</item>
          <item name="android:paddingLeft">2dip</item>
          <item name="android:gravity">center_vertical</item>
      </style>
@@ -134,6 +134,8 @@
          
          <item name = "android:textColor">@color/text_light_gray</item>
           <item name = "android:textSize">15sp</item>
+          <item name = "android:paddingLeft">5dip</item>
+          <item name = "android:layout_gravity">center_vertical</item>
      </style>
      
      

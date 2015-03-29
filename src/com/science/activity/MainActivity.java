@@ -1175,10 +1175,14 @@ public class MainActivity extends Activity {
 			getNewsList(Url.HOTPAGEURL1,1);
 			getNewsList(Url.HOTPAGEURL2,2);
 			getNewsList(Url.HOTPAGEURL3,3);
-    	
+    	    
 		}
     }
 
+    
+    
+    
+    
     private class MyThreadDownLoadKeyWords implements Runnable
     {
 
@@ -1281,7 +1285,7 @@ public class MainActivity extends Activity {
     	new Thread(myThreadUpdateKeywords).start();
     }
     
-private PlatformActionListener paListener=new PlatformActionListener() {
+     private PlatformActionListener paListener=new PlatformActionListener() {
 		
 		@Override
 		public void onError(Platform arg0, int arg1, Throwable arg2) {
@@ -1301,6 +1305,14 @@ private PlatformActionListener paListener=new PlatformActionListener() {
 			Toast.makeText(MainActivity.this, "concel", Toast.LENGTH_LONG);
 		}
 	};
+	
+	
+	
+	
+	
+
+    
+	
 	
 	
 }

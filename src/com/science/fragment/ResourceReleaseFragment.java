@@ -13,7 +13,7 @@ public class ResourceReleaseFragment extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
 		
-		View view = inflater.inflate(R.layout.coop_fragment_release, null);
+		View view = inflater.inflate(R.layout.coop_fragment_release_source, null);
 		
 		return view;
 	}

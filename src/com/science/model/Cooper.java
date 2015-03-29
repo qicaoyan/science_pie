@@ -1,4 +1,4 @@
-package com.science.item;
+package com.science.model;
 
 import android.content.Context;
 import android.graphics.Bitmap;

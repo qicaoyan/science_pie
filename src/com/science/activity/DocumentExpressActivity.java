@@ -12,8 +12,10 @@ import java.util.Map;
 import java.util.zip.Inflater;
 
 import com.example.science.R;
+import com.science.adapter.CommonFragmentPagerAdapter;
 import com.science.adapter.DocumentListAdapter;
 import com.science.adapter.DocumentTagAdapter;
+import com.science.fragment.DocumentExpressFragment;
 import com.science.interfaces.OnLoadingStateChangedListener;
 import com.science.json.JsonDcumentListHandler;
 import com.science.services.MyApplication;
@@ -30,6 +32,11 @@ import android.graphics.Color;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -53,21 +60,14 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Message;
-public class DocumentExpressActivity extends Activity implements OnLoadingStateChangedListener{
-	private Context context;
-	private MyHeader header_view;
-	private MyImageButton chinese_doc_btn;
-	private MyImageButton english_doc_btn;
-	private MyImageButton working_doc_btn;
-	private MyImageButton nsf_doc_btn;
+public class DocumentExpressActivity extends FragmentActivity {
+
+	private MyHeader doc_header_view;
+
 	private TableLayout tag_tab_layout;
 	private RelativeLayout other_tag_layout;
-	private ListView  doc_list_view;
-	
-	
 	private MyImageButton fold_btn;
 	private WindowManager wm;
-	private DocListAdapter doc_list_adapter;
 	private TextView other_tag_tv;
 	private int rows;
 	private int num_cols;//表示一行有几个
@@ -83,20 +83,16 @@ public class DocumentExpressActivity extends Activity implements OnLoadingStateC
 	
 	
 	
-    private static final int UPDATE_TAG_VIEW = 0x00; 
-    private static final int UPDATE_DOC_LIST = 0x01;
-    private static final int UPDATE_DOC_LIST_FAIL = 0x02;
+
     private MyApplication application;
     
     
              
-    private static final int DEFAULT_ID = 111;
-    private static final int DEFAULT_TYPE = 0;
-    private static final String DEFAULT_KEYWORDS = "城市化";
+    private final int       UPDATE_TAG_VIEW = 0;
     
-    private int              doc_id = DEFAULT_ID;
-    private int              doc_type = DEFAULT_TYPE;
-    private String            doc_keywords = DEFAULT_KEYWORDS;
+    private int              doc_id;
+    private int              doc_type ;
+    private String            doc_keywords;
     public static  final boolean HIDE = false;
     public static final boolean SHOW = true;
     private StringBuffer current_keyword;
@@ -104,6 +100,16 @@ public class DocumentExpressActivity extends Activity implements OnLoadingStateC
     private StringBuffer doc_list_url;
     
     private int all_keywords_num;
+    
+    
+    //定义四个fragment
+    private DocumentExpressFragment doc_fragment_chi;//中文文献
+    private DocumentExpressFragment doc_fragment_eng;//中文文献
+    private DocumentExpressFragment doc_fragment_work;//中文文献
+    private DocumentExpressFragment doc_fragment_nsf;//中文文献
+    private ViewPager doc_view_pager;
+    private CommonFragmentPagerAdapter doc_fragment_adapter;
+    private FragmentManager fm;
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -112,8 +118,9 @@ public class DocumentExpressActivity extends Activity implements OnLoadingStateC
 		setContentView(R.layout.document_express);
 		initVariable();
 		initViews();
-	    requestData();//刚启动的时候刷新一次数据
-		setOnClickListener();
+		
+	   // requestData();//刚启动的时候刷新一次数据
+		//setOnClickListener();
 	}
 	
 	
@@ -123,8 +130,6 @@ public class DocumentExpressActivity extends Activity implements OnLoadingStateC
 		hide = true;
 		tag_tv_width = 0;
 		tag_tv_height = 0;
-		context = this;
-		json = new JsonDcumentListHandler();
 
 		application = (MyApplication) this.getApplication();
 		doc_list = null;
@@ -134,60 +139,102 @@ public class DocumentExpressActivity extends Activity implements OnLoadingStateC
 			tags_state[i] = 0;
 		}
 		other_tag_str = "";
-		//设置doc_list_adapter的值
-		doc_list_adapter = new DocListAdapter();
-        strUrl = Url.composeDocListUrl(doc_id,doc_type,doc_keywords);
-		
+
 		
 		all_keywords_num = application.non_null_keywords_list.size();
 	    rows = (all_keywords_num + 3)/4;
 	}
 	
-	private void requestData()
-	{
-		
-        MyThread thread = new MyThread(0);
-        new Thread(thread).start(); 
-	}
+
 	
 	
 	public void initViews()
 	{
+
+		
 		wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
 		int screen_width = wm.getDefaultDisplay().getWidth();
 		int screen_height = wm.getDefaultDisplay().getHeight();
 		
 		//获取文献速递页面的header并设置
-		header_view = (MyHeader) findViewById(R.id.doc_express_common_header_layout);
-		header_view.SetHeaderText("文献速递");
+		doc_header_view = (MyHeader) findViewById(R.id.doc_express_common_header_layout);
+		doc_header_view.SetHeaderText("文献速递");
 		String[] header_button_strs = {"中文文献","英文文献","工作文献","NSF"};
-		header_view.SetHeaderButtons(header_button_strs);
+		doc_header_view.SetHeaderButtons(header_button_strs);
 
 		
 
-		doc_list_view = (ListView)findViewById(R.id.doc_list_view);
-		doc_list_view.setCacheColorHint(Color.argb(255, 0, 0, 0));
-		doc_list_view.setSelector(R.drawable.list_item_selector);
-		doc_list_view.setOnItemClickListener(doc_item_click_listener);
-		doc_list_view.setAdapter(doc_list_adapter);
+
 		//其他标签
-		other_tag_tv = (TextView)findViewById(R.id.tag_input);
-		other_tag_tv.setText(other_tag_str);
-		other_tag_tv.setOnClickListener(other_tag_click_listener);
-		
-		/*加载更多按钮*/
-		//doc_more_view = (LinearLayout) getLayoutInflater().inflate(R.layout.listmoredata, null);
-
-		
-		fold_btn = (MyImageButton)findViewById(R.id.fold_btn);
-		tag_tab_layout = (TableLayout)findViewById(R.id.tag_tab_layout);
-		other_tag_layout = (RelativeLayout)findViewById(R.id.other_tag_layout);
-
-		setTagLayout(true);
+//		other_tag_tv = (TextView)findViewById(R.id.tag_input);
+//		other_tag_tv.setText(other_tag_str);
+//		other_tag_tv.setOnClickListener(other_tag_click_listener);
+//
+//		
+//		fold_btn = (MyImageButton)findViewById(R.id.fold_btn);
+//		tag_tab_layout = (TableLayout)findViewById(R.id.tag_tab_layout);
+//		other_tag_layout = (RelativeLayout)findViewById(R.id.other_tag_layout);
+//
+//		setTagLayout(true);
 
 		
 
-	
+
+		
+		
+		
+		//设置fragment
+		fm = this.getSupportFragmentManager();
+		
+		doc_view_pager = (ViewPager) findViewById(R.id.doc_view_pager);
+		doc_fragment_chi = new DocumentExpressFragment(201, new String[]{"城市化"});
+		doc_fragment_eng = new DocumentExpressFragment(202, new String[]{"城市化"});
+		doc_fragment_work = new DocumentExpressFragment(203, new String[]{"城市化"});
+		doc_fragment_nsf = new DocumentExpressFragment(204, new String[]{"城市化"});
+		doc_fragment_adapter = new CommonFragmentPagerAdapter(fm, new Fragment[]{doc_fragment_chi,doc_fragment_eng,doc_fragment_work,doc_fragment_nsf});
+		doc_view_pager.setAdapter(doc_fragment_adapter);
+		doc_view_pager.setCurrentItem(0);
+		
+		doc_view_pager.setOnPageChangeListener(new OnPageChangeListener(){
+
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onPageSelected(int position) {
+				// TODO Auto-generated method stub
+				doc_header_view.SetSelected(position);	
+			}
+			
+		});
+		
+		
+		
+		OnClickListener doc_header_tab_listener = new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+				doc_view_pager.setCurrentItem(v.getId());
+			}
+			
+		};
+		
+		doc_header_view.SetOnHeadButtonClickListener(doc_header_tab_listener, 0);
+		doc_header_view.SetOnHeadButtonClickListener(doc_header_tab_listener, 1);
+		doc_header_view.SetOnHeadButtonClickListener(doc_header_tab_listener, 2);
+		doc_header_view.SetOnHeadButtonClickListener(doc_header_tab_listener, 3);
+		doc_header_view.SetSelected(0);
 	}
 	
 	
@@ -258,44 +305,26 @@ public class DocumentExpressActivity extends Activity implements OnLoadingStateC
 
 
 		//设置标题上的三个按钮的监听事件
-        OnClickListener doc_type_listener = new OnClickListener(){
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-					if(doc_list != null)
-					doc_list.clear();
-					doc_list_adapter.notifyDataSetChanged();
-
-					doc_type = v.getId();
-					strUrl = Url.composeDocListUrl(doc_id,doc_type,doc_keywords);
-					requestData();
-	 
-			}
-        	
-        };
 		
-        header_view.SetOnHeadButtonClickListener(doc_type_listener, 0);
-        header_view.SetOnHeadButtonClickListener(doc_type_listener, 1);
-        header_view.SetOnHeadButtonClickListener(doc_type_listener, 2);
-        header_view.SetOnHeadButtonClickListener(doc_type_listener, 3);
-        header_view.SetSelected(0);
+
+        doc_header_view.SetSelected(0);
         
         //设置fold按钮的监听事件
-        fold_btn.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				hide = !hide;
-				if(hide)
-					v.setBackground(getResources().getDrawable(R.drawable.fold));
-				else
-				    v.setBackground(getResources().getDrawable(R.drawable.unfold));
-				handler.sendEmptyMessage(DocumentExpressActivity.UPDATE_TAG_VIEW);
-			}
-        	
-        });
+//        fold_btn.setOnClickListener(new OnClickListener(){
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				hide = !hide;
+//				if(hide)
+//					v.setBackground(getResources().getDrawable(R.drawable.fold));
+//				else
+//				    v.setBackground(getResources().getDrawable(R.drawable.unfold));
+//				//handler.sendEmptyMessage(DocumentExpressActivity.UPDATE_TAG_VIEW);
+//			}
+//        	
+//        });
 	}
 	
 	
@@ -327,7 +356,7 @@ public class DocumentExpressActivity extends Activity implements OnLoadingStateC
 			{
 			 
 			//更新TAG_VIEW
-			case DocumentExpressActivity.UPDATE_TAG_VIEW:
+			case UPDATE_TAG_VIEW:
 
 				//在更新之前先把所有的tag_tab_layout子View删掉
 			
@@ -338,20 +367,7 @@ public class DocumentExpressActivity extends Activity implements OnLoadingStateC
 					other_tag_layout.setVisibility(View.VISIBLE);
 				
 				break;
-			
-			    
-				
-			case DocumentExpressActivity.UPDATE_DOC_LIST:
-				DocumentExpressActivity.this.onLoadingSucceed();
-				//findViewById(R.id.doc_loading_mask_layout).setVisibility(View.GONE);
-				doc_list_adapter.notifyDataSetChanged();
-				doc_list_view.setAdapter(doc_list_adapter);
-				//doc_list_view.addFooterView(doc_more_view);
-				break;
-			case DocumentExpressActivity.UPDATE_DOC_LIST_FAIL:
-				DocumentExpressActivity.this.onLoadingFail();
-				break;
-				
+
 			}
 		}
 	};
@@ -359,115 +375,11 @@ public class DocumentExpressActivity extends Activity implements OnLoadingStateC
 	
 	
 	
-	private class MyThread implements Runnable
-	{
-		private int index = 0;
-		
-		public MyThread(int temp)
-		{
-			index = temp;
-		}
 
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			
-			URL url;
-			try{
-				
-				
-				url = new URL(strUrl);
-				URLConnection con = url.openConnection();
-				con.connect();
-				InputStream input = con.getInputStream();
-				List<Map<String,String>> temp = null;
-				temp = json.getListItems(input);
-				if(temp != null)
-				{
-					
-					doc_list = temp;
-					handler.sendEmptyMessage(DocumentExpressActivity.UPDATE_DOC_LIST);
-				}else
-				{
-					handler.sendEmptyMessage(DocumentExpressActivity.UPDATE_DOC_LIST_FAIL);
-				}
-			}catch(MalformedURLException e)
-			{
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-	}
 	
 	
 	
 	
-	private class DocListAdapter extends BaseAdapter
-	{
-
-		@Override
-		public int getCount() {
-			// TODO Auto-generated method stub
-			if(doc_list != null)
-			return doc_list.size();
-			else
-			return 0;
-		}
-
-		@Override
-		public Object getItem(int item) {
-			// TODO Auto-generated method stub
-			return item;
-		}
-
-		@Override
-		public long getItemId(int id) {
-			// TODO Auto-generated method stub
-			return id;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			// TODO Auto-generated method stub
-			
-			LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View view = inflater.inflate(R.layout.doc_list_item, null);
-			TextView doc_title_text = (TextView) view.findViewById(R.id.doc_title);
-			String title = doc_list.get(position).get("title");
-			doc_title_text.setText(title);
-			if(convertView == null)
-			{
-				convertView = view;
-			}
-			return convertView;
-		}
-		
-	}
-	
-	
-	
-	//为ListView每一个item设置OnClick事件
-	private OnItemClickListener doc_item_click_listener = new OnItemClickListener()
-	{
-
-		@Override
-		public void onItemClick(AdapterView<?> parent, View v, int position,
-				long id) {
-			// TODO Auto-generated method stub
-			String url = application.ComposeToken(Url.DocumentDetailBase) + "&id=" + doc_list.get(position).get("id");
-			Log.i("doc_item_url", url);
-			Intent intent = new Intent();//用以传递数据
-			intent.setClass(DocumentExpressActivity.this, CommonContentActivity.class);
-			intent.putExtra("url", application.ComposeToken(url));
-			intent.putExtra("act_class", "document");
-			intent.putExtra("theme",doc_list.get(position).get("title"));
-			startActivity(intent);
-		}
-		
-	};
 	
 	
 	
@@ -498,18 +410,13 @@ public class DocumentExpressActivity extends Activity implements OnLoadingStateC
 				}
 			}
 			
-			if(doc_list != null)
-			doc_list.clear();
-			doc_list_adapter.notifyDataSetChanged();
-			
-			
+
 			doc_keywords = application.keywords[tag_id];
 			if(tags_state[tag_id] == 1)
 			strUrl = Url.composeDocListUrl(doc_id,doc_type,doc_keywords);
 			else
 			strUrl = composeDocListUrl(doc_id,doc_type,new StringBuffer());
 			
-			requestData();
 			setTagLayout(hide);
 			
 		}
@@ -557,44 +464,9 @@ public class DocumentExpressActivity extends Activity implements OnLoadingStateC
 	
 	
 	
-	//设置加载事件
-	@Override
-	public void onLoadingSucceed() {
-		// TODO Auto-generated method stub
-		findViewById(R.id.doc_loading_mask_layout).setVisibility(View.GONE);
-		Toast.makeText(DocumentExpressActivity.this, "加载成功", Toast.LENGTH_SHORT).show();
-	}
-
-	@Override
-	public void onLoadingFail() {
-		// TODO Auto-generated method stub
-		findViewById(R.id.doc_loading_mask_layout).setVisibility(View.GONE);
-		Toast.makeText(DocumentExpressActivity.this, "加载失败！", Toast.LENGTH_SHORT).show();
-	}
-
-	@Override
-	public void onLoadingBegin() {
-		// TODO Auto-generated method stub
-		findViewById(R.id.doc_loading_mask_layout).setVisibility(View.VISIBLE);
-	}
 
 
-	@Override
-	public void setOnLoadingStateChangedListener(OnLoadingStateChangedListener l) {
-		// TODO Auto-generated method stub
-		l = this;
-	}
-	
-	
-	
-	
-	
-	@Override
-	public void onResume()
-	{
-        super.onResume();
 
-	}
 	
 	
 }

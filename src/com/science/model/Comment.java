@@ -1,4 +1,4 @@
-package com.science.util;
+package com.science.model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.science.interfaces.OnShowMoreListener;
+import com.science.util.DefaultUtil;
 
 import android.graphics.Color;
 import android.text.SpannableString;
@@ -23,7 +24,7 @@ import android.widget.TextView;
 
 
 
-public class CommentUtil implements Comparable{
+public class Comment implements Comparable{
 
 	public static final String commentid = "commentid";
 	public static final String customerid = "customerid";
@@ -49,9 +50,9 @@ public class CommentUtil implements Comparable{
 	public int customer_id = DefaultUtil.INAVAILABLE;
 	public String comment_time = DefaultUtil.NULL;
 	public SpannableString span_comment_content = new SpannableString(comment_content);
-	public CommentUtil fir_comment = null;
-	public CommentUtil sec_comment = null;
-	public CommentUtil thr_comment = null;
+	public Comment fir_comment = null;
+	public Comment sec_comment = null;
+	public Comment thr_comment = null;
 	public TextView tv = null;
 	public int mark;//标志当前是几级评论
 	public int comment_like_num = DefaultUtil.ZERO;
@@ -81,7 +82,7 @@ public class CommentUtil implements Comparable{
 	 * 
 	 * @param obj接受JSONObject参数
 	 */
-	public CommentUtil(JSONObject obj){
+	public Comment(JSONObject obj){
 		
 		if(null == obj)
 			return;
@@ -131,7 +132,7 @@ public class CommentUtil implements Comparable{
 	
 	
 	
-	public CommentUtil(int comment_id,int customer_id,String customer_name,
+	public Comment(int comment_id,int customer_id,String customer_name,
 			            String comment_time,String comment_content,int comment_like_num,
 			            String comment_parent_name,String comment_parent_content)
 	{
@@ -146,7 +147,7 @@ public class CommentUtil implements Comparable{
 		
 	}
 	
-	public CommentUtil()
+	public Comment()
 	{
 	}
 	
@@ -154,7 +155,7 @@ public class CommentUtil implements Comparable{
 	
 	
 	
-	public CommentUtil(CommentUtil fir_comment,CommentUtil sec_comment,CommentUtil thr_comment)
+	public Comment(Comment fir_comment,Comment sec_comment,Comment thr_comment)
 	{
 		this.fir_comment = fir_comment;
 		this.sec_comment = sec_comment;
@@ -333,7 +334,7 @@ public class CommentUtil implements Comparable{
 	@Override
 	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
-		CommentUtil other = (CommentUtil)o;
+		Comment other = (Comment)o;
 		if(this.comment_date == null || other.comment_date == null)
 			return 0;
 		

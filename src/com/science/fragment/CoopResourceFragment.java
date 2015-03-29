@@ -15,19 +15,21 @@ import java.util.Map;
 
 import com.example.science.R;
 import com.science.activity.CommonContentActivity;
+import com.science.activity.CoopReleaseActivity;
+import com.science.activity.CoopResearchActivity;
 
 
-import com.science.item.Cooper;
 import com.science.json.JsonProgramListHandler;
 import com.science.json.JsonProjectSelectListHandler;
+import com.science.model.Cooper;
 import com.science.model.FirstClassItem;
 import com.science.model.SecondClassItem;
 import com.science.services.MyApplication;
 import com.science.util.Url;
+import com.science.view.MyImageButton;
 
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -35,10 +37,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -88,6 +93,10 @@ public class CoopResourceFragment extends Fragment{
 	private CoopAllNextAdapter second_adapter;
     private CoopAreaAdapter coop_area_adapter;
 	private View cooper_more_view;
+	
+	/*底部加号按钮*/
+	private MyImageButton  coop_add_release_btn;
+	
 	private JsonProgramListHandler json = null;
 	private JsonProjectSelectListHandler json_select = null;
 	private MyApplication application;
@@ -190,6 +199,10 @@ private void requestData(){
 		coop_area_btn = (LinearLayout)view.findViewById(R.id.coop_area_layout);
 
 		coop_list_view = (ListView)view.findViewById(R.id.coop_fragment_resource_list);
+		
+		coop_add_release_btn = (MyImageButton)view.findViewById(R.id.coop_add_release);
+		
+		
 		coop_list_view.setCacheColorHint(Color.argb(255, 0, 0, 0));
 		coop_list_view.setSelector(R.drawable.list_item_selector);
 		coop_list_view.setOnItemClickListener(coop_item_click_listener);
@@ -534,6 +547,26 @@ private void requestData(){
 	        	
 	        });
 	        
+	        
+	        
+	        
+	        //底部增加发布按钮
+	        coop_add_release_btn.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+					Intent intent = new Intent();
+					intent.setClass(activity,CoopReleaseActivity.class);
+					startActivity(intent);
+				}
+	        	
+	        });
+	        
+	        
+	        
+	        
 		}
 		
 		
@@ -822,6 +855,8 @@ private void requestData(){
         Toast.makeText(this.getActivity(),text,Toast.LENGTH_SHORT).show();
   
     }
+
+
 
 
 

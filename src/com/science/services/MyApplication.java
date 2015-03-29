@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.science.activity.Android_DialogActivity.MyThread;
 import com.science.json.JsonLoginHandler;
+import com.science.model.ResourceDefine;
 import com.science.util.DefaultUtil;
 import com.science.util.Url;
 
@@ -52,6 +53,10 @@ public class MyApplication extends Application{
 		}
 		instance= this;
 		androidId = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID); 
+		
+		
+		/*生成ResourceDefine 很重要*/
+		ResourceDefine.deriveResourceDefine(getApplicationContext());
 	}
 
 	public  String Login(String name,String pass)

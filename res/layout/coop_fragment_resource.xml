@@ -146,9 +146,10 @@
         android:layout_height="wrap_content"
         android:background="@drawable/coop_bottom_background_middle"
         android:gravity="center"
+        
         >
         
-        <com.science.view.MyImageButton android:id="@+id/coop_plus"
+        <com.science.view.MyImageButton android:id="@+id/coop_add_release"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/plus"

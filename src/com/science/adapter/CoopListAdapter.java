@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.science.R;
-import com.science.item.Cooper;
+import com.science.model.Cooper;
 
 
 
