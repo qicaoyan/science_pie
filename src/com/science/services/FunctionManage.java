@@ -51,7 +51,7 @@ public class FunctionManage {
 		//GetLoginInfo();
 		if (name==null||pass==null) {
 			Intent intent=new Intent();
-			intent.setAction("com.science.loginactivity");
+			intent.setAction("com.science.intent.action.LOGIN");
 			context.startActivity(intent);
 		}
 		else {

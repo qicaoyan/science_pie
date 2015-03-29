@@ -555,7 +555,7 @@ public class CommentDetailActivity extends Activity {
 	public void run() {
 		// TODO Auto-generated method stub
 		
-		String str_url = Url.composeDeleteCommentUrl(comment_id, mark);
+		String str_url = Url.composeDeleteCommentUrl(comment_id);
 		try {
 			URL url = new URL(str_url);
 			URLConnection conn = url.openConnection();
@@ -587,7 +587,7 @@ public class CommentDetailActivity extends Activity {
 		public void run() {
 			// TODO Auto-generated method stub
 			String str_url = Url.compseReleaseCommentUrl(comment_id,root_id, 
-                    article_type, article_id, mark, comment_content);
+                    article_type, article_id, comment_content);
 			Log.i("uploading_comment_url", str_url);
 				URL url;
 				try {

@@ -48,7 +48,7 @@
          >
         <activity
             android:name="com.science.activity.SplashScreen"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -58,7 +58,6 @@
         </activity>
         <activity
             android:name="com.science.activity.MainActivity"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -74,9 +73,10 @@
         <activity
             android:name="com.science.activity.Android_DialogActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode ="stateUnspecified|adjustPan"
              >
             <intent-filter>
-                <action android:name="com.science.loginactivity" />
+                <action android:name="com.science.intent.action.LOGIN" />
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -86,7 +86,12 @@
         </activity>
         <activity
             android:name="com.science.activity.CommonContentActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait" >
+        	<intent-filter>
+                <action android:name="com.science.CommonContentActivity" />
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
         <activity
             android:name="com.science.activity.DocumentExpressActivity"
@@ -100,12 +105,12 @@
         <activity
             android:name="com.science.activity.CoopResearchActivity"
             android:screenOrientation="portrait" 
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden|adjustPan">
         </activity>
         <activity
             android:name="com.science.activity.CommentDetailActivity"
             android:label="@string/title_activity_comment_detail"
-	    android:windowSoftInputMode ="stateHidden" >
+	    	android:windowSoftInputMode ="stateHidden" >
     	</activity>
 	        <activity
             android:name="com.science.activity.RegisterActivity"
@@ -125,6 +130,10 @@
         </activity>
        	<activity
             android:name="com.science.activity.MyPublishActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+       	<activity
+            android:name="com.science.activity.MyMessageActivity"
             android:screenOrientation="portrait" >
         </activity>
         

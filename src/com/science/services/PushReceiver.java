@@ -1,5 +1,8 @@
 package com.science.services;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +12,8 @@ import android.widget.Toast;
 
 import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
+import com.science.activity.CommonContentActivity;
+import com.science.util.AppUtil;
 
 public class PushReceiver extends BroadcastReceiver {
 
@@ -31,12 +36,43 @@ public class PushReceiver extends BroadcastReceiver {
 			System.out.println("第三方回执接口调用" + (result ? "成功" : "失败"));
 			
 			if (payload != null) {
-				String data = new String(payload);
 
-				Log.d("GetuiSdkDemo", "Got Payload:" + data);
-//				if (GetuiSdkDemoActivity.tLogView != null)
-//					GetuiSdkDemoActivity.tLogView.append(data + "\n");
-				Toast.makeText(context, "透传测试"+data, Toast.LENGTH_LONG).show();
+				try {
+					String data = new String(payload);
+					int a=data.indexOf("{");
+					data=data.substring(a);
+			        JSONObject obj;
+					obj = new JSONObject(data);
+					String url=obj.getString("url");
+					String id=obj.getString("block_id");
+					String name=AppUtil.BlockCodeToBlockText(id);
+					
+					
+					//Intent intentContent=new Intent(context,CommonContentActivity.class);
+					Intent intentContent=new Intent();
+					intentContent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					intentContent.putExtra("url", url);//传递数据
+					intentContent.putExtra("title", name);
+					intentContent.putExtra("act_class", "热点新闻");
+					intentContent.setClass(context, CommonContentActivity.class);
+					intentContent.setAction("com.science.CommonContentActivity");
+					
+					Thread.sleep(2000);
+					context.startActivity(intentContent);
+					
+					Log.d("GetuiSdkDemo", "Got Payload:" + data);
+//					if (GetuiSdkDemoActivity.tLogView != null)
+//						GetuiSdkDemoActivity.tLogView.append(data + "\n");
+					Toast.makeText(context, "透传测试"+data, Toast.LENGTH_LONG).show();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        
+
 				
 			}
 			break;

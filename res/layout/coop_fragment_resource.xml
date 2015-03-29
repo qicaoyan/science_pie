@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:id="@+id/frag_resource_linear">
+  <LinearLayout 
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:background="@drawable/shape_light_blue"
+     android:gravity="center"
+     android:paddingTop="2dip"
+     android:paddingBottom = "2dip">
+       
+ <FrameLayout
+     android:id="@+id/coop_search_layout"
+     android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/search_box"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+   
+
+    <ImageView android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:src="@drawable/fangdajing"
+         android:layout_marginLeft="3dip"
+         android:layout_centerVertical="true"
+         android:layout_gravity="center_vertical|right"
+         android:layout_marginRight="10dip"/>
+     <EditText
+         android:id="@+id/search_edit_text"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:background="@null"
+         android:paddingLeft="5dip"
+         android:layout_gravity="center"
+         android:gravity="left"
+         android:hint="搜索" 
+         android:maxLength="10"
+         android:textSize="15sp"/>
+
+ </FrameLayout>
+     
+ </LinearLayout>
+ <LinearLayout android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+      
+      <LinearLayout android:id="@+id/coop_area_layout"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:gravity="center"
+          android:background="@drawable/shape_light_blue">
+          
+          <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="地域"
+              android:textColor="@color/white"
+              android:textSize="15sp"
+              android:paddingTop = "10dip"
+              android:paddingBottom="10dip"
+            />
+          <ImageView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:src="@drawable/jiantou"
+              android:layout_marginLeft="5dip"
+              android:paddingTop = "10dip"
+              android:paddingBottom="10dip"
+              android:id="@+id/coop_area_arrow"/>
+      </LinearLayout>
+      
+            <LinearLayout android:id="@+id/coop_all_layout"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:gravity="center"
+          android:background="@drawable/shape_light_blue">
+          
+          <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="全部"
+              android:textColor="@color/white"
+              android:textSize="15sp"
+              android:paddingTop = "10dip"
+              android:paddingBottom="10dip"/>
+          <ImageView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:src="@drawable/jiantou"
+              android:layout_marginLeft="5dip"
+              android:paddingTop = "10dip"
+              android:paddingBottom="10dip"
+              android:id="@+id/coop_all_arrow"/>
+      </LinearLayout>
+      
+      
+  </LinearLayout>
+    <RelativeLayout 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/doc_list_layout">
+
+
+<ListView
+   
+    android:id="@+id/coop_fragment_resource_list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="0dip"
+    android:layout_marginBottom="30dip"
+    style = "@style/common_list_divider_style"
+    >
+    
+</ListView>
+
+
+
+  
+  
+<!-- 设置底部按钮 -->
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:gravity="bottom">
+   
+   <!-- 我提供布局 -->
+  <LinearLayout android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@drawable/coop_bottom_background_side"
+      android:gravity="center"
+       android:layout_weight="1">
+    <TextView android:id="@+id/coop_i_offer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我提供"
+        android:textSize="15sp"
+        android:textColor="@color/light_blue"
+        android:textAlignment ="center"
+       />
+  </LinearLayout>  
+  
+  
+    <!-- 中间添加按钮布局 -->
+   <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/coop_bottom_background_middle"
+        android:gravity="center"
+        >
+        
+        <com.science.view.MyImageButton android:id="@+id/coop_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/plus"
+            android:background="@null"/>
+        
+        
+    </LinearLayout>
+    
+    
+ <!-- 我要找布局 -->   
+ <LinearLayout android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@drawable/coop_bottom_background_side"
+      android:gravity="center"
+       android:layout_weight="1">
+    <TextView android:id="@+id/coop_i_find"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我要找"
+        android:textSize="15sp"
+        android:textColor="@color/light_blue"
+        android:textAlignment ="center"
+       />
+  </LinearLayout> 
+   
+ 
+ 
+ 
+ 
+</LinearLayout>
+
+
+
+</RelativeLayout>   
+
+</LinearLayout>

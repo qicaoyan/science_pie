@@ -61,8 +61,8 @@ public class MyInfoActivity extends Activity{
 	
 	private void InitData()
 	{
-		adapterDiYu=new ArrayAdapter<String>(this,android.R.layout.browser_link_context_header,strDiYu);
-		adapterZhiYe=new ArrayAdapter<String>(this,android.R.layout.browser_link_context_header,strZhiYe);
+		adapterDiYu=new ArrayAdapter<String>(this,R.layout.my_spinner,strDiYu);
+		adapterZhiYe=new ArrayAdapter<String>(this,R.layout.my_spinner,strZhiYe);
 		adapterDiYu.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		adapterZhiYe.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		

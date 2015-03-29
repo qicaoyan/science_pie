@@ -15,7 +15,7 @@
         android:scaleType="fitCenter"
          />
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
 		android:layout_margin="20dip"
         android:orientation="vertical"
@@ -94,16 +94,19 @@
 	        android:layout_weight="1"
 	        android:orientation="horizontal"
 	        android:gravity="center_vertical"
+	        android:id="@+id/settingmymessage"
 	        >
 	       <ImageButton 
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_marginRight="20dip"
+	            android:clickable="false"
 	            android:background="@drawable/xx"
 	            />
 	        <ImageButton 
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
+	            android:clickable="false"
 	            android:background="@drawable/wodexiaoxi"
 	            />
 	     </LinearLayout>

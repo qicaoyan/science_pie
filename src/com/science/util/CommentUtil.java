@@ -34,9 +34,9 @@ public class CommentUtil implements Comparable{
 	public static final String customername = "customername";
 	public static final String content = "content";
 	public static final String time = "time";
-	public static final String parentname = "parent_name";
+	public static final String parentname = "parentname";
 	public static final String parentcontent = "parentcontent";
-	public static final String likenum = "like_num";
+	public static final String likenum = "likenum";
 	public static final int MAX_COMMENT_WORDS_NUM = 10;
 	
 	
@@ -86,8 +86,34 @@ public class CommentUtil implements Comparable{
 		if(null == obj)
 			return;
 		try {
-			int comment_id = Integer.parseInt(obj.getString(commentid));
-			int customer_id = Integer.parseInt(obj.getString(customerid));
+			this.comment_id = Integer.parseInt(obj.getString(commentid));
+			this.customer_id = Integer.parseInt(obj.getString(customerid));
+			this.customer_name = obj.getString(customername);
+			this.comment_time = obj.getString(time);
+			this.comment_content = obj.getString(content);
+			this.comment_like_num = Integer.parseInt(obj.getString(likenum));
+			this.comment_parent_name = obj.getString(parentname);
+			this.comment_parent_content = obj.getString(parentcontent);
+			
+			
+			
+			//设置评论的回复样式
+			if(!this.comment_parent_name.equals(DefaultUtil.NULL))
+			{
+				this.comment_content += "//@" + this.comment_parent_name + ":" + this.comment_parent_content;
+			}
+			
+			Log.i("comment_content", this.comment_content);
+			setCommentText();
+			//获取时间的值
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMMM-dddd HH:mm:ss");
+			try {
+				this.comment_date = sdf.parse(this.comment_time);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,6 +121,9 @@ public class CommentUtil implements Comparable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	
+		
 		
 	}
 	
