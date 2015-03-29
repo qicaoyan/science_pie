@@ -17,19 +17,27 @@ import com.science.util.ShoucangUtil;
 import com.science.util.Url;
 import com.science.view.MyListView;
 
+import android.R.integer;
+import android.R.string;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AbsListView; 
+import android.widget.AbsListView.OnScrollListener; 
+import android.widget.ListView; 
+import android.widget.SimpleAdapter; 
 
 public class MyCollectionActivity extends Activity {
 
@@ -41,6 +49,8 @@ public class MyCollectionActivity extends Activity {
 	private List<Map<String, Object>> myList;
 	private JsonGetCollectionHandler jsonGetCollectionHandler;
 	private MyHandler handler;
+	private myAdapte myAdapte=null;
+	private Integer lastId=0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,8 +72,7 @@ public class MyCollectionActivity extends Activity {
 	
 	private void InitVariable()
 	{
-		ShoucangUtil shoucang_util = new ShoucangUtil(this);
-		myList = shoucang_util.getLocalShoucangList();
+		myList=new ArrayList<Map<String,Object>>();
 	
 		jsonGetCollectionHandler=new JsonGetCollectionHandler();
 		handler=new MyHandler();
@@ -97,6 +106,7 @@ public class MyCollectionActivity extends Activity {
 	private void SetListener()
 	{
 		//myInfo.setOnClickListener(onClickListener);
+		myListView.setOnScrollListener(new OnScrollListenerImple()); 
 	}
 	
 	private void GetMyCollection()
@@ -161,12 +171,22 @@ public class MyCollectionActivity extends Activity {
 			// TODO Auto-generated method stub
 			URL url;
 			try {
-				url = new URL(myApplication.ComposeToken(Url.getCollection));
+				String strUrl=Url.getCollection+"&id=";
+				String tempLastId=lastId.toString();
+				strUrl+=tempLastId;
+				Log.v("MyCollectionUrl", strUrl);
+				url = new URL(myApplication.ComposeToken(strUrl));
 				URLConnection con = url.openConnection();
 				con.connect();
 				InputStream input = con.getInputStream();
-				myList=jsonGetCollectionHandler.getListItems(input);
-				if (myList!=null) {
+				List<Map<String, Object>> tempList=null;
+				tempList=jsonGetCollectionHandler.getListItems(input);
+				
+				if (tempList!=null) {
+					for (int i = 0; i < tempList.size(); i++) {
+						myList.add(tempList.get(i));
+					}
+					lastId=Integer.parseInt((String) myList.get(myList.size()-1).get("id"));
 					handler.sendEmptyMessage(2);
 				}
 			} catch (MalformedURLException e) {
@@ -191,7 +211,15 @@ public class MyCollectionActivity extends Activity {
     	@Override
     	public void handleMessage(Message msg) {
     		if (msg.what == 2) {
-    			myListView.setAdapter(new myAdapte());
+    			if (myAdapte==null) {
+        			myAdapte=new myAdapte();
+        			myListView.setAdapter(myAdapte);
+				}
+    			else
+    			{
+    				myAdapte.notifyDataSetChanged();
+    			}
+
 			} 
     		super.handleMessage(msg);
     	}
@@ -209,4 +237,30 @@ public class MyCollectionActivity extends Activity {
     	}
     	
     }
+
+    private class OnScrollListenerImple implements OnScrollListener{ 
+        @Override 
+        public void onScroll(AbsListView listView, int firstVisibleItem,int visibleItemCount, int totalItemCount) { 
+            
+        } 
+   
+
+
+		@Override 
+        public void onScrollStateChanged(AbsListView listview, int scrollState) { 
+	        if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {  
+	            // 判断是否滚动到底部  
+	            if (listview.getLastVisiblePosition() == listview.getCount() - 1) {  
+	                //加载更多功能的代码  
+	            	addDataForListView(); 
+	            }  
+	        } 
+        } 
+           
+    }
+
+    private void addDataForListView() {
+		// TODO Auto-generated method stub
+    	GetMyCollection();
+	}
 }

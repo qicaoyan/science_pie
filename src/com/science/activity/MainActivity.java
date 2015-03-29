@@ -173,6 +173,7 @@ public class MainActivity extends Activity {
         temp[0]=new Tag();
         temp[0].setName("test");
         PushManager.getInstance().initialize(this.getApplicationContext());
+        functionManage.UpdateCid();
        // PushManager.getInstance().setTag(this,temp);
     }
 
@@ -386,8 +387,8 @@ public class MainActivity extends Activity {
 				{
 					if (mainpageKeywords[i].getText().length()>0) {
 						mainpageKeywords[i].setBackgroundColor(getResources().getColor(R.color.keywordsbackground));
+						mainpageKeywordsChar[i].setBackgroundColor(getResources().getColor(R.color.black));
 						mainpageKeywordsChar[i].setImageDrawable(getResources().getDrawable(R.drawable.cha));
-						//mainpageKeywordsChar[i].setBackgroundColor(getResources().getColor(R.color.keywordsbackground));
 						mainpageKeywordsChar[i].setVisibility(View.VISIBLE);
 					}
 					
@@ -904,8 +905,8 @@ public class MainActivity extends Activity {
 		}
 		try {
 //			// 获取新闻列表，存到list里边
-			//URL url = new URL(address+Integer.toString(block));
-			URL url = new URL("http://123.57.207.9:80/hot/hotList?typeid=0&classid=0");
+			URL url = new URL(address+Integer.toString(block));
+			//URL url = new URL("http://123.57.207.9:80/hot/hotList?typeid=0&classid=0");
 			URLConnection con = url.openConnection();
 			con.connect();
 			InputStream input = con.getInputStream();

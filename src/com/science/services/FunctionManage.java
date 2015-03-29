@@ -17,7 +17,10 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 import cn.sharesdk.onekeyshare.ShareContentCustomizeCallback;
 
 import com.example.science.R;
+import com.igexin.sdk.PushManager;
+import com.igexin.sdk.Tag;
 import com.science.json.JsonDownLoadsKeywords;
+import com.science.json.JsonUpdateGeTuiTagsHandler;
 import com.science.util.Url;
 
 import android.app.Activity;
@@ -32,6 +35,7 @@ public class FunctionManage {
 	public Context context;
 	public Map<String,String> keywordsMap=null;
 	public JsonDownLoadsKeywords jsonDownLoadsKeywords;
+	public JsonUpdateGeTuiTagsHandler jsonUpdateGeTuiTagsHandler=null;
 	public String name=null;
 	public String pass=null;
 	public OnekeyShare oks=null;
@@ -42,6 +46,7 @@ public class FunctionManage {
 		myApplication=MyApplication.getInstance();
 		context=con;
 		jsonDownLoadsKeywords=new JsonDownLoadsKeywords();
+		jsonUpdateGeTuiTagsHandler=new JsonUpdateGeTuiTagsHandler();
 		ShareSDK.initSDK(context);
 		oks=new OnekeyShare();
 	}
@@ -57,7 +62,8 @@ public class FunctionManage {
 		else {
 			MyThreadLogin myThreadLogin=new MyThreadLogin();
 			new Thread(myThreadLogin).start();
-		}
+		}		
+		//UpdateCid();
 	}
 	
 	public void showShare() {
@@ -117,7 +123,18 @@ public class FunctionManage {
 		new Thread(myThreadUpdateKeywords).start();
 	}
 	
+	public void UpdateCid()
+	{
+		MyThreadUpdateCid myThreadUpdateCid=new MyThreadUpdateCid();
+		new Thread(myThreadUpdateCid).start();
+		
+	}
 	
+	public void UpdataTags()
+	{
+		MyThreadUpdateTags myThreadUpdateTags=new MyThreadUpdateTags();
+		new Thread(myThreadUpdateTags).start();
+	}
 	
 	private class MyThreadUpdateKeywords implements Runnable
     {
@@ -160,6 +177,8 @@ public class FunctionManage {
 		public void run() {
 			// TODO Auto-generated method stub
 			 myApplication.Login(name, pass);
+			 
+			 UpdataTags();
 		}
 		
 	}
@@ -193,8 +212,60 @@ public class FunctionManage {
 		@Override
 		public void run() {
 			
+			try {
+				URL url;
+				String cidString=PushManager.getInstance().getClientid(context);
+				url = new URL(myApplication.ComposeToken(Url.updateCid+PushManager.getInstance().getClientid(context)));
+				URLConnection con = url.openConnection();
+				con.connect();
+				InputStream input = con.getInputStream();
+				
+				//UpdataTags();
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private class MyThreadUpdateTags implements Runnable
+	{
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			try {
+				URL url;
+				url = new URL(myApplication.ComposeToken(Url.updateTags));
+				URLConnection con = url.openConnection();
+				con.connect();
+				InputStream input = con.getInputStream();
+				Map<String, String> map=jsonUpdateGeTuiTagsHandler.getListItems(input);
+				if(map!=null)
+				{
+					String tag=map.get("pushtags");
+					String [] tags=tag.split(",");
+					Tag [] Tags=new Tag[tags.length];
+					for (int i = 0; i < tags.length; i++) {
+						Tag tempTag=new Tag();
+						tempTag.setName(tags[i]);
+						Tags[i]=tempTag;
+					}
+					
+					Integer errorcode=PushManager.getInstance().setTag(context, Tags);
+					Log.v("FunctionManage", "bbb"+errorcode.toString());
+				}
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
-
 	}
 }

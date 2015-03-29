@@ -23,10 +23,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AbsListView.OnScrollListener;
 
 public class MyMessageActivity extends Activity {
 	private MyApplication myApplication=null;
@@ -36,6 +38,8 @@ public class MyMessageActivity extends Activity {
 	private List<Map<String, Object>> myList;
 	private JsonGetMyMessageHandler jsonGetMyMessageHandler=null;
 	private MyHandler handler=null;
+	private Integer page=1;
+	private myAdapte myAdapte=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,7 +56,7 @@ public class MyMessageActivity extends Activity {
 		InitData();
 		SetListener();
 		
-		GetMyCollection();
+		GetMyMessage();
 	}
 	
 	private void InitVariable()
@@ -60,7 +64,7 @@ public class MyMessageActivity extends Activity {
 		//myListView=new MyListView(MyCollectionActivity.this);
 		jsonGetMyMessageHandler=new JsonGetMyMessageHandler();
 		handler=new MyHandler();
-//		myList=new ArrayList<Map<String,Object>>();
+		myList=new ArrayList<Map<String,Object>>();
 //		Map<String , Object> map1=new HashMap<String, Object>();
 //		map1.put("title", "北京市关于征集2014年中央文化产业发展专项资金一般项目的通知");
 //		map1.put("time", "4天前");
@@ -94,7 +98,7 @@ public class MyMessageActivity extends Activity {
 		//myInfo.setOnClickListener(onClickListener);
 	}
 	
-	private void GetMyCollection()
+	private void GetMyMessage()
 	{
 		MyThreadGetMyMessage myThreadGetMyMessaage=new MyThreadGetMyMessage();
 		new Thread(myThreadGetMyMessaage).start();
@@ -156,12 +160,20 @@ public class MyMessageActivity extends Activity {
 			// TODO Auto-generated method stub
 			URL url;
 			try {
-				url = new URL(myApplication.ComposeToken(Url.getMessage));
+				String urlStr=Url.getMessage+"&page=";
+				urlStr+=page.toString();
+				url = new URL(myApplication.ComposeToken(urlStr));
 				URLConnection con = url.openConnection();
 				con.connect();
 				InputStream input = con.getInputStream();
-				myList=jsonGetMyMessageHandler.getListItems(input);
-				if (myList!=null) {
+				List<Map<String, Object>> tempList=null;
+				tempList=jsonGetMyMessageHandler.getListItems(input);
+				
+				if (tempList!=null) {
+					for (int i = 0; i < tempList.size(); i++) {
+						myList.add(tempList.get(i));
+					}
+					page=page+1;
 					handler.sendEmptyMessage(2);
 				}
 			} catch (MalformedURLException e) {
@@ -185,9 +197,14 @@ public class MyMessageActivity extends Activity {
 
     	@Override
     	public void handleMessage(Message msg) {
-    		if (msg.what == 2) {
-    			myListView.setAdapter(new myAdapte());
-			} 
+			if (myAdapte==null) {
+    			myAdapte=new myAdapte();
+    			myListView.setAdapter(myAdapte);
+			}
+			else
+			{
+				myAdapte.notifyDataSetChanged();
+			}
     		super.handleMessage(msg);
     	}
 
@@ -204,4 +221,30 @@ public class MyMessageActivity extends Activity {
     	}
     	
     }
+	
+	  private class OnScrollListenerImple implements OnScrollListener{ 
+	        @Override 
+	        public void onScroll(AbsListView listView, int firstVisibleItem,int visibleItemCount, int totalItemCount) { 
+	            
+	        } 
+	   
+
+
+			@Override 
+	        public void onScrollStateChanged(AbsListView listview, int scrollState) { 
+		        if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {  
+		            // 判断是否滚动到底部  
+		            if (listview.getLastVisiblePosition() == listview.getCount() - 1) {  
+		                //加载更多功能的代码  
+		            	addDataForListView(); 
+		            }  
+		        }  
+	        } 
+	           
+	    }
+	  
+      private void addDataForListView() {
+			// TODO Auto-generated method stub
+      	GetMyMessage();
+		}
 }

@@ -106,7 +106,9 @@ public class MyApplication extends Application{
 	public  String ComposeToken(String str)
 	{
 		if (str!=null) {
-			str+="&";
+			if (str.charAt(str.length()-1)!='?') {
+				str+="&";
+			}
 			str+="sid=";
 			str+=this.sidString;
 			str+="&";

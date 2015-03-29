@@ -347,8 +347,9 @@ public class Android_DialogActivity extends Activity {
 		            //保存用户名和密码
 		            if(name!=null&&pass!=null)
 		            {
-		            	functionManage.SaveLoginInfo(name,pass);
+		            	functionManage.SaveLoginInfo(name,pass);	
 		            }
+		            functionManage.UpdataTags();
 		            //关闭掉这个Activity
 		            Toast.makeText(Android_DialogActivity.this, "success", Toast.LENGTH_LONG).show();
 		            finish();  

@@ -35,6 +35,8 @@ public class Url {
 	public static String removeCollection=Url.BASEURL+"/collection/deleteCollection?";
 	public static String getCollection=Url.BASEURL+"/collection/getCollection?";
 	public static String getMessage=Url.BASEURL+"/message/getMessageInBox?";
+	public static String updateCid=Url.BASEURL+"/Getui/setcid?cid=";
+	public static String updateTags=Url.BASEURL+"/getui/getPushtags?";
 	
 	public static String CommentList = Url.BASEURL + "comment/getComment?";
 	public static String ReleaseComment = Url.BASEURL + "comment/setComment?";

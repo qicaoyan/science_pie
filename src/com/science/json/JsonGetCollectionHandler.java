@@ -80,6 +80,8 @@ public class JsonGetCollectionHandler {
 		        	map.put("time", temp.getString("time"));
 		        	map.put("url", temp.getString("url"));
 		        	map.put("title", temp.getString("title"));
+		        	map.put("id", temp.getString("collectionid"));
+		        	
 		        	list.add(map);
 		        }
 		        return list;
