@@ -57,12 +57,9 @@ public class PushReceiver extends BroadcastReceiver {
 					intentContent.setClass(context, CommonContentActivity.class);
 					intentContent.setAction("com.science.CommonContentActivity");
 					
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 					context.startActivity(intentContent);
 					
-					Log.d("GetuiSdkDemo", "Got Payload:" + data);
-//					if (GetuiSdkDemoActivity.tLogView != null)
-//						GetuiSdkDemoActivity.tLogView.append(data + "\n");
 					Toast.makeText(context, "透传测试"+data, Toast.LENGTH_LONG).show();
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
