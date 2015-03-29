@@ -21,6 +21,12 @@ public class SplashScreen extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		myApplication=(MyApplication)this.getApplication();
+		
+	      if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {  
+	            finish();
+	            return;
+	         }
+		
 		//myApplication.Login("admin@qq.com","admin");
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

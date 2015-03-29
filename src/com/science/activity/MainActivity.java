@@ -132,8 +132,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         myApplication=(MyApplication)this.getApplication();
-        
-        Toast.makeText(MainActivity.this, myApplication.androidId, Toast.LENGTH_LONG).show();
+        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {  
+            finish();
+            return;
+         }
+        Toast.makeText(MainActivity.this, myApplication.eid, Toast.LENGTH_LONG).show();
         functionManage=new FunctionManage(MainActivity.this);
      // �����ޱ��ⴰ��
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -870,7 +873,8 @@ public class MainActivity extends Activity {
 		}
 		try {
 //			// 获取新闻列表，存到list里边
-			URL url = new URL(address+Integer.toString(block));
+			//URL url = new URL(address+Integer.toString(block));
+			URL url = new URL("http://123.57.207.9:80/hot/hotList?typeid=0&classid=0");
 			URLConnection con = url.openConnection();
 			con.connect();
 			InputStream input = con.getInputStream();
