@@ -52,26 +52,29 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.science.activity.MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.science.activity.MainPageActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
 
         <activity
             android:name="com.science.activity.DocumentListActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
 
         <activity
             android:name="com.science.activity.Android_DialogActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode ="stateUnspecified|adjustPan"
              >
@@ -82,6 +85,7 @@
         </activity>
         <activity
             android:name="com.science.activity.HotPageListActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -95,10 +99,12 @@
         </activity>
         <activity
             android:name="com.science.activity.DocumentExpressActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
          <activity
             android:name="com.science.activity.ProjectApplyActivity"
+<<<<<<< HEAD
             android:screenOrientation="portrait" 
             >"
         </activity>
@@ -106,6 +112,10 @@
             android:name="com.science.activity.CoopResearchActivity"
             android:screenOrientation="portrait" 
             android:windowSoftInputMode="stateHidden|adjustPan">
+=======
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
+>>>>>>> Jamli-master
         </activity>
         
         
@@ -119,31 +129,38 @@
         
         <activity
             android:name="com.science.activity.CommentDetailActivity"
+            android:launchMode="singleTask"
             android:label="@string/title_activity_comment_detail"
 	    	android:windowSoftInputMode ="stateHidden" >
     	</activity>
 	        <activity
             android:name="com.science.activity.RegisterActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
      	<activity
             android:name="com.science.activity.SettingManageActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
        	<activity
             android:name="com.science.activity.MyInfoActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
        	<activity
             android:name="com.science.activity.MyCollectionActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
        	<activity
             android:name="com.science.activity.MyPublishActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
        	<activity
             android:name="com.science.activity.MyMessageActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
         
