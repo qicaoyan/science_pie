@@ -190,5 +190,57 @@
          <item name ="android:textColor">@color/text_light_gray</item>    
           
    </style>
+   
+   
+   
+   
+   
+   
+   <!-- 搜索框文字的样式 -->
+  <style name = "common_search_input_text_style">
+      <item name = "android:textColor">@color/text_dark_gray</item>
+      <item name = "android:textSize">13sp</item>
+     <item name = "android:textColorHint">@color/white</item>
+     <item name = "android:paddingLeft">15dip</item>
+     <item name = "android:maxLength">10</item>
+  </style>
+  
+  
+    <style name = "common_subject_text_style">
+      <item name = "android:textColor">@color/white</item>
+      <item name = "android:textSize">15sp</item>
+     <item name = "android:paddingLeft">15dip</item>
+     <item name = "android:maxLength">10</item>
+  </style>
+   
+  
+  
+  
+  
+
+  <style name = "tech_trend_kywd_text">
+      <item name = "android:textColor">@color/black</item>
+      <item name = "android:textSize">20sp</item>
+  </style>
+   
+    <style name = "tech_trend_kywd_breviary_text">
+      <item name = "android:textColor">@color/text_dark_gray</item>
+      <item name = "android:textSize">15sp</item>
+      <item name = "android:maxLines">2</item>
+      <item name= "android:maxEms">20</item>
+  </style> 
      
+    
+    
+    
+    
+    <style name="common_list_item_figure_text_style">
+        <item name = "android:textSize">10sp</item>
+        <item name = "android:textColor">@color/text_light_gray</item>
+    </style>
+        
+    
+    
+
+    
 </resources>

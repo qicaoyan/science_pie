@@ -724,7 +724,7 @@ private void requestData(){
 					iv.setImageResource(R.drawable.icon_green_point);
 					iv.setPadding(10, 10, 0, 10);
 					layout.addView(iv);
-					layout.setBackground(getResources().getDrawable(R.color.dark_blue));
+					layout.setBackground(getResources().getDrawable(R.color.middle_blue));
 				  }else{
 		            layout.setBackground(getResources().getDrawable(R.color.light_blue));
 				}

@@ -25,7 +25,7 @@ import com.science.util.AppUtil;
 import com.science.util.AsyncImageLoader;
 import com.science.util.Url;
 import com.science.util.AsyncImageLoader.ImageCallback;
-import com.science.view.MyHeader;
+import com.science.view.MyHeaderView;
 import com.science.view.MyPullToRefreshListView;
 import com.science.view.MyPullToRefreshListView.OnRefreshListener;
 
@@ -70,7 +70,7 @@ public class HotPageListActivity extends Activity {
 	private String strUrl=null;
 	private int block=0;
 	private MyListAdapter myListAdapter=null;
-	private MyHeader myHeader=null;
+	private MyHeaderView myHeader=null;
 	private String title="";
 	
 	private int type_id = 1;
@@ -164,7 +164,7 @@ public class HotPageListActivity extends Activity {
 		// 加上底部view
 		bt.setOnClickListener(bt_listener);
 		
-		myHeader=(MyHeader)findViewById(R.id.hotpagelistheader);
+		myHeader=(MyHeaderView)findViewById(R.id.hotpagelistheader);
 	}
 	
 	private void initVariable()

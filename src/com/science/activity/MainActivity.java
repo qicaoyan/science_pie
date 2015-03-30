@@ -33,7 +33,7 @@ import com.science.util.AsyncImageLoader;
 import com.science.util.AsyncImageLoader.ImageCallback;
 import com.science.util.NetWorkState;
 import com.science.util.Url;
-import com.science.view.MyHeader;
+import com.science.view.MyHeaderView;
 
 
 import android.os.Bundle;
@@ -59,6 +59,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -80,7 +81,7 @@ public class MainActivity extends Activity {
 	 private ViewPager viewPager;  
 	 private ArrayList<View> pageViews;  
  
-	 private MyHeader myHeader=null;
+	 private MyHeaderView myHeader=null;
 	 
 	 // ��������ͼƬLinearLayout
 	 private ViewGroup main;
@@ -103,6 +104,10 @@ public class MainActivity extends Activity {
 	public ImageView mainPageImageView2;
 	public ImageView mainPageImageView3;
 	public ImageView mainPageImageView4;
+	public View      mainPageProjectView;
+	public View      mainPageDocumentView;
+	public View      mainPageCoopView;
+	public View      mainPageTechView;
 	 
 	 private ListView hotpageListView1;
 	 private ListView hotpageListView2;
@@ -259,6 +264,9 @@ public class MainActivity extends Activity {
         v2 = inflater.inflate(R.layout.mainpage, null); 
         hotmain=inflater.inflate(R.layout.hotpagemain, null);
         
+
+        
+        
         pageViews.add(hotmain);  
         pageViews.add(v2); 
         
@@ -292,6 +300,38 @@ public class MainActivity extends Activity {
         
 		if(v2!=null)
 		{			
+	        /*设置四个主页项*/
+	        mainPageProjectView = v2.findViewById(R.id.main_page_project);
+	        mainPageDocumentView = v2.findViewById(R.id.main_page_document);
+	        mainPageCoopView = v2.findViewById(R.id.main_page_coop);
+	        mainPageTechView = v2.findViewById(R.id.main_page_tech);
+			
+			int screenWidth = this.getWindowManager().getDefaultDisplay().getWidth();
+			LayoutParams params;
+			params = mainPageProjectView.getLayoutParams();
+			params.width = screenWidth/2;
+			params.height = screenWidth/2;
+			mainPageProjectView.setLayoutParams(params);
+			
+			params = mainPageDocumentView.getLayoutParams();
+			params.width = screenWidth/2;
+			params.height = screenWidth/2;
+			mainPageDocumentView.setLayoutParams(params);
+			
+			
+			params = mainPageCoopView.getLayoutParams();
+			params.width = screenWidth/2;
+			params.height = screenWidth/2;
+			mainPageCoopView.setLayoutParams(params);
+			
+			
+			params = mainPageTechView.getLayoutParams();
+			params.width = screenWidth/2;
+			params.height = screenWidth/2;
+			mainPageTechView.setLayoutParams(params);
+			
+			
+	        
 			mainPageImageView1=(ImageView)v2.findViewById(R.id.mainPageImageView1);
 			mainPageImageView2=(ImageView)v2.findViewById(R.id.mainPageImageView2);
 			mainPageImageView3=(ImageView)v2.findViewById(R.id.mainPageImageView3);
@@ -321,19 +361,29 @@ public class MainActivity extends Activity {
 		{
 //			hotButton=(Button)main.findViewById(R.id.mainhot);
 //			mainButton=(Button)main.findViewById(R.id.mainmainpage);
-			myHeader=(MyHeader)main.findViewById(R.id.mainheader);
+			myHeader=(MyHeaderView)main.findViewById(R.id.mainheader);
 		}
+		
+		
+		
+		
+		
+		
 	}
 	
 	private void setClickListener()
 	{
 		viewPager.setOnPageChangeListener(onPageChangeListener);
 		
-		mainPageImageView1.setOnClickListener(onClickListenerMain);
-		mainPageImageView2.setOnClickListener(onClickListenerMain);
-		mainPageImageView3.setOnClickListener(onClickListenerMain);
-		mainPageImageView4.setOnClickListener(onClickListenerMain);
+		//mainPageImageView1.setOnClickListener(onClickListenerMain);
+		//mainPageImageView2.setOnClickListener(onClickListenerMain);
+		//mainPageImageView3.setOnClickListener(onClickListenerMain);
+		//mainPageImageView4.setOnClickListener(onClickListenerMain);
 		
+		mainPageProjectView.setOnClickListener(onClickListenerMain);
+		mainPageDocumentView.setOnClickListener(onClickListenerMain);
+		mainPageCoopView.setOnClickListener(onClickListenerMain);
+		mainPageTechView.setOnClickListener(onClickListenerMain);
 //		hotButton.setOnClickListener(onClickListener);
 //		mainButton.setOnClickListener(onClickListener);
 		
@@ -387,6 +437,7 @@ public class MainActivity extends Activity {
 					if (mainpageKeywords[i].getText().length()>0) {
 						mainpageKeywords[i].setBackgroundColor(getResources().getColor(R.color.keywordsbackground));
 						mainpageKeywordsChar[i].setImageDrawable(getResources().getDrawable(R.drawable.cha));
+						mainpageKeywordsChar[i].setBackgroundColor(getResources().getColor(R.color.transparent));
 						//mainpageKeywordsChar[i].setBackgroundColor(getResources().getColor(R.color.keywordsbackground));
 						mainpageKeywordsChar[i].setVisibility(View.VISIBLE);
 					}
@@ -541,22 +592,23 @@ public class MainActivity extends Activity {
 //			}
 
 			switch (v.getId()) {
-			case R.id.mainPageImageView1://进入项目申报页面
+			case R.id.main_page_project://进入项目申报页面
 				//定义一个Intent
 				   Intent intent = new Intent(MainActivity.this, ProjectApplyActivity.class);
 				   startActivity(intent);
 				break;
-			case R.id.mainPageImageView2:
+			case R.id.main_page_document:
 				//定义一个Intent
 				   Intent intent1 = new Intent(MainActivity.this, DocumentExpressActivity.class);
 				   startActivity(intent1);
 				break;
-			case R.id.mainPageImageView3:
+			case R.id.main_page_coop:
 				Intent intent2 = new Intent(MainActivity.this, CoopResearchActivity.class);
 				   startActivity(intent2);
 				break;
-			case R.id.mainPageImageView4:
-				
+			case R.id.main_page_tech://科技趋势页面
+				Intent intent3 = new Intent(MainActivity.this, TechTrendActivity.class);
+				startActivity(intent3);
 				break;
 			default:
 				break;
@@ -1089,6 +1141,11 @@ public class MainActivity extends Activity {
 				TextView textView=(TextView)convertView.findViewById(R.id.hotpageitemsMainTextView);
 				TextView textTitleTextView=(TextView)convertView.findViewById(R.id.houpageitemsMainTitle);
 				final ImageView imageView=(ImageView)convertView.findViewById(R.id.hotpageItemsMainImageView);
+				/*直接设定动态图片的大小*/
+				LayoutParams params = imageView.getLayoutParams();
+				params.width = MainActivity.this.getWindowManager().getDefaultDisplay().getWidth() - 40;
+				params.height = (int) (params.width*0.67);
+				imageView.setLayoutParams(params);
 				
 				String temp=list.get(position).get("title");
 				textView.setText(temp);
@@ -1119,6 +1176,12 @@ public class MainActivity extends Activity {
 								if (imageView != null && imageDrawable != null) {
 									handler.sendEmptyMessage(3);
 									imageView.setImageDrawable(imageDrawable);
+									
+									imageView.measure(View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED), 
+											View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED));
+									
+		
+									
 									// Log.e("在回调里面设置好图片", "liushuai");
 								} else {
 									try {

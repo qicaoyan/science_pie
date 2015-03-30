@@ -4,45 +4,53 @@
     android:layout_height="match_parent"
     android:orientation="vertical" 
     android:id="@+id/frag_resource_linear">
-  <LinearLayout 
+
+  <ImageView android:layout_width="match_parent"
+     android:layout_height="1px"
+    android:src="@color/middle_blue"
+    />
+    
+    <!-- 搜索框的样式 -->
+    <LinearLayout 
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
-     android:background="@drawable/shape_light_blue"
+     android:background="@color/light_blue"
      android:gravity="center"
-     android:paddingTop="2dip"
-     android:paddingBottom = "2dip">
-       
- <FrameLayout
-     android:id="@+id/coop_search_layout"
-     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/search_box"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
-   
+     android:paddingTop="5dip"
+     android:paddingBottom = "5dip">
 
-    <ImageView android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:src="@drawable/fangdajing"
-         android:layout_marginLeft="3dip"
-         android:layout_centerVertical="true"
-         android:layout_gravity="center_vertical|right"
-         android:layout_marginRight="10dip"/>
-     <EditText
-         android:id="@+id/search_edit_text"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         android:background="@null"
-         android:paddingLeft="5dip"
-         android:layout_gravity="center"
-         android:gravity="left"
-         android:hint="搜索" 
-         android:maxLength="10"
-         android:textSize="15sp"/>
 
- </FrameLayout>
-     
+        <LinearLayout android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_input_box"
+            android:gravity="center_vertical"
+         >
+            
+            <EditText android:id="@+id/coop_resource_search_box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="搜索"
+                style = "@style/common_search_input_text_style"/>
+            <com.science.view.MyImageButton android:id="@+id/coop_resource_search_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dip"
+                android:layout_marginTop="5dip"
+                android:layout_marginBottom="5dip"
+                android:background="@drawable/icon_search"
+                />  
+        </LinearLayout>
+
  </LinearLayout>
+ 
+
+    
+    
+    
+    
+  
  <LinearLayout android:layout_width="match_parent"
       android:layout_height="wrap_content">
       
@@ -58,15 +66,15 @@
               android:text="地域"
               android:textColor="@color/white"
               android:textSize="15sp"
-              android:paddingTop = "10dip"
-              android:paddingBottom="10dip"
+              android:paddingTop = "5dip"
+              android:paddingBottom="5dip"
             />
           <ImageView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:src="@drawable/jiantou"
               android:layout_marginLeft="5dip"
-              android:paddingTop = "10dip"
-              android:paddingBottom="10dip"
+              android:paddingTop = "5dip"
+              android:paddingBottom="5dip"
               android:id="@+id/coop_area_arrow"/>
       </LinearLayout>
       
@@ -82,14 +90,14 @@
               android:text="全部"
               android:textColor="@color/white"
               android:textSize="15sp"
-              android:paddingTop = "10dip"
-              android:paddingBottom="10dip"/>
+              android:paddingTop = "5dip"
+              android:paddingBottom="5dip"/>
           <ImageView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:src="@drawable/jiantou"
               android:layout_marginLeft="5dip"
-              android:paddingTop = "10dip"
-              android:paddingBottom="10dip"
+              android:paddingTop = "5dip"
+              android:paddingBottom="5dip"
               android:id="@+id/coop_all_arrow"/>
       </LinearLayout>
       

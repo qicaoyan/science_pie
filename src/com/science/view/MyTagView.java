@@ -93,7 +93,7 @@ public class MyTagView extends LinearLayout  implements OnFocusChangeListener{
 				hide = !hide;
 				if(hide)
 				{
-					v.setBackground(getResources().getDrawable(R.drawable.fold));
+					v.setBackground(getResources().getDrawable(R.drawable.icon_extend));
 					other_tag_layout.setVisibility(View.GONE);
 				}
 				else
@@ -257,7 +257,7 @@ public class MyTagView extends LinearLayout  implements OnFocusChangeListener{
 		if(!hasFocus)
 		{
 			hide = true;
-			fold_btn.setBackground(getResources().getDrawable(R.drawable.fold));
+			fold_btn.setBackground(getResources().getDrawable(R.drawable.icon_extend));
 			other_tag_layout.setVisibility(View.GONE);
 			setTagLayout(hide);
 		}

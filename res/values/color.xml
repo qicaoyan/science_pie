@@ -16,12 +16,15 @@
     <color name="white"> #ffffff</color> 
     <color name="black"> #000000</color> 
     <color name="light_blue">#39a1d1</color>
+     <color name="middle_blue">#157dba</color>
+     <color name="dark_blue">#031e2f</color>
+     <color name = "translucent_light_blue">#54aee3</color>
     <color name="tag_selected_color">#158acf</color>
     <color name="hotpagetitle1"> #b8d45d</color>
     <color name="hotpagetitle2"> #649fd7</color>
     <color name="hotpagetitle3"> #345678</color>
     <color name="hotpagetitle4"> #456789</color>
-    <color name="dark_blue">#147cb9</color>
+   
      <color name="page_back">#fff2f2f2</color>
     <color name="logo_text_color">#ff7f7f7f</color>
     <color name="login_with_other_plat_text_color">#ff383838</color>
@@ -37,4 +40,10 @@
     <color name="background_light_gray">#dfe2e7</color>
     <color name="translucent_mask_gray">#66676b6c</color>
     <color name="fast_register_color">#204f7d</color>
+    
+    
+    <color name="main_page_dark_cyan">#8abc1d</color>
+    <color name = "main_page_light_cyan">#b9d55e</color>
+    <color name = "main_page_dark_blue">#1069ad</color>
+    <color name = "main_page_light_blue">#007dad</color>
 </resources>

@@ -5,11 +5,11 @@
     android:background="@color/background"
     android:orientation="vertical" >
     
-    <com.science.view.MyHeader 
+    <com.science.view.MyHeaderView 
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:id="@+id/hotpagelistheader"
-	        ></com.science.view.MyHeader>
+	        />
     <ViewSwitcher 
         android:id="@+id/hotpagelistViewSwitcher"
         android:layout_width="match_parent"

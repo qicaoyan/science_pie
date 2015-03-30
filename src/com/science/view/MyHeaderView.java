@@ -25,7 +25,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MyHeader extends LinearLayout {
+public class MyHeaderView extends LinearLayout {
 
 	public TextView tv=null;
 	public LinearLayout headerContentView=null;
@@ -51,7 +51,7 @@ public class MyHeader extends LinearLayout {
 	private int screen_width;
 	private int header_btn_all_width;
 
-	public MyHeader(Context context, AttributeSet attrs) {
+	public MyHeaderView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -66,7 +66,7 @@ public class MyHeader extends LinearLayout {
 	}
 
 
-	public MyHeader(Context context) {
+	public MyHeaderView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -82,7 +82,7 @@ public class MyHeader extends LinearLayout {
        fm = new FunctionManage(context);
 	}
 
-	public MyHeader(Context context, AttributeSet attrs, int defStyleAttr) {
+	public MyHeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		// TODO Auto-generated constructor stub
 		LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

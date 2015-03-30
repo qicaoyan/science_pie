@@ -20,7 +20,7 @@ import com.science.interfaces.OnLoadingStateChangedListener;
 import com.science.json.JsonDcumentListHandler;
 import com.science.services.MyApplication;
 import com.science.util.Url;
-import com.science.view.MyHeader;
+import com.science.view.MyHeaderView;
 import com.science.view.MyImageButton;
 
 import android.app.Activity;
@@ -62,7 +62,7 @@ import android.widget.Toast;
 import android.os.Message;
 public class DocumentExpressActivity extends FragmentActivity {
 
-	private MyHeader doc_header_view;
+	private MyHeaderView doc_header_view;
 
 	private TableLayout tag_tab_layout;
 	private RelativeLayout other_tag_layout;
@@ -157,7 +157,7 @@ public class DocumentExpressActivity extends FragmentActivity {
 		int screen_height = wm.getDefaultDisplay().getHeight();
 		
 		//获取文献速递页面的header并设置
-		doc_header_view = (MyHeader) findViewById(R.id.doc_express_common_header_layout);
+		doc_header_view = (MyHeaderView) findViewById(R.id.doc_express_common_header_layout);
 		doc_header_view.SetHeaderText("文献速递");
 		String[] header_button_strs = {"中文文献","英文文献","工作文献","NSF"};
 		doc_header_view.SetHeaderButtons(header_button_strs);

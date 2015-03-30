@@ -21,7 +21,7 @@ import com.science.model.FirstClassItem;
 import com.science.model.SecondClassItem;
 import com.science.services.MyApplication;
 import com.science.util.Url;
-import com.science.view.MyHeader;
+import com.science.view.MyHeaderView;
 import com.science.view.MyImageButton;
 
 import android.annotation.SuppressLint;
@@ -845,7 +845,7 @@ private class ProjSourceNextAdapter extends BaseAdapter{
 					iv.setImageResource(R.drawable.icon_green_point);
 					iv.setPadding(40, 10, 0, 10);
 					layout.addView(iv);
-					layout.setBackground(getResources().getDrawable(R.color.dark_blue));
+					layout.setBackground(getResources().getDrawable(R.color.middle_blue));
 				  }else{
 		            layout.setBackground(getResources().getDrawable(R.color.light_blue));
 				}

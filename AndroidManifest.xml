@@ -123,6 +123,18 @@
         
         
         
+        
+        <!-- 科技趋势 -->
+        <activity 
+            android:name="com.science.activity.TechTrendActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+            
+            
+            
+        </activity>
+        
+        
         <activity
             android:name="com.science.activity.CommentDetailActivity"
             android:launchMode="singleTask"
@@ -243,6 +255,11 @@
             android:taskAffinity="android.task.myServicetask"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:exported="false" />
+        
+        
+        
+        
+        
         
         <receiver android:name="com.igexin.getuiext.service.PayloadReceiver" android:exported="false" >
 			<intent-filter>

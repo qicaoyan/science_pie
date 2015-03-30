@@ -6,7 +6,7 @@ import com.science.services.MyApplication;
 import com.science.services.ToastProxy;
 import com.science.util.DefaultUtil;
 import com.science.util.ShoucangUtil;
-import com.science.view.MyHeader;
+import com.science.view.MyHeaderView;
 import com.science.view.MyImageButton;
 
 import android.app.Activity;
@@ -98,7 +98,7 @@ public class CommonContentActivity extends Activity{
 		webView=(WebView)main.findViewById(R.id.documentcontentwebview);
 		bar = (ProgressBar)main.findViewById(R.id.documentcontentmyProgressBar);
 		
-		MyHeader header_view = (MyHeader) main.findViewById(R.id.item_header);
+		MyHeaderView header_view = (MyHeaderView) main.findViewById(R.id.item_header);
 		if(act_class.equals("document"))
 			header_view.SetHeaderText("文献速递");
 		else if(act_class.equals("project"))
@@ -111,7 +111,7 @@ public class CommonContentActivity extends Activity{
 		go_back_btn = (MyImageButton)findViewById(R.id.go_back);
 		shoucang_btn = (MyImageButton)findViewById(R.id.shoucang);
 		comment_btn = (MyImageButton)findViewById(R.id.common_comment_btn);
-		shoucang_btn.setDrawable(getResources().getDrawable(R.drawable.shoucang_a), getResources().getDrawable(R.drawable.shoucang_b));
+		shoucang_btn.setDrawable(getResources().getDrawable(R.drawable.icon_shoucang_a), getResources().getDrawable(R.drawable.icon_shoucang_b));
 		share_btn = (MyImageButton)findViewById(R.id.share);
 		like_btn = (MyImageButton) findViewById(R.id.common_like_btn);
 		email_btn = (MyImageButton) findViewById(R.id.common_email_btn);

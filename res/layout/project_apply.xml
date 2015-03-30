@@ -7,7 +7,7 @@
     
 
 
-  <com.science.view.MyHeader
+  <com.science.view.MyHeaderView
       android:id="@+id/proj_apply_header"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"/>

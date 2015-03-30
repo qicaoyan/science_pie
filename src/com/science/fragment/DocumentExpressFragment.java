@@ -19,7 +19,7 @@ import com.science.json.JsonDcumentListHandler;
 import com.science.services.MyApplication;
 import com.science.util.DefaultUtil;
 import com.science.util.Url;
-import com.science.view.MyHeader;
+import com.science.view.MyHeaderView;
 import com.science.view.MyImageButton;
 
 import android.annotation.SuppressLint;

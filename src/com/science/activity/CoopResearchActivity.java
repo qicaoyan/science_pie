@@ -4,7 +4,7 @@ import com.example.science.R;
 import com.science.adapter.CommonFragmentPagerAdapter;
 import com.science.fragment.CoopPaperFragment;
 import com.science.fragment.CoopResourceFragment;
-import com.science.view.MyHeader;
+import com.science.view.MyHeaderView;
 import com.science.view.MyImageButton;
 import android.app.Activity;
 import android.os.Bundle;
@@ -37,7 +37,7 @@ public class CoopResearchActivity extends FragmentActivity{
 	private CoopResourceFragment fragment_resource;  
 	private CoopPaperFragment fragment_paper;
 	
-	private MyHeader coop_header = null;
+	private MyHeaderView coop_header = null;
 
     
     private FragmentManager fm;
@@ -62,7 +62,7 @@ public class CoopResearchActivity extends FragmentActivity{
         //mTabResource.setOnClickListener(this);  
         //mTabPaper.setOnClickListener(this);  
  
-        coop_header = (MyHeader) findViewById(R.id.coop_header);
+        coop_header = (MyHeaderView) findViewById(R.id.coop_header);
         OnClickListener on_header_tab_listener = new OnClickListener(){
 
 			@Override
