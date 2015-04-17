@@ -6,30 +6,43 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.example.science.R;
+import com.science.interfaces.ListComparator;
 import com.science.json.JsonGetCollectionHandler;
 import com.science.services.MyApplication;
 import com.science.util.ShoucangUtil;
 import com.science.util.Url;
 import com.science.view.MyListView;
 
+import android.R.integer;
+import android.R.string;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AbsListView; 
+import android.widget.AbsListView.OnScrollListener; 
+import android.widget.ListView; 
+import android.widget.SimpleAdapter; 
 
 public class MyCollectionActivity extends Activity {
 
@@ -41,6 +54,8 @@ public class MyCollectionActivity extends Activity {
 	private List<Map<String, Object>> myList;
 	private JsonGetCollectionHandler jsonGetCollectionHandler;
 	private MyHandler handler;
+	private MyAdapter myAdapter=null;
+	private Integer lastId=0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,9 +77,8 @@ public class MyCollectionActivity extends Activity {
 	
 	private void InitVariable()
 	{
-		ShoucangUtil shoucang_util = new ShoucangUtil(this);
-		myList = shoucang_util.getLocalShoucangList();
-	
+		myList=new ArrayList<Map<String,Object>>();
+		myAdapter = new MyAdapter();
 		jsonGetCollectionHandler=new JsonGetCollectionHandler();
 		handler=new MyHandler();
 
@@ -76,6 +90,21 @@ public class MyCollectionActivity extends Activity {
 		headerback=(ImageButton)findViewById(R.id.settingback);
 		headertitle=(TextView)findViewById(R.id.settingheadertitle);
 		myListView=(ListView)findViewById(R.id.myCollectionList);
+		myListView.setAdapter(myAdapter);
+		myListView.setOnItemClickListener(new OnItemClickListener(){
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(MyCollectionActivity.this,CommonContentActivity.class);
+				intent.putExtra("theme",myList.get(position).get("title").toString());
+				intent.putExtra("act_class", "我的收藏");
+				intent.putExtra("url", myList.get(position).get("url").toString());
+				startActivity(intent);
+			}
+			
+		});
 	}
 	
 	private void InitData()
@@ -97,6 +126,7 @@ public class MyCollectionActivity extends Activity {
 	private void SetListener()
 	{
 		//myInfo.setOnClickListener(onClickListener);
+		myListView.setOnScrollListener(new OnScrollListenerImple()); 
 	}
 	
 	private void GetMyCollection()
@@ -105,7 +135,7 @@ public class MyCollectionActivity extends Activity {
 		new Thread(myThreadGetMyCollection).start();
 	}
 	
-	private class myAdapte extends BaseAdapter
+	private class MyAdapter extends BaseAdapter
 	{
 
 		@Override
@@ -139,17 +169,44 @@ public class MyCollectionActivity extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup arg2) {
 			// TODO Auto-generated method stub
-			convertView = getLayoutInflater().inflate(R.layout.mycollectionitem,
-					null);
-			TextView title=(TextView)convertView.findViewById(R.id.myCollectionItemTitle);
-			TextView time=(TextView)convertView.findViewById(R.id.myCollectionItemsTime);
+			ViewHolder holder = null;
 			
-			String strtitle=(String) myList.get(position).get("title");
-			String strTime=(String)myList.get(position).get("description");
-			title.setText(strtitle);
-			time.setText(strTime);
+			if(convertView == null){
+				holder = new ViewHolder();
+				convertView = getLayoutInflater().inflate(R.layout.mycollectionitem,
+						null);
+				holder.titleTv =(TextView)convertView.findViewById(R.id.myCollectionItemTitle);
+				holder.timeTv =(TextView)convertView.findViewById(R.id.myCollectionItemsTime);
+				convertView.setTag(holder);
+			}
+			else{
+				holder = (ViewHolder) convertView.getTag();
+			}
+			
+			if(holder != null){
+				
+				String strtitle=(String) myList.get(position).get("title");
+				String strTime=(String)myList.get(position).get("description");
+				holder.titleTv.setText(strtitle);
+				holder.timeTv.setText(strTime);
+			}
+			
+
 			return convertView;
 		}
+		
+		
+		
+		
+		class ViewHolder{
+			TextView titleTv;
+			TextView timeTv;
+		}
+		
+		
+		
+		
+		
 		
 	}
 
@@ -161,12 +218,25 @@ public class MyCollectionActivity extends Activity {
 			// TODO Auto-generated method stub
 			URL url;
 			try {
-				url = new URL(myApplication.ComposeToken(Url.getCollection));
+				//String strUrl=Url.getCollection+"&id=";
+				String tempLastId=lastId.toString();
+				//strUrl+=tempLastId;
+				String strUrl ;
+				strUrl = Url.composeGetCollectionUrl(tempLastId);
+				url = new URL(strUrl);
 				URLConnection con = url.openConnection();
 				con.connect();
 				InputStream input = con.getInputStream();
-				myList=jsonGetCollectionHandler.getListItems(input);
-				if (myList!=null) {
+				List<Map<String, Object>> tempList=null;
+				jsonGetCollectionHandler = new JsonGetCollectionHandler();
+				tempList=jsonGetCollectionHandler.getListItems(input);
+				
+				if (tempList!=null) {
+					for (int i = 0; i < tempList.size(); i++) {
+						myList.add(tempList.get(i));
+					}
+
+					lastId= (Integer) myList.get(myList.size()-1).get("id");
 					handler.sendEmptyMessage(2);
 				}
 			} catch (MalformedURLException e) {
@@ -191,7 +261,24 @@ public class MyCollectionActivity extends Activity {
     	@Override
     	public void handleMessage(Message msg) {
     		if (msg.what == 2) {
-    			myListView.setAdapter(new myAdapte());
+    			if (myAdapter==null) {
+    				
+        			myAdapter=new MyAdapter();
+        			myListView.setAdapter(myAdapter);
+        			
+        			//更新本地数据库中的收藏信息
+        			ShoucangUtil su = new ShoucangUtil(MyCollectionActivity.this);
+//        			for(int i = 0;i < myList.size();i++){
+//        				
+//        				su.addToLocalShoucang(myApplication.user_name, (Integer)myList.get(i).get("article_type"), 
+//        						(Integer)myList.get(i).get("article_id"), (String)myList.get(i).get("title"),(String)myList.get(i).get("time"),(String)myList.get(i).get("url"));
+//        			}
+				}
+    			else
+    			{
+    				myAdapter.notifyDataSetChanged();
+    			}
+
 			} 
     		super.handleMessage(msg);
     	}
@@ -209,4 +296,30 @@ public class MyCollectionActivity extends Activity {
     	}
     	
     }
+
+    private class OnScrollListenerImple implements OnScrollListener{ 
+        @Override 
+        public void onScroll(AbsListView listView, int firstVisibleItem,int visibleItemCount, int totalItemCount) { 
+            
+        } 
+   
+
+
+		@Override 
+        public void onScrollStateChanged(AbsListView listview, int scrollState) { 
+	        if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {  
+	            // 判断是否滚动到底部  
+	            if (listview.getLastVisiblePosition() == listview.getCount() - 1) {  
+	                //加载更多功能的代码  
+	            	addDataForListView(); 
+	            }  
+	        } 
+        } 
+           
+    }
+
+    private void addDataForListView() {
+		// TODO Auto-generated method stub
+    	GetMyCollection();
+	}
 }

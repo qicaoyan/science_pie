@@ -22,31 +22,31 @@ public class JsonProgramListHandler {
 	public String codeString=null;
 	public String messageString=null;
 	public String reString=null;
-	public List<Map<String, String>> list=null;
+	public List<Map<String, Object>> list=null;
 	
 	public JsonProgramListHandler(String str)
 	{
 		json=str;
-		list=new ArrayList<Map<String,String>>();
+		list=new ArrayList<Map<String,Object>>();
 	}
 	
 	public JsonProgramListHandler()
 	{
-		list=new ArrayList<Map<String,String>>();
+		list=new ArrayList<Map<String,Object>>();
 	}
 	
 	public void SetJsonHotPage(String str)
 	{
 		json=str;
-		list=new ArrayList<Map<String,String>>();
+		list=new ArrayList<Map<String,Object>>();
 	}
 	
-	public List<Map<String, String>> getList()
+	public List<Map<String, Object>> getList()
 	{
 		return null;
 	}
 	
-	public List<Map<String, String>> getListItems(InputStream input)
+	public List<Map<String, Object>> getListItems(InputStream input)
 	{
 		
 		Reader reader;
@@ -73,12 +73,23 @@ public class JsonProgramListHandler {
 		        JSONArray array = tempJsonObject.getJSONArray("project.list");
 		        for (int i = 0; i < array.length(); ++i) {
 		        	JSONObject temp = (JSONObject) array.opt(i);
-		        	Map<String, String> map=new HashMap<String, String>();
-		        	Log.v("test",temp.getString("title"));
-		        	map.put("id", Integer.toString(temp.getInt("id")));
+		        	Map<String, Object> map=new HashMap<String, Object>();
+		        	map.put("id", temp.getInt("prj_id"));
 		        	map.put("title", temp.getString("title"));
-		        	map.put("startTime",temp.getString("startTime"));
-		        	map.put("endTime", temp.getString("endTime"));
+		        	map.put("startTime",temp.getString("startdate"));
+		        	map.put("endTime", temp.getString("enddate"));
+		        	map.put("diggtop",  temp.getInt("diggtop"));
+		        	map.put("plnum", temp.getInt("plnum"));
+		        	map.put("url", temp.getString("url"));
+		        	map.put("articleType", temp.getString("articleType"));
+		        	if(temp.has("mark"))
+		        	{
+		        		map.put("mark", temp.getInt("mark"));
+		        	}
+		        	else
+		        	{
+		        		map.put("mark",0);
+		        	}
 		        	//map.put("label", temp.getString("label"));
 		        	list.add(map);
 		        }

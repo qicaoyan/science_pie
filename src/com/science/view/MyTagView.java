@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,12 @@ public class MyTagView extends LinearLayout  implements OnFocusChangeListener{
     public static final boolean SHOW = true;
     private int all_keywords_num;
 	private Activity activity;
+	
+	private String[] tag_words;//记录标签的关键词数组
+	private int id;
+	private int type;
+	private StringBuffer kywd;
+	private OnTagChangeListener listener;
 	public MyTagView(Context context,AttributeSet attr) {
 		super(context,attr);
 		this.context = context;
@@ -46,9 +53,14 @@ public class MyTagView extends LinearLayout  implements OnFocusChangeListener{
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);;
 		inflater.inflate(R.layout.common_suspend_tag, this);
 		this.setOnFocusChangeListener(this);
+		this.kywd = new StringBuffer("");
 		initMyTagView();	
 	}
 
+	
+	public void setOnTagChangeListener(OnTagChangeListener l){
+		this.listener = l;
+	}
 	
 	private void initMyTagView()
 	{
@@ -60,14 +72,22 @@ public class MyTagView extends LinearLayout  implements OnFocusChangeListener{
 		application = (MyApplication) this.activity.getApplication();
 	
 		tags_state = new int[8];
+		tag_words = new String[8];
+		
 		for(int i = 0;i < 8;i++)
 		{
 			tags_state[i] = 0;
+			tag_words[i] = "";
 		}
 		other_tag_str = "";
 
 		
 		all_keywords_num = application.non_null_keywords_list.size();
+		
+		for(int i = 0;i < all_keywords_num;i++){
+			tags_state[i] = 1;
+			tag_words[i] = application.non_null_keywords_list.get(i).toString();
+		}
 	    rows = (all_keywords_num + 3)/4;
 	    
 	    
@@ -109,6 +129,35 @@ public class MyTagView extends LinearLayout  implements OnFocusChangeListener{
 		
       
 	 setTagLayout(true);
+	}
+	
+	
+	public StringBuffer getTagKeywords(){
+		kywd.setLength(0);
+		for(int i = 0;i < tags_state.length;i++)
+		{
+
+			if(tags_state[i] == 1){
+				
+				kywd.append(tag_words[i]);
+				kywd.append("||");
+			}
+			
+		}
+		//需要将最后的两个"||"删除掉
+		if(kywd.length() > 2)
+		{// Log.i("kywd_length", "" + kywd.length());
+		    //kywd.delete(kywd.length() - 1, kywd.length());
+		    kywd.deleteCharAt(kywd.length() - 1);
+		    kywd.deleteCharAt(kywd.length() - 1);
+		   
+		}
+		else if(kywd.length() <= 0){
+			
+			kywd.append("-1");
+		}
+		
+		return kywd;
 	}
 	
 	private void setTagLayout(boolean hide)
@@ -162,6 +211,7 @@ public class MyTagView extends LinearLayout  implements OnFocusChangeListener{
 			tv.setTag(tag_id);
 			tv.setOnClickListener(tag_click_listener);
 			tr.addView(tv);
+			
 		  }
 		  
 		  tag_tab_layout.addView(tr);
@@ -171,6 +221,8 @@ public class MyTagView extends LinearLayout  implements OnFocusChangeListener{
 	
 	
 	
+	
+
 	
 	
 	private OnClickListener tag_click_listener = new OnClickListener()
@@ -192,15 +244,39 @@ public class MyTagView extends LinearLayout  implements OnFocusChangeListener{
 			}
 			
 			
+
+
+			
+			/*更新标签StringBuffer先清空*/
+			kywd.setLength(0);
+			
+			
+			
 			for(int i = 0;i < tags_state.length;i++)
 			{
-				if(i != tag_id)
-				{
-					tags_state[i] = 0;	
+
+				if(tags_state[i] == 1){
+					
+					kywd.append(tag_words[i]);
+					kywd.append("||");
 				}
+				
+			}
+			//需要将最后的两个"||"删除掉
+			if(kywd.length() > 2)
+			{ 
+			    //kywd.delete(kywd.length() - 1, kywd.length());
+			    kywd.deleteCharAt(kywd.length() - 1);
+			    kywd.deleteCharAt(kywd.length() - 1);
+			   
+			}
+			else if(kywd.length() <= 0){
+				
+				kywd.append("-1");
 			}
 			
-
+			listener.onTagChange(kywd); 
+			
 			//doc_keywords = application.keywords[tag_id];
 
 			
@@ -209,11 +285,6 @@ public class MyTagView extends LinearLayout  implements OnFocusChangeListener{
 		}
 		
 	};
-	
-	
-	
-	
-	
 	
 	
 	
@@ -236,16 +307,61 @@ public class MyTagView extends LinearLayout  implements OnFocusChangeListener{
 					// TODO Auto-generated method stub
 					other_tag_str = other_input_ed.getText().toString();
 					other_tag_tv.setText(other_tag_str);
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					/*更新标签StringBuffer先清空*/
+					kywd.setLength(0);
+					
+					
+					
+					for(int i = 0;i < tags_state.length;i++)
+					{
+
+						if(tags_state[i] == 1){
+							
+							kywd.append(tag_words[i]);
+							kywd.append("||");
+						}
+						
+					}
+					
+					
+//					//需要将最后的两个"||"删除掉
+//					if(kywd.length() > 2)
+//					{ 
+//					    //kywd.delete(kywd.length() - 1, kywd.length());
+//					    kywd.deleteCharAt(kywd.length() - 1);
+//					    kywd.deleteCharAt(kywd.length() - 1);
+//					   
+//					}
+
+					
+					kywd.append(other_tag_str);
+					
+					if(kywd.length() <= 0){
+						
+						kywd.append("-1");
+					}
+					listener.onTagChange(kywd); 
+					
 				}
 			})
 			.setNegativeButton("取消",null)
 			.show();
-
-
-			
 		}
 		
 	};
+	
+	
+	
+
 	
 	
 	
@@ -265,9 +381,13 @@ public class MyTagView extends LinearLayout  implements OnFocusChangeListener{
 	
 	
 	
+
 	
 	
-	
+	public interface OnTagChangeListener{
+		
+		public void onTagChange(StringBuffer sb);
+	}
 	
 	
 }

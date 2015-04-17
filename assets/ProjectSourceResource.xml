@@ -2,6 +2,16 @@
 
 <all_sources>
 
+    
+ <sources name = "全部" id = "-1">   
+      <source>
+
+        <abbr>ALL</abbr>
+        <code>-1</code>
+        <value>全部</value>
+    </source>
+ </sources>   
+ 
 <sources name = "国际" id = "101">
     
   <source>
@@ -178,150 +188,219 @@
 
 
 
-<sources name = "国家" id = "2">
+<sources name = "国家" id = "102">
 
+     <source>
+       <abbr>aa</abbr>
+       <code>102000</code>
+       <value>全部</value>
+    </source>
+    
     <source>
        <abbr>aa</abbr>
        <code>102001</code>
-       <value>政府1</value>
+       <value>科技部</value>
     </source>
     
     <source>
        <abbr>aa</abbr>
        <code>102002</code>
-       <value>政府2</value>
+       <value>文化部</value>
     </source>   
     <source>
        <abbr>aa</abbr>
        <code>102003</code>
-       <value>政府3</value>
+       <value>财政部</value>
     </source>        
     <source>
        <abbr>aa</abbr>
        <code>102004</code>
-       <value>政府4</value>
+       <value>水利部</value>
     </source> 
     
     <source>
        <abbr>aa</abbr>
        <code>102005</code>
-       <value>政府5</value>
+       <value>审计署</value>
     </source> 
            
     <source>
        <abbr>aa</abbr>
        <code>102006</code>
-       <value>政府6</value>
+       <value>民政部</value>
     </source>   
     
     <source>
        <abbr>aa</abbr>
        <code>102007</code>
-       <value>政府7</value>
+       <value>国家海洋局</value>
     </source>        
     
     <source>
        <abbr>aa</abbr>
        <code>102008</code>
-       <value>政府8</value>
+       <value>国家旅游局</value>
     </source>   
     
     
      <source>
        <abbr>aa</abbr>
        <code>102009</code>
-       <value>政府9</value>
+       <value>中国科学院</value>
     </source>       
  
     <source>
        <abbr>aa</abbr>
        <code>102010</code>
-       <value>政府10</value>
+       <value>国家信访局</value>
     </source> 
 
-
-</sources>
-
-
-
-
-
-
-
-<sources name = "各部" id="3">
-        <source>
-        <abbr>aa</abbr>
-        <code>103001</code>
-        <value>部门1</value>
-    </source>
-
-    
     <source>
-        <abbr>aa</abbr>
-        <code>103002</code>
-        <value>部门2</value>
-    </source>  
-    
-    <source>
-        <abbr>aa</abbr>
-        <code>103003</code>
-        <value>部门3</value>
-    </source>    
-    <source>
-        <abbr>aa</abbr>
-        <code>103004</code>
-        <value>部门4</value>
+       <abbr>aa</abbr>
+       <code>102011</code>
+       <value>国家粮食局</value>
     </source> 
     
     
-    
     <source>
-        <abbr>aa</abbr>
-        <code>103005</code>
-        <value>部门5</value>
-    </source>    
- 
-     <source>
-        <abbr>aa</abbr>
-        <code>103006</code>
-        <value>部门6</value>
-    </source> 
-    
-    <source>
-        <abbr>aa</abbr>
-        <code>103007</code>
-        <value>部门7</value>
-    </source>  
-    
-    
-    <source>
-        <abbr>aa</abbr>
-        <code>103008</code>
-        <value>部门8</value>
+       <abbr>aa</abbr>
+       <code>102012</code>
+       <value>国家宗教事务局</value>
     </source>     
+    
     <source>
-        <abbr>aa</abbr>
-        <code>103009</code>
-        <value>部门9</value>
+       <abbr>aa</abbr>
+       <code>102013</code>
+       <value>中国科学技术协会</value>
+    </source>     
+ 
+    
+    <source>
+       <abbr>aa</abbr>
+       <code>102014</code>
+       <value>国家民族事务委员会</value>
+    </source> 
+   
+    
+    
+    
+    
+      <source>
+       <abbr>aa</abbr>
+       <code>102015</code>
+       <value>国家新闻出版广电总局</value>
     </source> 
     
+    
+    
+    
      <source>
-        <abbr>aa</abbr>
-        <code>103010</code>
-        <value>部门10</value>
+       <abbr>aa</abbr>
+       <code>102016</code>
+       <value>卫生和计划生育委员会</value>
     </source> 
+      
+    
+    
+     <source>
+       <abbr>aa</abbr>
+       <code>102017</code>
+       <value>国家自然科学基金委员会</value>
+    </source> 
+     
+    
+    
+    
+    
 </sources>
 
 
 
 
 
-<sources name = "地域" id = "4">
+
+<!-- <sources name = "各部" id="103"> -->
+     
+<!--     <source> -->
+<!--         <abbr>aa</abbr> -->
+<!--         <code>103000</code> -->
+<!--         <value>全部</value> -->
+<!--     </source> -->
+    
+    
+<!--      <source> -->
+<!--         <abbr>aa</abbr> -->
+<!--         <code>103001</code> -->
+<!--         <value>部门1</value> -->
+<!--     </source> -->
+
+    
+<!--     <source> -->
+<!--         <abbr>aa</abbr> -->
+<!--         <code>103002</code> -->
+<!--         <value>部门2</value> -->
+<!--     </source>   -->
+    
+<!--     <source> -->
+<!--         <abbr>aa</abbr> -->
+<!--         <code>103003</code> -->
+<!--         <value>部门3</value> -->
+<!--     </source>     -->
+<!--     <source> -->
+<!--         <abbr>aa</abbr> -->
+<!--         <code>103004</code> -->
+<!--         <value>部门4</value> -->
+<!--     </source>  -->
+    
+    
+    
+<!--     <source> -->
+<!--         <abbr>aa</abbr> -->
+<!--         <code>103005</code> -->
+<!--         <value>部门5</value> -->
+<!--     </source>     -->
+ 
+<!--      <source> -->
+<!--         <abbr>aa</abbr> -->
+<!--         <code>103006</code> -->
+<!--         <value>部门6</value> -->
+<!--     </source>  -->
+    
+<!--     <source> -->
+<!--         <abbr>aa</abbr> -->
+<!--         <code>103007</code> -->
+<!--         <value>部门7</value> -->
+<!--     </source>   -->
+    
+    
+<!--     <source> -->
+<!--         <abbr>aa</abbr> -->
+<!--         <code>103008</code> -->
+<!--         <value>部门8</value> -->
+<!--     </source>      -->
+<!--     <source> -->
+<!--         <abbr>aa</abbr> -->
+<!--         <code>103009</code> -->
+<!--         <value>部门9</value> -->
+<!--     </source>  -->
+    
+<!--      <source> -->
+<!--         <abbr>aa</abbr> -->
+<!--         <code>103010</code> -->
+<!--         <value>部门10</value> -->
+<!--     </source>  -->
+<!-- </sources> -->
+
+
+
+
+
+<sources name = "地域" id = "104">
     
      <source>
       <abbr>ALL</abbr>
       <code>104000</code>
-      <value>所有</value>
+      <value>全部</value>
     </source>
     
     <source>

@@ -23,7 +23,7 @@
             android:gravity="center_vertical"
         >
             
-            <EditText android:id="@+id/tech_trend_kywd_alys"
+            <EditText android:id="@+id/tech_trend_kywd_alys_input_box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -48,14 +48,20 @@
         android:layout_height="1px"
         android:src="@color/middle_blue"/>
 
+        <RelativeLayout android:id="@+id/tech_trend_kywd_alys_none_hint_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
         <ListView android:id="@+id/tech_trend_kywd_alys_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@color/middle_gray"
             android:dividerHeight="1dip"
             android:layout_marginBottom="50dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
             >
-     
-            
+    
         </ListView>
+       </RelativeLayout>
 </LinearLayout>

@@ -4,28 +4,32 @@
     android:layout_height="wrap_content"
      >
     
-<ListView android:id="@+id/doc_list_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="30dip"
-    android:layout_marginBottom="40dip"
-    android:descendantFocusability ="beforeDescendants">"
-    
-</ListView>
 
-<RelativeLayout 
-    android:id="@+id/doc_loading_mask_layout"
+<com.science.view.MyPullToRefreshListView android:id="@+id/doc_list_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:background="@null"
+    android:layout_marginTop="30dip"
+    android:layout_marginBottom="40dip"
+    android:divider="@color/light_gray"
+    android:dividerHeight="1px"
     >
-<ProgressBar android:id="@+id/doc_loading_progress_bar"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    style = "?android:attr/progressBarStyleLarge"
-    />
-</RelativeLayout>
+    
+</com.science.view.MyPullToRefreshListView>
+
+ 
+<!-- <RelativeLayout  -->
+<!--     android:id="@+id/doc_loading_mask_layout" -->
+<!--     android:layout_width="match_parent" -->
+<!--     android:layout_height="match_parent" -->
+<!--     android:gravity="center" -->
+<!--     android:background="@null" -->
+<!--     > -->
+<!-- <ProgressBar android:id="@+id/doc_loading_progress_bar" -->
+<!--     android:layout_width="wrap_content" -->
+<!--     android:layout_height="wrap_content" -->
+<!--     style = "?android:attr/progressBarStyleLarge" -->
+<!--     /> -->
+<!-- </RelativeLayout> -->
 
 
 

@@ -51,12 +51,12 @@ public class TechTrendKywdAlysListAdapter extends BaseAdapter{
 		LayoutInflater inflater = ((Activity)context).getLayoutInflater().from(context);
 		View view = inflater.inflate(R.layout.tech_trendency_kywd_alys_list_item, null);
 		TextView kywd_tv = (TextView) view.findViewById(R.id.tech_trend_kywd_alys_keywords);
-		TextView alys_tv = (TextView) view.findViewById(R.id.tech_trend_kywd_alys_breviary);
-		MyImageButton kywd_alys_shoucang_btn = (MyImageButton) view.findViewById(R.id.tech_trend_kywd_alys_shoucang);
+		//TextView alys_tv = (TextView) view.findViewById(R.id.tech_trend_kywd_alys_breviary);
+		//MyImageButton kywd_alys_shoucang_btn = (MyImageButton) view.findViewById(R.id.tech_trend_kywd_alys_shoucang);
 		
 		KywdAlys kywd_alys_node = kywd_alys_list.get(position);
-		kywd_tv.setText(kywd_alys_node.getKywd());
-		alys_tv.setText(kywd_alys_node.getAlys());
+		kywd_tv.setText("\"" + kywd_alys_node.getKywd() + "\"" + "的关键词分析");
+		//alys_tv.setText(kywd_alys_node.getAlys());
 		
 		return view;
 	}

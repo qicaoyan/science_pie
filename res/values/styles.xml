@@ -219,8 +219,8 @@
   
 
   <style name = "tech_trend_kywd_text">
-      <item name = "android:textColor">@color/black</item>
-      <item name = "android:textSize">20sp</item>
+      <item name = "android:textColor">@color/dark_gray</item>
+      <item name = "android:textSize">16sp</item>
   </style>
    
     <style name = "tech_trend_kywd_breviary_text">
@@ -241,6 +241,54 @@
         
     
     
+    
+    
+    
+    <!-- 个人设置的一些样式 -->
+    <style name = "setting_item_bg_style">
+        
+        <item name = "android:background">@drawable/icon_setting_box</item>
+        <item name = "android:gravity">center_vertical</item>
+        <item name = "android:layout_marginTop">15dip</item>
+        <item name = "android:orientation">horizontal</item>
+    </style>
+    
+    
+    <style name = "common_setting_text_style">
+        <item name = "android:textSize">15sp</item>
+        <item name = "android:textColor">@color/text_light_gray</item>
+        <item name = "android:layout_marginLeft">10dip</item>
+    </style>
 
+    
+    
+    <style name = "common_empty_content_hint_style">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:textColor">@color/text_dark_gray</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:text">暂无内容</item>
+        <item name="android:visibility">gone</item>
+    </style>
+    
+    
+    
+    
+    <style name="setting_info_hint">
+        <item name = "android:textColor">@color/text_light_gray</item>
+        <item name = "android:textSize">15sp</item>
+        <item name = "android:layout_marginLeft">15dip</item>
+        <item name = "android:layout_width">wrap_content</item>
+        <item name = "android:layout_height">wrap_content</item>
+    </style>
+    
+    <style name="setting_info_input_edit">
+        <item name = "android:textColorHint">@color/text_light_gray</item>
+        <item name = "android:textColor">@color/text_dark_gray</item>
+        <item name = "android:textSize">15sp</item>
+        <item name = "android:layout_marginLeft">10dip</item>
+        <item name = "android:gravity">left</item>
+    </style>
     
 </resources>

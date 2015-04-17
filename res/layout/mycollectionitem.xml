@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
      >
-	<ImageButton 
+	<ImageView 
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_margin="10dip"
@@ -18,7 +18,6 @@
 	<TextView 
 	    android:layout_width="match_parent"
 	    android:layout_height="80dip"
-	    android:layout_marginTop="20dip"
 	    android:gravity="center_vertical"
         android:ellipsize="end"
         android:maxLines="3"
@@ -28,6 +27,7 @@
 	    android:layout_centerVertical="true"
 	    android:layout_toRightOf="@id/myCollectionYuanDian"
 	    android:background="@color/white"
+	    android:textColor="@color/text_dark_gray"
 	    
 	    />
 	<TextView

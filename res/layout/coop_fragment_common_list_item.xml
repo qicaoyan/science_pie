@@ -6,11 +6,12 @@
     android:paddingTop="5dip"
     android:paddingBottom="5dip">
     
-  <ImageView android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:src="@drawable/profile_photo"
+  <ImageView android:layout_width="40dip"
+      android:layout_height="40dip"
+      android:src="@drawable/icon_upload_pic"
       android:layout_marginLeft="10dip"
-      android:id="@+id/coop_cooper_photo"/>  
+      android:id="@+id/coop_cooper_photo"
+/>  
 
   <LinearLayout
       android:layout_width="wrap_content"

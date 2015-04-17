@@ -51,14 +51,14 @@ public class ShoucangUtil {
 	}
 	
 	
-	public void addShoucang(int article_type,int article_id,String url,String title)
+	public void addShoucang(String article_type,int article_id,String url,String title)
 	{
 		String str_url  = Url.composeAddShoucangUrl(article_type, article_id, url, title);
-		Log.i("add_shoucang_url", str_url);
+		//Log.i("add_shoucang_url", str_url);
 		new Thread(new ShoucangRunnable(str_url,ADD)).start();
 	}
 	
-	public void deleteShoucang(int article_type,int article_id)
+	public void deleteShoucang(String article_type,int article_id)
 	{
 		String str_url  = Url.composeDeleteShoucangUrl(article_type,article_id);
 		new Thread(new ShoucangRunnable(str_url,DELETE)).start();
@@ -104,8 +104,8 @@ public class ShoucangUtil {
 				{
 					if(code == RESULT_OK)
 					handler.sendEmptyMessage(RESULT_ADD_OK);
-					else
-					handler.sendEmptyMessage(RESULT_ADD_FAIL);
+//					else
+//					handler.sendEmptyMessage(RESULT_ADD_FAIL);
 				}
 				if(action == DELETE)
 				{
@@ -162,14 +162,14 @@ public class ShoucangUtil {
 	 * @param description  文章的表述，一般是时间
 	 * @param url          文章的链接
 	 */
-	public  void addToLocalShoucang(int type,int id,String title,String description,String url){
+	public  void addToLocalShoucang(String account,int type,int id,String title,String description,String url){
 		
-		db_manager.addOneCollection(type, id, title, description, url);
+		db_manager.addOneCollection(account,type, id, title, description, url);
 	}
 	
 	
-	public  void dropFromLocalShoucang(int type,int id){
-		db_manager.dropOneCollection(type, id);
+	public  void dropFromLocalShoucang(String account,int type,int id){
+		db_manager.dropOneCollection(account,type, id);
 	}
 	
 	
@@ -185,6 +185,7 @@ public class ShoucangUtil {
 	
 	
 	public  boolean containInShoucang(int article_type,int article_id){
+		
 		
 		List<Map<String,Object>> list = getLocalShoucangList();
 		if(list == null)

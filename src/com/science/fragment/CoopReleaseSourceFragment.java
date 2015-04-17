@@ -121,6 +121,9 @@ public class CoopReleaseSourceFragment extends Fragment {
 		return norm_px;
 	}
 	
+	
+	
+	
 	public void initViews(){
 		
 		user_photo_iv = (ImageView) view.findViewById(R.id.release_resource_user_photo);
@@ -170,4 +173,16 @@ public class CoopReleaseSourceFragment extends Fragment {
 		user_job_select_view.setMinimumHeight(normalize(height_user_job));
 		user_job_select_tv.setText("职业");
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

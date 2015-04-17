@@ -26,13 +26,12 @@
     >
 
         <ImageView
-            android:id="@+id/num_like_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/icon_like1" />
 
         <TextView
-            android:id="@+id/num_like_text"
+            android:id="@+id/doc_like_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dip"
@@ -42,14 +41,13 @@
         
         
          <ImageView
-            android:id="@+id/num_comment_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/comments" 
+            android:background="@drawable/icon_reply" 
             android:layout_marginLeft="10dip"/>
 
         <TextView
-            android:id="@+id/num_like_text"
+            android:id="@+id/doc_comment_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dip"
@@ -60,7 +58,4 @@
     </LinearLayout>
     
     
-    <ImageView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/a_horizontal_bar_black"/>
 </LinearLayout>

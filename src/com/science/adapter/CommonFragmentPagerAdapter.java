@@ -5,12 +5,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.ViewGroup;
 
-public class CommonFragmentPagerAdapter extends FragmentPagerAdapter{
+public class CommonFragmentPagerAdapter extends FragmentPagerAdapter {
 
 	FragmentManager fm ;
 	Fragment[] fragments;
+	private int currentIndex = 0;
     //boolean[] fragments_update_flag;
 	public CommonFragmentPagerAdapter(FragmentManager fm,Fragment[] fragments ) {
 		super(fm);
@@ -46,21 +48,26 @@ public class CommonFragmentPagerAdapter extends FragmentPagerAdapter{
 //	public Object instantiateItem(ViewGroup container,int position){
 //		
 //		Fragment fragment = (Fragment) super.instantiateItem(container, position);
-//		String fragment_tag = fragment.getTag();
+//	    if(!fragment.isAdded()){//如果fragment还没有added
+//	    	
+//	    	FragmentTransaction ft = fm.beginTransaction();
+//	    	ft.add(fragment, fragment.getClass().getSimpleName());
+//	    	ft.commit();
+//	    	fm.executePendingTransactions();
+//	    }
 //		
-//		if(fragments_update_flag[position % fragments_update_flag.length]){
-//			FragmentTransaction ft = fm.beginTransaction();
-//			ft.remove(fragment);
-//			fragment = fragments[position % fragments.length];
-//			ft.add(container.getId(), fragment,fragment_tag);
-//			ft.attach(fragment);
-//			ft.commit();
-//			
-//			fragments_update_flag[position % fragments_update_flag.length] = false;
-//		}
+//	    if(fragment.getView().getParent() == null){
+//	    	container.addView(fragment.getView());
+//	    }
+//
 //		
 //		return fragment;
 //	}
+	
+	
+	
+
+	
 	
 	
 }

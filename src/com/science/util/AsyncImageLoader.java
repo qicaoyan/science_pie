@@ -55,12 +55,12 @@ public class AsyncImageLoader {
 //		String outFileName = folder
 //				+ imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
 //		File file = new File(outFileName);
-//		if (imageCache.containsKey(imageUrl)) {
-//			SoftReference<Drawable> softReference = imageCache.get(imageUrl);
-//			Drawable drawable = softReference.get();
-//			if (drawable != null) {
-//				return drawable;
-//			} else {
+		if (imageCache.containsKey(imageUrl)) {
+			SoftReference<Drawable> softReference = imageCache.get(imageUrl);
+			Drawable drawable = softReference.get();
+			if (drawable != null) {
+				return drawable;
+			} //else {
 //				if (file.exists()) {
 //					Bitmap bitmap = FileAccess.decodeSampledBitmapFromResource(
 //							outFileName, reqImgWidth, reqImgHeight);
@@ -71,8 +71,8 @@ public class AsyncImageLoader {
 //					System.gc();
 //					return tmpDrawable;
 //				}
-//			}
-//		} else if (file.exists()) {
+			//}
+		} //else if (file.exists()) {
 //			Bitmap bitmap = FileAccess.decodeSampledBitmapFromResource(
 //					outFileName, reqImgWidth, reqImgHeight);
 //			// Bitmap bitmap = BitmapFactory.decodeFile(outFileName);
@@ -92,6 +92,7 @@ public class AsyncImageLoader {
 			public void run() {
 				 Bitmap mBitmap=null;
 		        try {
+		        	
 					URL url = new URL(imageUrl);  
 			        HttpURLConnection conn = (HttpURLConnection) url.openConnection();  
 			        conn.setConnectTimeout(10 * 1000);  
@@ -111,9 +112,10 @@ public class AsyncImageLoader {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}  
+				} 
 		        @SuppressWarnings("deprecation")
 				Drawable drawable =new BitmapDrawable(mBitmap);
+		        imageCache.put(imageUrl, new SoftReference<Drawable>(drawable));
 		        //Drawable d = Drawable.createFromStream(is, src_name);
 				Message message = handler.obtainMessage(0, drawable);
 				handler.sendMessage(message);

@@ -26,6 +26,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.science.http.HttpUtil;
 import com.science.json.JsonDownLoadsKeywords;
 import com.science.json.JsonHotPageMainHandler;
+import com.science.services.DownloadFile;
 import com.science.services.FunctionManage;
 import com.science.services.MyApplication;
 import com.science.util.AppUtil;
@@ -42,6 +43,7 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -141,7 +143,7 @@ public class MainActivity extends Activity {
             finish();
             return;
          }
-        Toast.makeText(MainActivity.this, myApplication.eid, Toast.LENGTH_LONG).show();
+       // Toast.makeText(MainActivity.this, myApplication.eid, Toast.LENGTH_LONG).show();
         functionManage=new FunctionManage(MainActivity.this);
      // �����ޱ��ⴰ��
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -156,8 +158,12 @@ public class MainActivity extends Activity {
         
         setContentView(main);
 
+        /*检查版本更新*/
+        checkVersionUpdate();
+        
+        
         if (myHeader!=null) {
-        	myHeader.SetHeaderText("科学 · 派");
+        	myHeader.SetHeaderText("科研 · 派");
             String[] str=new String[2];
             str[0]="热点";
             str[1]="主页";
@@ -172,12 +178,15 @@ public class MainActivity extends Activity {
         
         myHeader.SetSelected(0);
         
+        /*隐藏主页Home按钮*/
+        myHeader.hideHeaderView("home");
         UpdateKeyWordsState();
         
         Tag[] temp=new Tag[2];
         temp[0]=new Tag();
         temp[0].setName("test");
         PushManager.getInstance().initialize(this.getApplicationContext());
+        functionManage.UpdateCid();
        // PushManager.getInstance().setTag(this,temp);
     }
 
@@ -189,10 +198,13 @@ public class MainActivity extends Activity {
         UpdateKeyWordsState();
 	}
 
+		
+		
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		//Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
 		downloadKeywords();
         UpdateKeyWordsState();
 	}
@@ -375,10 +387,7 @@ public class MainActivity extends Activity {
 	{
 		viewPager.setOnPageChangeListener(onPageChangeListener);
 		
-		//mainPageImageView1.setOnClickListener(onClickListenerMain);
-		//mainPageImageView2.setOnClickListener(onClickListenerMain);
-		//mainPageImageView3.setOnClickListener(onClickListenerMain);
-		//mainPageImageView4.setOnClickListener(onClickListenerMain);
+
 		
 		mainPageProjectView.setOnClickListener(onClickListenerMain);
 		mainPageDocumentView.setOnClickListener(onClickListenerMain);
@@ -401,6 +410,9 @@ public class MainActivity extends Activity {
 		mainpageKeywords[6].setOnClickListener(onClickListenerKeywords);
 		mainpageKeywords[7].setOnClickListener(onClickListenerKeywords);
 		keywordsEdite.setOnClickListener(onClickListenerKeywordsEdit);
+		for(int i = 0;i < mainpageKeywordsChar.length;i++){
+			mainpageKeywordsChar[i].setOnClickListener(on_clear_kywd_listener);
+		}
 	}
     
 	private void GetData(String url,int what)
@@ -436,9 +448,12 @@ public class MainActivity extends Activity {
 				{
 					if (mainpageKeywords[i].getText().length()>0) {
 						mainpageKeywords[i].setBackgroundColor(getResources().getColor(R.color.keywordsbackground));
+						mainpageKeywordsChar[i].setBackgroundColor(getResources().getColor(R.color.black));
 						mainpageKeywordsChar[i].setImageDrawable(getResources().getDrawable(R.drawable.cha));
+
 						mainpageKeywordsChar[i].setBackgroundColor(getResources().getColor(R.color.transparent));
 						//mainpageKeywordsChar[i].setBackgroundColor(getResources().getColor(R.color.keywordsbackground));
+
 						mainpageKeywordsChar[i].setVisibility(View.VISIBLE);
 					}
 					
@@ -456,6 +471,12 @@ public class MainActivity extends Activity {
 					mainpageKeywordsChar[i].setVisibility(View.INVISIBLE);
 				}
 			}
+			
+			
+			
+			updateKeywords();
+			
+			
 
 		}
 	};
@@ -466,60 +487,79 @@ public class MainActivity extends Activity {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			TextView bt=(TextView)v;
-			String btnTextString=(String) bt.getText();		
+			
+			String btnTextString= bt.getText().toString();		
 			final View temp=v;
+			LayoutInflater factory = LayoutInflater  
+	                    .from(MainActivity.this);  
+	        final View DialogView = factory.inflate(R.layout.keywordsinput, null);
+	        final EditText edt=(EditText)DialogView.findViewById(R.id.KeywordsEditText);
 			if(bt.getText().length()==0) {
 				
 				if (!myApplication.IsLogin()) {
 					functionManage.Login();
 					return;
 				}
-				 LayoutInflater factory = LayoutInflater  
-		                    .from(MainActivity.this);  
-		            final View DialogView = factory.inflate(R.layout.keywordsinput, null);
+
 		            
-		           final EditText edt=(EditText)DialogView.findViewById(R.id.KeywordsEditText);
-		           edt.setText(btnTextString);
+				
+		           
+		         edt.setText(btnTextString);
 				 AlertDialog dlg = new AlertDialog.Builder(  
 		                    MainActivity.this)  
 		                    .setTitle("输入关键词")  
 		                    .setView(DialogView)  
 		                    .setPositiveButton("确定",  
 		                            new DialogInterface.OnClickListener() {  
-
+                  
 		                                @Override  
 		                                public void onClick(  
 		                                        DialogInterface dialog,  
 		                                        int which) {  
 		                                    // TODO Auto-generated method  
 		                                    // stub  
+		                                	int index = 0;
 		                        			switch (temp.getId()) {
 		                        			case R.id.mainpageKeywords1:
+		                        				index = 0;
 		                        				mainpageKeywords[0].setText(edt.getText().toString());
 		                        				break;
 		                        			case R.id.mainpageKeywords2:
+		                        				index = 1;
 		                        				mainpageKeywords[1].setText(edt.getText().toString());
 		                        				break;
 		                        			case R.id.mainpageKeywords3:
+		                        				index = 2;
 		                        				mainpageKeywords[2].setText(edt.getText().toString());
 		                        				break;
 		                        			case R.id.mainpageKeywords4:
+		                        				index = 3;
 		                        				mainpageKeywords[3].setText(edt.getText().toString());
 		                        				break;
 		                        			case R.id.mainpageKeywords5:
+		                        				index = 4;
 		                        				mainpageKeywords[4].setText(edt.getText().toString());
 		                        				break;
 		                        			case R.id.mainpageKeywords6:
+		                        				index = 5;
 		                        				mainpageKeywords[5].setText(edt.getText().toString());
 		                        				break;
 		                        			case R.id.mainpageKeywords7:
+		                        				index  = 6;
 		                        				mainpageKeywords[6].setText(edt.getText().toString());
 		                        				break;
 		                        			case R.id.mainpageKeywords8:
+		                        				index  = 7;
 		                        				mainpageKeywords[7].setText(edt.getText().toString());
 		                        				break;
 		                        			default:
 		                        				break;
+		                        			}
+		                        			
+		                        			if(mainpageKeywordsEditeState)
+		                        			{
+		                        			mainpageKeywordsChar[index].setVisibility(View.VISIBLE);
+		 
 		                        			}
 		                        			updateKeywords();
 		                                }  
@@ -535,45 +575,102 @@ public class MainActivity extends Activity {
 		                            }).create();  
 		            dlg.show();  
 			}
-			else if(mainpageKeywordsEditeState&&bt.getText().length()>0)
+			if(mainpageKeywordsEditeState&&bt.getText().length()>0)
 			{
+				
+				
+			    int index = 0;
 				switch (temp.getId()) {
+				
     			case R.id.mainpageKeywords1:
-    				mainpageKeywords[0].setText("");
-    				mainpageKeywordsChar[0].setVisibility(View.INVISIBLE);
+    				edt.setText(mainpageKeywords[0].getText());
+    				index = 0;
+    				//mainpageKeywords[0].setText("");
+    				//mainpageKeywordsChar[0].setVisibility(View.INVISIBLE);
     				break;
     			case R.id.mainpageKeywords2:
-    				mainpageKeywords[1].setText("");
-    				mainpageKeywordsChar[1].setVisibility(View.INVISIBLE);
+    				edt.setText(mainpageKeywords[1].getText());
+    				index = 1;
+    				//mainpageKeywords[1].setText("");
+    				//mainpageKeywordsChar[1].setVisibility(View.INVISIBLE);
     				break;
     			case R.id.mainpageKeywords3:
-    				mainpageKeywords[2].setText("");
-    				mainpageKeywordsChar[2].setVisibility(View.INVISIBLE);
+    				edt.setText(mainpageKeywords[2].getText());
+    				index = 2;
+    				//mainpageKeywords[2].setText("");
+    				//mainpageKeywordsChar[2].setVisibility(View.INVISIBLE);
     				break;
     			case R.id.mainpageKeywords4:
-    				mainpageKeywords[3].setText("");
-    				mainpageKeywordsChar[3].setVisibility(View.INVISIBLE);
+    				edt.setText(mainpageKeywords[3].getText());
+    				index = 3;
     				break;
     			case R.id.mainpageKeywords5:
-    				mainpageKeywords[4].setText("");
-    				mainpageKeywordsChar[4].setVisibility(View.INVISIBLE);
+    				edt.setText(mainpageKeywords[4].getText());
+    				index = 4;
+
     				break;
     			case R.id.mainpageKeywords6:
-    				mainpageKeywords[5].setText("");
-    				mainpageKeywordsChar[5].setVisibility(View.INVISIBLE);
+    				edt.setText(mainpageKeywords[5].getText());
+    				index = 5;
     				break;
     			case R.id.mainpageKeywords7:
-    				mainpageKeywords[6].setText("");
-    				mainpageKeywordsChar[6].setVisibility(View.INVISIBLE);
+    				edt.setText(mainpageKeywords[6].getText());
+    				index = 6;
     				break;
     			case R.id.mainpageKeywords8:
-    				mainpageKeywords[7].setText("");
-    				mainpageKeywordsChar[7].setVisibility(View.INVISIBLE);
+    				edt.setText(mainpageKeywords[7].getText());
+    				index = 7;
     				break;
     			default:
     				break;
     			}
-				updateKeywords();
+				
+				
+				
+				
+				final int idx = index;
+				
+				
+				
+				
+				
+				
+				 AlertDialog dlg = new AlertDialog.Builder(  
+		                    MainActivity.this)  
+		                    .setTitle("输入关键词")  
+		                    .setView(DialogView)  
+		                    .setPositiveButton("确定",  
+		                            new DialogInterface.OnClickListener() {  
+
+		                                @Override  
+		                                public void onClick(  
+		                                        DialogInterface dialog,  
+		                                        int which) {  
+		                                    // TODO Auto-generated method  
+		                                    // stub  
+		                                	mainpageKeywords[idx].setText(edt.getText());
+		                                	if(edt.getText().toString().length() == 0)
+		                                	mainpageKeywordsChar[idx].setVisibility(View.INVISIBLE);
+
+		                        			updateKeywords();
+		                                }  
+		                            })  
+		                    .setNegativeButton("取消",  
+		                            new DialogInterface.OnClickListener() {  
+
+		                                @Override  
+		                                public void onClick(  
+		                                        DialogInterface dialog,  
+		                                        int which) {  
+		                                }  
+		                            }).create();  
+		            dlg.show();  
+				
+
+				
+				
+
+				
 			}
 		}
 	};
@@ -582,14 +679,7 @@ public class MainActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			//avg_width = findViewById(R.id.layout).getWidth();
-			
-//			if (LoginManage.sidString==null) {
-//				//定义一个Intent
-//				   Intent intent = new Intent(MainActivity.this, Android_DialogActivity.class);
-//				   startActivity(intent);
-//				   return ;
-//			}
+
 
 			switch (v.getId()) {
 			case R.id.main_page_project://进入项目申报页面
@@ -650,43 +740,33 @@ public class MainActivity extends Activity {
 				intent.setClass(MainActivity.this, HotPageListActivity.class);//从哪里跳到哪里
 				intent.putExtra("block", "0");//传递数据
 				intent.putExtra("title",getResources().getString(R.string.hotpage_title1));
-                
+                intent.putExtra("class_id",0);
 				startActivity(intent);
 				return;
 			}
 
 			
-//			if (myApplication.IsLogin()) {
-//				String url=list0.get(arg2).get("filename");
-//				Log.v("test", url);
-//				Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
-//				intent.setClass(MainActivity.this, HotPage1ContentActivity.class);//从哪里跳到哪里
-//				intent.putExtra("url", url);//传递数据
-//				startActivity(intent);
-//			}
-//			else {
-//				
-//				//定义一个Intent
-//				   Intent intent = new Intent(MainActivity.this, Android_DialogActivity.class);
-//				   intent.putExtra("title",getResources().getString(R.string.hotpage_title1));
-//				   startActivity(intent);
-//			}
+
 			String url=list0.get(arg2).get("filename");
 
 			Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
 			intent.setClass(MainActivity.this, CommonContentActivity.class);//从哪里跳到哪里
 			intent.putExtra("url", url);//传递数据
 			intent.putExtra("title",getResources().getString(R.string.hotpage_title1));
-			intent.putExtra("act_class", "热点新闻");
+			intent.putExtra("act_class", "访问学者");
 			
 			//传递到CommonContent页面中
-			intent.putExtra("article_type", 0);
+			
 			int article_id = Integer.parseInt(list0.get(arg2).get("id"));
-			intent.putExtra("article_id", article_id);
+			intent.putExtra("id", article_id);
 			String theme = list0.get(arg2).get("title");
 			
 			
 			intent.putExtra("theme", theme);
+			
+			
+			String article_type = list0.get(arg2).get("articleType");
+			intent.putExtra("articleType", article_type);
 			startActivity(intent);
 			
 		}
@@ -703,39 +783,28 @@ public class MainActivity extends Activity {
 				Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
 				intent.setClass(MainActivity.this, HotPageListActivity.class);//从哪里跳到哪里
 				intent.putExtra("block", "1");//传递数据
+				 intent.putExtra("class_id",1);
 				intent.putExtra("title",getResources().getString(R.string.hotpage_title2));
 				startActivity(intent);
 				return;
 			}
 
 			
-//			if (myApplication.IsLogin()) {
-//				String url=list1.get(arg2).get("filename");
-//				Log.v("test", url);
-//				Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
-//				intent.setClass(MainActivity.this, HotPage1ContentActivity.class);//从哪里跳到哪里
-//				intent.putExtra("url", url);//传递数据
-//				startActivity(intent);
-//			}
-//			else {
-//				
-//				//定义一个Intent
-//				   Intent intent = new Intent(MainActivity.this, Android_DialogActivity.class);
-//				   startActivity(intent);
-//			}
+
 			String url=list1.get(arg2).get("filename");
 			Log.v("test", url);
 			Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
 			intent.setClass(MainActivity.this, CommonContentActivity.class);//从哪里跳到哪里
 			intent.putExtra("url", url);//传递数据
 			intent.putExtra("title",getResources().getString(R.string.hotpage_title2));
-			intent.putExtra("act_class", "热点新闻");
+			intent.putExtra("act_class", "招聘信息");
 			//传递到CommonContent页面中
-			intent.putExtra("article_type", 0);
 			int article_id = Integer.parseInt(list1.get(arg2).get("id"));
-			intent.putExtra("article_id", article_id);
+			intent.putExtra("id", article_id);
 			String theme = list1.get(arg2).get("title");
 			intent.putExtra("theme", theme);
+			String article_type = list0.get(arg2).get("articleType");
+			intent.putExtra("articleType", article_type);
 			startActivity(intent);
 			
 		}
@@ -752,39 +821,28 @@ public class MainActivity extends Activity {
 				Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
 				intent.setClass(MainActivity.this, HotPageListActivity.class);//从哪里跳到哪里
 				intent.putExtra("block", "2");//传递数据
+				 intent.putExtra("class_id",2);
 				intent.putExtra("title",getResources().getString(R.string.hotpage_title3));
 				startActivity(intent);
 				return;
 			}
 
-//			if (myApplication.IsLogin()) {
-//				String url=list2.get(arg2).get("filename");
-//				Log.v("test", url);
-//				Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
-//				intent.setClass(MainActivity.this, HotPage1ContentActivity.class);//从哪里跳到哪里
-//				intent.putExtra("url", url);//传递数据
-//				startActivity(intent);
-//			}
-//			else {
-//				
-//				//定义一个Intent
-//				   Intent intent = new Intent(MainActivity.this, Android_DialogActivity.class);
-//				   startActivity(intent);
-//			}
 			String url=list2.get(arg2).get("filename");
 			Log.v("test", url);
 			Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
 			intent.setClass(MainActivity.this, CommonContentActivity.class);//从哪里跳到哪里
 			intent.putExtra("url", url);//传递数据
 			intent.putExtra("title",getResources().getString(R.string.hotpage_title3));
-			intent.putExtra("act_class", "热点新闻");
+			intent.putExtra("act_class", "学术前沿");
 			
 			//传递到CommonContent页面中
-			intent.putExtra("article_type", 0);
 			int article_id = Integer.parseInt(list2.get(arg2).get("id"));
-			intent.putExtra("article_id", article_id);
+			intent.putExtra("id", article_id);
 			String theme = list2.get(arg2).get("title");
+			 intent.putExtra("class_id",3);
 			intent.putExtra("theme", theme);
+			String article_type = list0.get(arg2).get("articleType");
+			intent.putExtra("articleType", article_type);
 			startActivity(intent);
 		}
 	};
@@ -801,28 +859,14 @@ public class MainActivity extends Activity {
 				intent.setClass(MainActivity.this, HotPageListActivity.class);//从哪里跳到哪里
 				intent.putExtra("block", "3");//传递数据
 				intent.putExtra("title",getResources().getString(R.string.hotpage_title4));
-				intent.putExtra("act_class", "热点新闻");
+				intent.putExtra("act_class", "项目解读");
 				startActivity(intent);
 				return;
 			}
 
 			
-//			if (myApplication.IsLogin()) {
-//				String url=list3.get(arg2).get("filename");
-//				Log.v("test", url);
-//				Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
-//				intent.setClass(MainActivity.this, HotPage1ContentActivity.class);//从哪里跳到哪里
-//				intent.putExtra("url", url);//传递数据
-//				startActivity(intent);
-//			}
-//			else {
-//				
-//				//定义一个Intent
-//				   Intent intent = new Intent(MainActivity.this, Android_DialogActivity.class);
-//				   startActivity(intent);
-//			}
+
 			String url=list3.get(arg2).get("filename");
-			Log.v("test", url);
 			Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
 			intent.setClass(MainActivity.this, CommonContentActivity.class);//从哪里跳到哪里
 			intent.putExtra("url", url);//传递数据
@@ -830,11 +874,12 @@ public class MainActivity extends Activity {
 			intent.putExtra("act_class", "热点新闻");
 			
 			//传递到CommonContent页面中
-			intent.putExtra("article_type", 0);
 			int article_id = Integer.parseInt(list3.get(arg2).get("id"));
-			intent.putExtra("article_id", article_id);
+			intent.putExtra("id", article_id);
 			String theme = list3.get(arg2).get("title");
 			intent.putExtra("theme", theme);
+			String article_type = list0.get(arg2).get("articleType");
+			intent.putExtra("articleType", article_type);
 			startActivity(intent);
 		}
 	};
@@ -857,13 +902,11 @@ public class MainActivity extends Activity {
 		@Override
 		public void onPageScrolled(int arg0, float arg1, int arg2) {
 			// TODO Auto-generated method stub
-			Log.v("1","onPageScrolled");
 		}
 		
 		@Override
 		public void onPageScrollStateChanged(int arg0) {
 			// TODO Auto-generated method stub
-			Log.v("1","onPageScrollStateChanged");
 		}
 	};
 	   
@@ -939,25 +982,31 @@ public class MainActivity extends Activity {
 	
 	private void updateKeywords()
 	{
+	
 		for (int i = 0; i < mainpageKeywords.length; i++) {
-			myApplication.keywords[i]=mainpageKeywords[i].getText().toString();
+			myApplication.keywords[i]= mainpageKeywords[i].getText().toString();
 		}
 		//先更新一下application中的non_null_keywords_list
 		myApplication.updateNonNullKeywordsList();
 		UpdateKeyWordsState();
+		
+		
+		
+		/*上传关键词*/
+    	MyThreadUpdateKeywords myThreadUpdateKeywords=new MyThreadUpdateKeywords();
+    	new Thread(myThreadUpdateKeywords).start();
 
 	}
     private void getNewsList(String address,int block) {
     	List<Map<String, String>> list=null;
 		if (!NetWorkState.isNetworkAvailable(this)) { // 判断网络连接情况
 			handler.sendEmptyMessage(0);
-			Log.v("test", "network wrong");
 			return;
 		}
 		try {
 //			// 获取新闻列表，存到list里边
-			//URL url = new URL(address+Integer.toString(block));
-			URL url = new URL("http://123.57.207.9:80/hot/hotList?typeid=0&classid=0");
+			URL url = new URL(address+Integer.toString(block));
+			//URL url = new URL("http://123.57.207.9:80/hot/hotList?typeid=0&classid=0");
 			URLConnection con = url.openConnection();
 			con.connect();
 			InputStream input = con.getInputStream();
@@ -1332,6 +1381,71 @@ public class MainActivity extends Activity {
         listView.setLayoutParams(params);  
     } 
     
+    
+    private OnClickListener on_clear_kywd_listener = new OnClickListener()
+    {
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+			switch(v.getId()){
+			case R.id.cha1:
+				mainpageKeywords[0].setText("");
+				mainpageKeywordsChar[0].setVisibility(View.INVISIBLE);
+				mainpageKeywords[0].setBackground(getResources().getDrawable(R.drawable.tj));
+				break;
+			case R.id.cha2:
+				mainpageKeywords[1].setText("");
+				mainpageKeywordsChar[1].setVisibility(View.INVISIBLE);
+				mainpageKeywords[1].setBackground(getResources().getDrawable(R.drawable.tj));
+				break;
+			case R.id.cha3:
+				mainpageKeywords[2].setText("");
+				mainpageKeywordsChar[2].setVisibility(View.INVISIBLE);
+				mainpageKeywords[2].setBackground(getResources().getDrawable(R.drawable.tj));
+				break;
+			case R.id.cha4:
+				mainpageKeywords[3].setText("");
+				mainpageKeywordsChar[3].setVisibility(View.INVISIBLE);
+				mainpageKeywords[3].setBackground(getResources().getDrawable(R.drawable.tj));
+				break;
+			case R.id.cha5:
+				mainpageKeywords[4].setText("");
+				mainpageKeywordsChar[4].setVisibility(View.INVISIBLE);
+				mainpageKeywords[4].setBackground(getResources().getDrawable(R.drawable.tj));
+				break;
+			case R.id.cha6:
+				mainpageKeywords[5].setText("");
+				mainpageKeywordsChar[5].setVisibility(View.INVISIBLE);
+				mainpageKeywords[5].setBackground(getResources().getDrawable(R.drawable.tj));
+				break;
+			case R.id.cha7:
+				mainpageKeywords[6].setText("");
+				mainpageKeywordsChar[6].setVisibility(View.INVISIBLE);
+				mainpageKeywords[6].setBackground(getResources().getDrawable(R.drawable.tj));
+				break;
+			case R.id.cha8:
+				mainpageKeywords[7].setText("");
+				mainpageKeywordsChar[7].setVisibility(View.INVISIBLE);
+				mainpageKeywords[7].setBackground(getResources().getDrawable(R.drawable.tj));
+				break;
+			}
+			
+			
+			
+			
+		}
+		
+		
+		
+		
+		
+    	
+    };
+    
+    
+    
     public void UpdateKeyWordsState()
     {
     	for(int i=0;i<myApplication.keywords.length;i++)
@@ -1344,12 +1458,13 @@ public class MainActivity extends Activity {
 				}
 			}
     		else {
+    			mainpageKeywords[i].setText(myApplication.keywords[i]);
     			mainpageKeywords[i].setBackground(getResources().getDrawable(R.drawable.tj));
 			}
     	}
     	
-    	MyThreadUpdateKeywords myThreadUpdateKeywords=new MyThreadUpdateKeywords();
-    	new Thread(myThreadUpdateKeywords).start();
+//    	MyThreadUpdateKeywords myThreadUpdateKeywords=new MyThreadUpdateKeywords();
+//    	new Thread(myThreadUpdateKeywords).start();
     }
     
      private PlatformActionListener paListener=new PlatformActionListener() {
@@ -1378,7 +1493,42 @@ public class MainActivity extends Activity {
 	
 	
 
-    
+    /*检查版本更新*/
+	public void checkVersionUpdate(){
+		
+		
+		
+		Log.i("local_version", "" + MyApplication.local_version);
+		Log.i("server_version", "" + MyApplication.server_version);
+		if(MyApplication.local_version < MyApplication.server_version)
+		{
+		
+	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("软件更新");
+		builder.setMessage("新版本  ：" + MyApplication.server_version_name);
+		builder.setNegativeButton("以后再说", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface v, int arg1) {
+				// TODO Auto-generated method stub
+			}
+		});
+		
+		
+		builder.setPositiveButton("马上更新",new DialogInterface.OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				// TODO Auto-generated method stub
+                    new DownloadFile(MainActivity.this).downFile(MyApplication.version_info.get("dlurl").toString());
+			}
+			
+		});
+		
+		builder.create();
+		builder.show();
+		}
+	}
 	
 	
 	

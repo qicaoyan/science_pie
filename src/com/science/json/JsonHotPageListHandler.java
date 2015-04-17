@@ -82,11 +82,11 @@ public class JsonHotPageListHandler {
 		        for (int i = 0; i < array.length(); ++i) {
 		        	JSONObject temp = (JSONObject) array.opt(i);
 		        	Map<String, Object> map=new HashMap<String, Object>();
-		        	Log.v("test",temp.getString("title"));
 		        	map.put("title", temp.getString("title"));
-		        	map.put("imgurl",temp.getString("img_url"));
-		        	map.put("filename", temp.getString("file_url"));
+		        	map.put("imgurl",temp.getString("titlepic"));
+		        	map.put("filename", temp.getString("filename"));
 		        	map.put("id", temp.getInt("id"));
+		        	map.put("articleType", temp.getString("articleType"));
 		        	list.add(map);
 		        }
 		        return list;

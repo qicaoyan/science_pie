@@ -97,10 +97,10 @@ public class DBManager {
 	 * @param content_name
 	 *            该收藏记录的详细内容的html在什么地�?
 	 */
-	public void addOneCollection(int type, int id, String title,
+	public void addOneCollection(String account,int type, int id, String title,
 			String description, String url) {
-		String sqlString = "INSERT INTO collection VALUES(?, ?, ?, ?, ?)";
-		Object[] projection = new Object[] { type, id, title, description, url };
+		String sqlString = "INSERT INTO collection VALUES(?, ?, ?, ?, ?, ?)";
+		Object[] projection = new Object[] {account, type, id, title, description, url };
 		db.execSQL(sqlString, projection);
 	}
 
@@ -113,12 +113,14 @@ public class DBManager {
 		Cursor c = queryAllCollections();
 		while(c.moveToNext())
 		{
+			String account = c.getString(c.getColumnIndex("account"));
 			int type = c.getInt(c.getColumnIndex("type"));
 			int id = c.getInt(c.getColumnIndex("id"));
 			String title = c.getString(c.getColumnIndex("title"));
 			String description = c.getString(c.getColumnIndex("description"));
 			String url = c.getString(c.getColumnIndex("url"));
 			Map map = new HashMap<String,Object>();
+			map.put("account", account);
 			map.put("article_type", type);
 			map.put("article_id", id);
 			map.put("title", title);
@@ -169,7 +171,7 @@ public class DBManager {
 	 * @param id
 	 *            收藏的ID
 	 */
-	public void dropOneCollection(int type, int id) {
+	public void dropOneCollection(String account,int type, int id) {
 //		if (type == CollectionItem.TYPE_BLOG) {
 //			db.delete("blog_copyright", "blog_id=?", new String[] { id });
 //		} else if (type == CollectionItem.TYPE_NEWSPAPER) {
@@ -184,8 +186,8 @@ public class DBManager {
 //			Log.i("--collection img path--", imgPath);
 //		}
 //		FileAccess.deleteFile(imgPath);
-		db.delete("collection", "type=? AND id=?",
-				new String[] { String.valueOf(type), Integer.toString(id) });
+		db.delete("collection", "account=? AND type=? AND id=?",
+				new String[] { account,String.valueOf(type), Integer.toString(id) });
 	}
 
 	/**

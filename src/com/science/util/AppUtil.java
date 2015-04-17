@@ -25,8 +25,8 @@ import android.widget.ListView;
 
 public class AppUtil {
 
-	public static int ITEM_IMG_WIDTH;
-	public static int ITEM_IMG_HEIGHT;
+	public static int ITEM_IMG_WIDTH = 60;
+	public static int ITEM_IMG_HEIGHT = 60;
 	public static int GALLERY_WIDTH;
 	public static int GALLERY_HEIGHT;
 
@@ -37,8 +37,8 @@ public class AppUtil {
 	 */
 	public static void QuitHintDialog(final Context context) {
 		new AlertDialog.Builder(context)
-				.setMessage("确定退出科学派吗？")
-				.setTitle("科学派")
+				.setMessage("确定退出科研·派吗？")
+				.setTitle("科研·派")
 				//.setIcon(R.drawable.ic_launcher)
 				.setPositiveButton("退出", new DialogInterface.OnClickListener() {
 
@@ -51,8 +51,9 @@ public class AppUtil {
 									DataUrlKeys.currentFontSizeFlag);
 							sharedata.commit(); // 将当前字号保存起来
 							((Activity) context).finish();
+							android.os.Process.killProcess(android.os.Process.myPid());
 						} catch (Exception e) {
-							Log.e("close", "close error");
+							//Log.e("close", "close error");
 						}
 					}
 				})

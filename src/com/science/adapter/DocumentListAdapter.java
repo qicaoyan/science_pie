@@ -16,8 +16,8 @@ public class DocumentListAdapter extends BaseAdapter{
 
 	private Context context;
 	private int doc_nums = 10;
-	private List<Map<String,String>> doc_list;
-	public DocumentListAdapter(Context context,List<Map<String,String>> list)
+	private List<Map<String,Object>> doc_list;
+	public DocumentListAdapter(Context context,List<Map<String,Object>> list)
 	{
 		this.context = context;
 		doc_list = list;
@@ -54,8 +54,14 @@ public class DocumentListAdapter extends BaseAdapter{
 		LayoutInflater inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view = inflater.inflate(R.layout.doc_list_item, null);
 		TextView doc_title_text = (TextView) view.findViewById(R.id.doc_title);
-		String title = doc_list.get(position).get("title");
+		TextView doc_like_num_text = (TextView) view.findViewById(R.id.doc_like_num);
+		TextView doc_comment_num_text = (TextView) view.findViewById(R.id.doc_comment_num);
+		String title = (String)doc_list.get(position).get("title");
+		int  like_num = (Integer)doc_list.get(position).get("diggtop");
+		int  comment_num = (Integer)doc_list.get(position).get("plnum");
 		doc_title_text.setText(title);
+		doc_like_num_text.setText("" + like_num);
+		doc_comment_num_text.setText("" + comment_num);
 		if(convertView == null)
 		{
 			convertView = view;

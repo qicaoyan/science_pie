@@ -15,6 +15,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.science.activity.DocumentExpressActivity;
+
 import android.util.Log;
 
 public class JsonDcumentListHandler {
@@ -22,23 +24,29 @@ public class JsonDcumentListHandler {
 	public String codeString=null;
 	public String messageString=null;
 	public String reString=null;
-	public List<Map<String, String>> list=null;
-	
+	public List<Map<String, Object>> list=null;
+	public int type ;
 	public JsonDcumentListHandler(String str)
 	{
-		json=str;
-		list=new ArrayList<Map<String,String>>();
+		
+		list=new ArrayList<Map<String,Object>>();
+	}
+	
+	public JsonDcumentListHandler(int type)
+	{
+		this.type = type;
+		list=new ArrayList<Map<String,Object>>();
 	}
 	
 	public JsonDcumentListHandler()
 	{
-		list=new ArrayList<Map<String,String>>();
+		list=new ArrayList<Map<String,Object>>();
 	}
 	
 	public void SetJsonHotPage(String str)
 	{
 		json=str;
-		list=new ArrayList<Map<String,String>>();
+		list=new ArrayList<Map<String,Object>>();
 	}
 	
 	public List<Map<String, String>> getList()
@@ -46,7 +54,7 @@ public class JsonDcumentListHandler {
 		return null;
 	}
 	
-	public List<Map<String, String>> getListItems(InputStream input)
+	public List<Map<String, Object>> getListItems(InputStream input)
 	{
 		
 		Reader reader;
@@ -59,28 +67,91 @@ public class JsonDcumentListHandler {
 	            sb.append(str);  
 	        }  
 	        
-	        Log.i("testaaa", sb.toString());
 	        String strTemp=sb.toString();
+	        Log.i("tempstring", strTemp.toString());
 	        int a=strTemp.indexOf("{");
 	        strTemp=strTemp.substring(a);
 	        JSONObject obj = new JSONObject(strTemp);
 	        codeString=obj.getString("code");
-	        Log.v("test",codeString);
 	        messageString=obj.getString("message");
 	        if (codeString.equals("200")) {
-	        	Log.v("test", "parse json success");
+	        	
 	        	JSONObject tempJsonObject=(JSONObject) obj.get("result");
 		        JSONArray array = tempJsonObject.getJSONArray("core.list");
+	        	/*中文文献*/
+	        	if(type == DocumentExpressActivity.DOC_CHI){
 		        for (int i = 0; i < array.length(); ++i) {
 		        	JSONObject temp = (JSONObject) array.opt(i);
-		        	Map<String, String> map=new HashMap<String, String>();
-		        	Log.v("test111",temp.getString("name"));
-		        	map.put("id", temp.getString("cnki_id"));
+		        	Map<String, Object> map=new HashMap<String, Object>();
+		        	map.put("id", temp.getInt("cnki_id"));
 		        	map.put("title",temp.getString("name"));
+		        	map.put("diggtop", temp.getInt("diggtop"));
+		        	map.put("pdate",temp.getString("pdate"));
+		        	map.put("plnum", temp.getInt("plnum"));
+		        	map.put("url", temp.getString("url"));
+		        	map.put("articleType", temp.getString("articleType"));
 		        	list.add(map);
 		        }
+	        	}
+	        	
+	        	
+	        	/*英文文献*/
+	        	else if(type == DocumentExpressActivity.DOC_ENG){
+		        for (int i = 0; i < array.length(); ++i) {
+		        	JSONObject temp = (JSONObject) array.opt(i);
+		        	Map<String, Object> map=new HashMap<String, Object>();
+		        	map.put("id", temp.getInt("sci_id"));
+		        	map.put("title",temp.getString("name"));
+		        	map.put("diggtop", temp.getInt("diggtop"));
+		        	map.put("pdate",temp.getString("pdate"));
+		        	map.put("plnum", temp.getInt("plnum"));
+		        	map.put("url", temp.getString("url"));
+		        	map.put("articleType", temp.getString("articleType"));
+		        	list.add(map);
+		        }
+	        	}
+		        
+		        /*work文献*/
+		        else if(type == DocumentExpressActivity.DOC_WORK){
+		        for (int i = 0; i < array.length(); ++i) {
+		        	JSONObject temp = (JSONObject) array.opt(i);
+		        	Map<String, Object> map=new HashMap<String, Object>();
+		        	map.put("id", temp.getInt("work_id"));
+		        	map.put("title",temp.getString("name"));
+		        	map.put("diggtop", temp.getInt("diggtop"));
+		        	map.put("pdate",temp.getString("pdate"));
+		        	map.put("plnum", temp.getInt("plnum"));
+		        	map.put("url", temp.getString("url"));
+		        	map.put("articleType", temp.getString("articleType"));
+		        	list.add(map);
+		        }
+		        }
+		        
+		        else if(type == DocumentExpressActivity.DOC_NSF){
+		        for (int i = 0; i < array.length(); ++i) {
+		        	JSONObject temp = (JSONObject) array.opt(i);
+		        	Map<String, Object> map=new HashMap<String, Object>();
+		        	map.put("id", temp.getInt("nsf_id"));
+		        	map.put("title",temp.getString("name"));
+		        	map.put("diggtop", temp.getInt("diggtop"));
+		        	map.put("age",temp.getString("awardExpirationDate"));
+		        	map.put("effective_date", temp.getString("awardEffeciveDate"));
+		        	map.put("plnum", temp.getInt("plnum"));
+		        	map.put("url", temp.getString("url"));
+		        	map.put("articleType", temp.getString("articleType"));
+		        	map.put("pdate", temp.getString("pdate"));
+		        	list.add(map);
+		        }
+	        	}
+		        
 		        return list;
 			}
+	        
+	        
+	       
+	        
+	        
+	        
 	        else
 	        	return null;
 		} catch (UnsupportedEncodingException e) {

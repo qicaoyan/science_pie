@@ -34,7 +34,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -50,6 +52,7 @@ public class Android_DialogActivity extends Activity {
 		static final int MSG_SHOW_ERROR=5;
 		static final int MSG_SHOW_CANCEL=6;
 	
+		
 		public ProgressDialog p_dialog;  
 		public MyHandler myHandler=null;
 		public String name=null;
@@ -147,6 +150,9 @@ public class Android_DialogActivity extends Activity {
 	    {
 	          editTextUserName=(EditText)findViewById(R.id.AccountEditText);
 	          editTextPassWord=(EditText)findViewById(R.id.PasswordEidtText);
+	          
+	          editTextUserName.setText(MyApplication.user_name);
+	          editTextPassWord.setText(MyApplication.password);
 	          
 	          tvRegister=(TextView)findViewById(R.id.logindialogregister);
 	          tvForgetPassWord=(TextView)findViewById(R.id.logindialogfogetpassword);
@@ -257,6 +263,9 @@ public class Android_DialogActivity extends Activity {
 							String password2 = ((EditText)layout.findViewById(R.id.ensure_password_input_box)).getText().toString();
 							String email = ((EditText)layout.findViewById(R.id.email_input_box)).getText().toString();
 							
+							
+//							Log.i("testtttttttttt","email:" + email + "account:" + account + "password1:" + password1 + "password2" + password2);
+							
 							RegisterUtil.OnRegisterListener listener = new RegisterUtil.OnRegisterListener(){
 
 								@Override
@@ -346,10 +355,12 @@ public class Android_DialogActivity extends Activity {
 		            //保存用户名和密码
 		            if(name!=null&&pass!=null)
 		            {
-		            	functionManage.SaveLoginInfo(name,pass);
+		            	functionManage.SaveLoginInfo(name,pass);	
 		            }
+		            functionManage.UpdataTags();
 		            //关闭掉这个Activity
-		            Toast.makeText(Android_DialogActivity.this, "success", Toast.LENGTH_LONG).show();
+		            //Toast.makeText(Android_DialogActivity.this, "登陆成功", Toast.LENGTH_LONG).show();
+		           // MyApplication.changeUserInfo();
 		            finish();  
 				}
 				else if (msg.what==2) {
@@ -397,12 +408,12 @@ public class Android_DialogActivity extends Activity {
 			public void run() {
 				// TODO Auto-generated method stub
 				try { 
-					Log.v("Login", "start");
+					//Log.v("Login", "start");
 					name=editTextUserName.getText().toString();
 					pass=editTextPassWord.getText().toString();
                     String result=myApplication.Login(name,pass);
-                    Log.v("Login", result);
-                    Log.v("Login", "faile");
+//                    Log.v("Login", result);
+//                    Log.v("Login", "faile");
                     if (result==null) {
 						myHandler.sendEmptyMessage(2);
 					}
@@ -486,5 +497,25 @@ public class Android_DialogActivity extends Activity {
 	    	 
 	    	// 启动分享GUI
 	    	 oks.show(this);
+	    }
+	    
+	    
+	    @Override
+	    public boolean onKeyDown(int keyCode, KeyEvent event){
+	    	
+	    	if(keyCode == KeyEvent.KEYCODE_BACK){
+	    		if(p_dialog != null){
+	    			if(p_dialog.isShowing())
+	    		        p_dialog.dismiss();
+	    			else
+	    				finish();
+	    		}
+	    		if(p_dialog == null){
+	    			finish();
+	    		}
+	    		return true;
+	    	}
+	    	
+	    	return super.onKeyDown(keyCode, event);
 	    }
 }

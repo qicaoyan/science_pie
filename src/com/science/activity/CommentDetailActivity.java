@@ -39,6 +39,7 @@ import android.os.Message;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
@@ -69,9 +70,9 @@ public class CommentDetailActivity extends Activity {
 	private ListView comment_list_view;
 	private int comment_num;
 	private CommentListAdapter comment_list_adapter;
-	private String comment_list_url;
-	private String comment_theme;//评论的标题
-	private int article_type;//表明评论的类型
+	private String comment_list_url = "";
+	private String comment_theme = "";//评论的标题
+	private String article_type = "";//表明评论的类型
 	private int article_id;//表明评论项目或论文或热点的id号
 	private int max_id;//获取小于该id的评论
 	private int comment_id;
@@ -86,6 +87,8 @@ public class CommentDetailActivity extends Activity {
 	private final int UPLOAD_COMMENT_FAIL = 3;
 	private final int DELETE_COMMENT_SUCCEED = 4;
 	private final int DELETE_COMMENT_FAIL = 5;
+	private final int UPLOAD_LIKE_SUCCEED = 6;
+	private final int UPLOAD_LIKE_FAIL = 7;
 	
 	private final int RELEASE_STATE = 0;//发布状态
 	private final int REPLY_STATE = 1;//回复状态
@@ -125,10 +128,10 @@ public class CommentDetailActivity extends Activity {
     	comment_num = 5;
     	comment_list_adapter = new CommentListAdapter();
     	comment_list = new ArrayList<Comment>();
-    	json = new JsonCommentListHandler();
+    	
     	Intent intent = this.getIntent();
     	comment_theme = intent.getStringExtra("theme");
-    	article_type = intent.getIntExtra("article_type", DefaultUtil.INAVAILABLE);
+    	article_type = intent.getStringExtra("articleType");
     	article_id = intent.getIntExtra("article_id", DefaultUtil.INAVAILABLE);
     	max_id = DefaultUtil.MAX_VALUE;
     	comment_state = IDLE_STATE;//表示
@@ -381,7 +384,8 @@ public class CommentDetailActivity extends Activity {
 				return null;
 			String customer_name = cu.customer_name;
 			String comment_time = cu.comment_time;
-
+            int    comment_like_num = cu.comment_like_num;
+			
 			customer_name_tv.setText(customer_name);
 			date_tv.setText(comment_time);
 			comment_detail_tv.setClickable(true);
@@ -397,11 +401,27 @@ public class CommentDetailActivity extends Activity {
 				
 			};
 			
+			
 			cu.setSpannableCommentContent(comment_detail_tv,listener);
 			
 			final int index = position;
+			
+			
+			
+			
+
+			
+			
+			
+			
 			//设置回复事件
 			View rv = v.findViewById(R.id.comment_replay);
+			if(application.user_name.equals(customer_name))
+			{
+				rv.setVisibility(View.GONE);
+			}
+			else
+			{
 			rv.setOnClickListener(new OnClickListener(){
 
 				@Override
@@ -418,13 +438,14 @@ public class CommentDetailActivity extends Activity {
 				}
 				
 			});
-			
+			}
 			
 			//设置删除事件
 			TextView tv = (TextView) v.findViewById(R.id.delete_reply);
 			if(application.user_name.equals(customer_name))
 			{
 				tv.setVisibility(View.VISIBLE);
+				tv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 				tv.setOnClickListener(new OnClickListener(){
 
 					@Override
@@ -444,6 +465,16 @@ public class CommentDetailActivity extends Activity {
 			//设置点赞的动画
 			final Animation like_anim = AnimationUtils.loadAnimation(getBaseContext(), R.anim.comment_like_anim);
 			final MyImageButton  like_btn = (MyImageButton) v.findViewById(R.id.comment_like);
+			final TextView       like_num_tv = (TextView) v.findViewById(R.id.comment_like_num);
+			
+			if(comment_like_num > 0){
+				like_num_tv.setText(""+comment_like_num);
+			}
+			else
+			{
+				like_num_tv.setVisibility(View.INVISIBLE);
+			}
+			
 			like_anim.setAnimationListener(new AnimationListener(){
 
 				@Override
@@ -471,6 +502,9 @@ public class CommentDetailActivity extends Activity {
 				
 			});
 			
+			
+			/*设置点赞事件*/
+			
 			like_btn.setOnClickListener(new OnClickListener(){
 
 				@Override
@@ -482,13 +516,17 @@ public class CommentDetailActivity extends Activity {
 	                }
 	                else
 	                {
-					if(!comment_list.get(index).like)
+//					if(!comment_list.get(index).like)
+//					{
 						comment_list.get(index).like = true;
-					else
-						comment_list.get(index).like = false;
-					like_btn.startAnimation(like_anim);
+						comment_id = comment_list.get(index).comment_id;
+						new Thread(upload_like_thread).start();
+//					}
+//					else
+//						comment_list.get(index).like = false;
+//					like_btn.startAnimation(like_anim);
 	                }
-	                
+//	                
 				}
 				
 			});
@@ -515,6 +553,7 @@ public class CommentDetailActivity extends Activity {
 					conn.connect();
 					InputStream is = conn.getInputStream();
 					List<Comment> temp = null;
+					json = new JsonCommentListHandler();
 					temp = json.getListItems(is);
 					if(temp != null)
 					{
@@ -617,6 +656,42 @@ public class CommentDetailActivity extends Activity {
     
     
     
+    private Runnable upload_like_thread = new Runnable(){
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			String str_url = Url.composeUploadCommentLikeUrl(comment_id);
+			Log.i("uploading_comment_url", str_url);
+				URL url;
+				try {
+					url = new URL(str_url);
+					URLConnection conn = url.openConnection();
+					conn.connect();
+					InputStream is = conn.getInputStream();
+					boolean state = getResultState(is);
+					if(state)
+					{
+						handler.sendEmptyMessage(UPLOAD_LIKE_SUCCEED);
+					}
+					else
+						handler.sendEmptyMessage(UPLOAD_LIKE_FAIL);
+						
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+		}
+    	
+    };
+    
+    
+    
+    
     private Handler handler = new Handler()
     {
     	@Override
@@ -644,14 +719,14 @@ public class CommentDetailActivity extends Activity {
     			requestData();
     			break;
     		case UPLOAD_COMMENT_FAIL:
-    			Toast.makeText(getBaseContext(), "评论失败", Toast.LENGTH_SHORT).show();
+    			//Toast.makeText(getBaseContext(), "评论失败", Toast.LENGTH_SHORT).show();
     			if(comment_list != null)
     			    comment_list.clear();
     			comment_list_adapter.notifyDataSetChanged();
     			break;
     			
     		case DELETE_COMMENT_SUCCEED:
-    			Toast.makeText(getBaseContext(), "删除成功", Toast.LENGTH_SHORT).show();
+    			//Toast.makeText(getBaseContext(), "删除成功", Toast.LENGTH_SHORT).show();
     			if(comment_list != null)
     			    comment_list.clear();
     			comment_list_adapter.notifyDataSetChanged();
@@ -659,7 +734,16 @@ public class CommentDetailActivity extends Activity {
     			break;
     			
     		case DELETE_COMMENT_FAIL:
-    			Toast.makeText(getBaseContext(), "删除失败", Toast.LENGTH_SHORT).show();
+    			//Toast.makeText(getBaseContext(), "删除失败", Toast.LENGTH_SHORT).show();
+    			
+    			break;
+    			
+    		case UPLOAD_LIKE_SUCCEED:
+    			if(comment_list != null)
+    			    comment_list.clear();
+    			//Toast.makeText(getBaseContext(), "点赞成功", Toast.LENGTH_SHORT).show();
+    			requestData();
+    			comment_list_adapter.notifyDataSetChanged();
     			break;
     		}
     	}

@@ -2,8 +2,10 @@ package com.science.activity;
 
 import com.example.science.R;
 import com.science.services.MyApplication;
+import com.science.services.MyApplication.CheckUpdateThread;
 import com.science.util.AppUtil;
 import com.science.util.DataUrlKeys;
+import com.science.util.Url;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +15,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 public class SplashScreen extends Activity {
 
@@ -47,8 +50,10 @@ public class SplashScreen extends Activity {
 				+ "    AppUtil.ITEM_IMG_HEIGHT" + AppUtil.ITEM_IMG_HEIGHT);
 		
 		SharedPreferences sharedata = getSharedPreferences("data", 0);  
-		DataUrlKeys.currentFontSizeFlag = sharedata.getInt("font_size", 1);  
-		
+		DataUrlKeys.currentFontSizeFlag = sharedata.getInt("font_size", 1);
+		MyApplication.checkVersionUpdate();
+		Url.changeBaseURL(MyApplication.platform);
+		Toast.makeText(this, "当前平台" + MyApplication.platform, Toast.LENGTH_LONG).show();
 		// splash screen 3 seconds
 		new Handler().postDelayed(new Runnable() {
 			@Override

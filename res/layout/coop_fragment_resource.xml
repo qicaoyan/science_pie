@@ -55,11 +55,12 @@
       android:layout_height="wrap_content">
       
       <LinearLayout android:id="@+id/coop_area_layout"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+          android:layout_width="match_parent"
+          android:layout_height="30dip"
           android:layout_weight="1"
           android:gravity="center"
-          android:background="@drawable/shape_light_blue">
+          android:background="@drawable/shape_light_blue"
+          android:orientation="horizontal">
           
           <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
@@ -68,19 +69,23 @@
               android:textSize="15sp"
               android:paddingTop = "5dip"
               android:paddingBottom="5dip"
+              android:id="@+id/coop_resource_area_select_text"
+              android:maxLines="1"
+              android:maxEms="4"
+              android:ellipsize="end"
             />
           <ImageView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:src="@drawable/jiantou"
-              android:layout_marginLeft="5dip"
               android:paddingTop = "5dip"
               android:paddingBottom="5dip"
-              android:id="@+id/coop_area_arrow"/>
+              android:id="@+id/coop_area_arrow"
+              android:layout_marginRight="3dip"/>
       </LinearLayout>
       
-            <LinearLayout android:id="@+id/coop_all_layout"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+         <LinearLayout android:id="@+id/coop_all_layout"
+          android:layout_width="match_parent"
+          android:layout_height="30dip"
           android:layout_weight="1"
           android:gravity="center"
           android:background="@drawable/shape_light_blue">
@@ -91,14 +96,19 @@
               android:textColor="@color/white"
               android:textSize="15sp"
               android:paddingTop = "5dip"
-              android:paddingBottom="5dip"/>
+              android:paddingBottom="5dip"
+              android:id="@+id/coop_resource_all_select_text"
+              android:maxLines="1"
+              android:maxEms="4"
+              android:ellipsize="end"/>
+        
           <ImageView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:src="@drawable/jiantou"
-              android:layout_marginLeft="5dip"
               android:paddingTop = "5dip"
               android:paddingBottom="5dip"
-              android:id="@+id/coop_all_arrow"/>
+              android:id="@+id/coop_all_arrow"
+              android:layout_marginRight="3dip"/>
       </LinearLayout>
       
       
@@ -115,14 +125,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="0dip"
-    android:layout_marginBottom="30dip"
+    android:layout_marginBottom="50dip"
     style = "@style/common_list_divider_style"
-    >
-    
+    >  
 </ListView>
 
 
-
+<TextView android:id="@+id/coop_empty_content_hint_text"
+    style = "@style/common_empty_content_hint_style"/>
   
   
 <!-- 设置底部按钮 -->
@@ -137,8 +147,9 @@
       android:layout_height="wrap_content"
       android:background="@drawable/coop_bottom_background_side"
       android:gravity="center"
-       android:layout_weight="1">
-    <TextView android:id="@+id/coop_i_offer"
+       android:layout_weight="1"
+       android:id="@+id/coop_resource_i_offer">
+    <TextView android:id="@+id/coop_resource_i_offer_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="我提供"
@@ -172,13 +183,14 @@
       android:layout_height="wrap_content"
       android:background="@drawable/coop_bottom_background_side"
       android:gravity="center"
-       android:layout_weight="1">
-    <TextView android:id="@+id/coop_i_find"
+       android:layout_weight="1"
+       android:id="@+id/coop_resource_i_need">
+    <TextView android:id="@+id/coop_resource_i_need_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="我要找"
         android:textSize="15sp"
-        android:textColor="@color/light_blue"
+        android:textColor="@color/white"
         android:textAlignment ="center"
        />
   </LinearLayout> 

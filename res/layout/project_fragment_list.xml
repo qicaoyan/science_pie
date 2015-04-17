@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:id="@+id/proj_fragment_root_layout"
+    android:layout_marginTop="25dip"
      >
     
-    <ListView
+
+    <com.science.view.MyPullToRefreshListView
     android:id="@+id/proj_list_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="30dip">
+    android:layout_marginBottom="30dip"
+    android:divider="@color/light_gray"
+    android:dividerHeight="1px"
+    android:descendantFocusability ="beforeDescendants">
     
-    </ListView>
+  </com.science.view.MyPullToRefreshListView>
 
     <!--  
     <LinearLayout android:layout_width="match_parent"
@@ -68,4 +74,4 @@
     
  -->   
     
-</FrameLayout>
+</LinearLayout>

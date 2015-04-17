@@ -9,12 +9,16 @@ import com.example.science.R;
 import com.science.adapter.CommonFragmentPagerAdapter;
 import com.science.adapter.CommonPopMenuListAdapter;
 import com.science.adapter.SubjectPopMenuListAdapter;
+import com.science.fragment.HotpageFragment;
+import com.science.fragment.MainProjectApplyFragment;
 import com.science.fragment.ProjectApplyFragment;
 
 import com.science.model.FirstClassItem;
 import com.science.model.Resource;
 import com.science.model.ResourceDefine;
 import com.science.model.SecondClassItem;
+import com.science.services.DataCache;
+import com.science.util.DefaultUtil;
 import com.science.view.MyHeaderView;
 
 import android.content.Context;
@@ -28,6 +32,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +41,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.animation.RotateAnimation;
 import android.view.Window;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -54,13 +60,15 @@ public class ProjectApplyActivity extends FragmentActivity {
 	
 	private LinearLayout main=null;
     private MyHeaderView proj_apply_header;
-    private ProjectApplyFragment proj_fragment_hot;//热点项目
-    private ProjectApplyFragment proj_fragment_poineer;//创业项目
-	private ProjectApplyFragment proj_fragment_expire;//即将到期
-	private ProjectApplyFragment proj_fragment_unscramble;//解读项目
+    private MainProjectApplyFragment proj_fragment_hot;//热点项目
+	private MainProjectApplyFragment proj_fragment_expire;//即将到期
+	
+    private HotpageFragment proj_fragment_poineer;//创业项目
+	private HotpageFragment proj_fragment_interpretation;//解读项目
+	private Fragment[]           proj_fragments;             
 	private ViewPager            proj_view_pager;
 	private CommonFragmentPagerAdapter proj_fragment_adapter;
-
+    private int                        curr_fragment_index;
 	private CommonPopMenuListAdapter proj_src_first_list_adapter;
 	private CommonPopMenuListAdapter proj_src_second_list_adapter;
 	private CommonPopMenuListAdapter proj_type_list_adapter;
@@ -68,12 +76,21 @@ public class ProjectApplyActivity extends FragmentActivity {
 	private List<Resource> proj_src_all_list;
 	private List<Resource> proj_type_list;
 	public static final int PROJ_HOT = 0;
-	public static final int PROJ_POINEER = 1;
-	public static final int PROJ_EXPIRE = 2;
-	public static final int PROJ_UNSCRAMBLE = 3;
+	public static final int PROJ_EXPIRE = 1;
+	public static final int PROJ_POINEER = 2;
+	public static final int PROJ_INTERPRETATION = 3;
 	
+	private int             proj_src1 = -1;
+	private int             proj_src2 = -1;
+	private int             proj_type = -1;
+	private int             proj_id = 0;
+	
+	
+	public static final int DEFAULT_FLAG = -1;
 	private final   int        ADD_SELECT_VIEW = 0;
 	private final    int       RM_SELECT_VIEW = 2;
+	private final   int        ALL_PROJECT = -1;
+	private final   int        NEW_PROJECT = 0;
 	private boolean                removed;//标记select_view是否被移除
 	
 	
@@ -82,7 +99,9 @@ public class ProjectApplyActivity extends FragmentActivity {
 	
 	private View            proj_select_view;
     private RelativeLayout  proj_main_layout;
-    
+    private TextView        proj_src_text;
+    private TextView        proj_type_text;
+    private List<List<Map<String,Object>>> frag_saved_data;
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -90,6 +109,7 @@ public class ProjectApplyActivity extends FragmentActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);		
 		LayoutInflater inflater = getLayoutInflater();  
 		main=(LinearLayout)inflater.inflate(R.layout.project_apply, null); 
+		
 		setContentView(main);
 		initVariable();
 		initView();
@@ -100,16 +120,20 @@ public class ProjectApplyActivity extends FragmentActivity {
 	
     
     private void initVariable(){
-
+        DataCache.cache.clear();
         proj_src_all_list = ResourceDefine.defined_resource_proj_src_list;
         proj_type_list = ResourceDefine.defined_resource_proj_type_list;
         proj_src_first_list_adapter = new CommonPopMenuListAdapter(this,proj_src_all_list);
         proj_type_list_adapter = new CommonPopMenuListAdapter(this,proj_type_list);
    
-        
+        proj_src1 = -1;
+        proj_src2 = -1;
+        proj_type = proj_type_list.get(0).getResId();
         /*设置select_view被移除的状态*/
         removed = false;
-        
+        frag_saved_data = new ArrayList<List<Map<String,Object>>>();
+        frag_saved_data.add(new ArrayList<Map<String,Object>>());
+        frag_saved_data.add(new ArrayList<Map<String,Object>>());
     }
     
     
@@ -121,23 +145,32 @@ public class ProjectApplyActivity extends FragmentActivity {
 		initPopMenuView();
 		proj_select_view = main.findViewById(R.id.proj_select_layout);
 		proj_main_layout = (RelativeLayout) main.findViewById(R.id.proj_main_layout);
-	    proj_fragment_hot = new ProjectApplyFragment();//热点项目
-	    proj_fragment_poineer = new ProjectApplyFragment();//创业项目
-		proj_fragment_expire = new ProjectApplyFragment();//即将到期
-		proj_fragment_unscramble = new ProjectApplyFragment();//解读项目
+		/*-1表示全部,null也默认表示全部*/
+	   // proj_fragment_hot = new MainProjectApplyFragment(PROJ_HOT,DefaultUtil.INAVAILABLE,-1,-1,-1,DefaultUtil.EMPTY,frag_saved_data.get(0));//热点项目
+	    //proj_fragment_expire = new ProjectApplyFragment(PROJ_EXPIRE,proj_src_all_list.get(0).getResId(),-1,-1,-1,DefaultUtil.EMPTY,frag_saved_data.get(1)); //即将到期
+		proj_fragment_hot = new MainProjectApplyFragment(PROJ_HOT);
+		proj_fragment_expire = new MainProjectApplyFragment(PROJ_EXPIRE);
+		
+	    proj_fragment_poineer = new HotpageFragment(4);//创业项目
+		proj_fragment_interpretation = new HotpageFragment(3);//解读项目
 		proj_apply_header = (MyHeaderView) findViewById(R.id.proj_apply_header);
 		
-		proj_fragment_adapter = new CommonFragmentPagerAdapter(this.getSupportFragmentManager(),
-				                                               new Fragment[]{proj_fragment_hot,proj_fragment_poineer,
-			                                                                  proj_fragment_expire,proj_fragment_unscramble});
+		proj_fragments = new Fragment[]{proj_fragment_hot,proj_fragment_expire,
+				                        proj_fragment_poineer,proj_fragment_interpretation};
+		proj_fragment_adapter = new CommonFragmentPagerAdapter(this.getSupportFragmentManager(),proj_fragments);
 
+		/**/
+		
+		proj_src_text = (TextView) findViewById(R.id.proj_src_text);
+		proj_type_text = (TextView) findViewById(R.id.proj_type_text);
 		
 		proj_view_pager = (ViewPager) findViewById(R.id.proj_view_pager);
 		proj_view_pager.setAdapter(proj_fragment_adapter);
 		proj_view_pager.setCurrentItem(0);
+		proj_fragment_hot.loadProject(proj_src1, proj_src2, proj_type, 0, DefaultUtil.EMPTY);
 		//设置proj_apply的header
 		proj_apply_header.SetHeaderText("项目申请");
-		String[] header_btn_strs = {"热点项目","创业项目","项目解读","即将到期"};
+		String[] header_btn_strs = {"热点项目","即将到期","创业项目","项目解读"};
 		proj_apply_header.SetHeaderButtons(header_btn_strs);
 		
 		proj_apply_header.SetSelected(0);
@@ -147,10 +180,25 @@ public class ProjectApplyActivity extends FragmentActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				proj_view_pager.setCurrentItem(v.getId());
-				if(v.getId() == PROJ_POINEER)
+				curr_fragment_index = v.getId();
+				
+				if(v.getId() == PROJ_HOT ){
+					
+					
+				}
+				
+				if(v.getId() == PROJ_POINEER - PROJ_HOT || v.getId() == PROJ_INTERPRETATION - PROJ_HOT)
+				{
 					handler.sendEmptyMessage(RM_SELECT_VIEW);
-				else
+				}
+				else{
+					
 					handler.sendEmptyMessage(ADD_SELECT_VIEW);
+					MainProjectApplyFragment frag = (MainProjectApplyFragment) proj_fragments[curr_fragment_index];
+				    frag.loadProject(proj_src1, proj_src2, proj_type, 0, DefaultUtil.EMPTY);
+					//frag.reLoadProjFragment(frag_saved_data.get(curr_fragment_index));
+					//frag.updateProjectFragment(proj_src1, proj_src2, proj_type, -1,DefaultUtil.EMPTY);
+				}
 			}
 			
 		};
@@ -178,11 +226,21 @@ public class ProjectApplyActivity extends FragmentActivity {
 			@Override
 			public void onPageSelected(int position) {
 				// TODO Auto-generated method stub
+				
 				proj_apply_header.SetSelected(position);
-				if(position == PROJ_POINEER)
+				curr_fragment_index = position;
+				if(position == PROJ_POINEER - PROJ_HOT || position == PROJ_INTERPRETATION - PROJ_HOT)
+				{
+
 					handler.sendEmptyMessage(RM_SELECT_VIEW);
-				else
+				}
+				else{
 					handler.sendEmptyMessage(ADD_SELECT_VIEW);
+					MainProjectApplyFragment frag = (MainProjectApplyFragment) proj_fragments[curr_fragment_index];
+					frag.loadProject(proj_src1, proj_src2, proj_type, 0, DefaultUtil.EMPTY);
+					// frag.reLoadProjFragment(frag_saved_data.get(curr_fragment_index));
+				   // frag.updateProjectFragment(proj_src1, proj_src2, proj_type, -1,DefaultUtil.EMPTY);
+				}
 			}
 			
 		});
@@ -235,6 +293,7 @@ public class ProjectApplyActivity extends FragmentActivity {
 	     
 	     //proj_type处理
 	     proj_type_list_view = (ListView)proj_type_pop_view.findViewById(R.id.common_stair_pop_view_list);
+	     proj_type_list_adapter.setSelectedPosition(0);
 	     proj_type_list_view.setAdapter(proj_type_list_adapter);
 	   //左侧ListView点击事件
 	     proj_src_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -245,6 +304,7 @@ public class ProjectApplyActivity extends FragmentActivity {
 	            	proj_src_first_list_adapter.setSelectedPosition(position);
 	            	proj_src_first_list_adapter.notifyDataSetChanged();
 	            	curr_proj_src = proj_src_all_list.get(position);
+	            	proj_src1 = curr_proj_src.getResId();
 	            	List<Resource> sub_proj_src_list;
 	            	if(curr_proj_src != null)
 	            	{
@@ -253,7 +313,7 @@ public class ProjectApplyActivity extends FragmentActivity {
 	            	  proj_src_next_list_view.setAdapter(proj_src_second_list_adapter);
 	            	}
           
-
+                    
 
 	            	/*设置二级菜单的高度*/
                     int height = proj_src_list_view.getHeight();
@@ -278,7 +338,21 @@ public class ProjectApplyActivity extends FragmentActivity {
 	            	
 	                proj_src_pop_win.dismiss();
 
-                    
+	                
+	                if(curr_proj_src.getSubResList() != null){
+
+                          Resource sub_proj_src = curr_proj_src.getSubResList().get(position);
+                          proj_src2 = sub_proj_src.getResId()%1000;
+                          if(proj_src2 == 0)
+                        	  proj_src2 = -1;
+                          MainProjectApplyFragment frag = (MainProjectApplyFragment) proj_fragments[curr_fragment_index];
+	                      frag.loadProject(proj_src1, proj_src2, proj_type, 0, DefaultUtil.EMPTY);
+                          //frag.updateProjectFragment(proj_src1, proj_src2, proj_type, -1,DefaultUtil.EMPTY);
+	                      proj_src_text.setText(curr_proj_src.getResName() + "/" + sub_proj_src.getResName());
+	                }
+	               
+	                
+	                
 
 	            }
 	        });
@@ -301,7 +375,13 @@ public class ProjectApplyActivity extends FragmentActivity {
 	                proj_type_list_adapter.setSelectedPosition(position);
 	                proj_type_list_adapter.notifyDataSetChanged();
 	                //关闭popupWindow，显示用户选择的分类
-	                proj_type_pop_win.dismiss();         
+	                proj_type_pop_win.dismiss();       
+	                proj_type = position - 1;
+	                proj_type_text.setText(proj_type_list.get(position).getResName());
+                    MainProjectApplyFragment frag = (MainProjectApplyFragment) proj_fragments[curr_fragment_index];
+                    frag.loadProject(proj_src1, proj_src2, proj_type, 0, DefaultUtil.EMPTY);
+                    //frag.updateProjectFragment(proj_src1, proj_src2, proj_type, -1,DefaultUtil.EMPTY);
+	                
 	            }
 	        });
 	     
@@ -465,4 +545,24 @@ private void setOnMenuClickListener(){
 	};
 
 
+	
+	
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
+				&& event.getAction() == KeyEvent.ACTION_DOWN) {
+			this.finish();
+			if(DataCache.hot_project_list != null)
+			DataCache.hot_project_list.clear();
+			
+			if(DataCache.usual_project_list != null)
+			DataCache.usual_project_list.clear();
+			
+			if(DataCache.expire_project_list != null)
+			DataCache.expire_project_list.clear();
+			return false;
+		} else {
+			return super.dispatchKeyEvent(event);
+		}
+	}
 }

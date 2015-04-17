@@ -8,15 +8,15 @@
     </type>
     
     <type>
-        <abbr>SS</abbr>
-        <code>0</code>
-        <value>社会科学</value>
-    </type> 
-    
-     <type>
         <abbr>NS</abbr>
         <code>1</code>
         <value>自然科学</value>
+    </type> 
+    
+     <type>
+        <abbr>SS</abbr>
+        <code>2</code>
+        <value>社会科学</value>
     </type>
     
 </types>

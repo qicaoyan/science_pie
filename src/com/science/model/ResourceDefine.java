@@ -39,7 +39,8 @@ public class ResourceDefine {
 	public static List<Subject> defined_resource_subject_list;
 	public static List<Resource> defined_resource_proj_src_list;
 	public static List<Resource> defined_resource_proj_type_list;
-	
+	public static List<Resource> defined_resource_coop_area_list;
+	public static List<Resource> defined_resource_coop_all_list;
 	public ResourceDefine(String abbr,int code,String value){
 		
 		this.abbr = abbr;
@@ -217,11 +218,13 @@ public class ResourceDefine {
 				
 				Resource res = new Resource(name,"",id,sub_proj_src_list);
 				defined_resource_proj_src_list.add(res);
+				/*合作研究中地域来源归结于此*/
+				
 			}
 			
 			is.close();
 			
-			
+			defined_resource_coop_area_list =  defined_resource_proj_src_list.get(links.getLength() - 1).getSubResList();
 			
 			
 			
@@ -259,6 +262,68 @@ public class ResourceDefine {
 				Resource res = new Resource(value,abbr,code);
 				defined_resource_proj_type_list.add(res);
 			}
+			
+			
+			is.close();
+			
+			
+			
+			
+			
+			/*定义合作研究的全部来源*/
+			is = context.getAssets().open("CoopAllResource.xml");
+			doc = builder.parse(is);
+			root = doc.getDocumentElement();
+			links = root.getElementsByTagName("resources");
+			defined_resource_coop_all_list = new ArrayList<Resource>();
+			for(int i = 0;i < links.getLength();i++){
+				
+				Element node = (Element) links.item(i);
+				String name = node.getAttribute("name");
+				NodeList sub_links = node.getElementsByTagName("resource");
+				List<Resource> sub_list = new ArrayList<Resource>();
+				int id = Integer.parseInt(node.getAttribute("id"));
+				
+				for(int j = 0;j < sub_links.getLength();j++){
+					
+					Element sub_node = (Element) sub_links.item(j);
+					NodeList sub_sub_links = sub_node.getChildNodes();
+					String abbr = "";
+					String value = "";
+					int code = 0;
+					for(int k = 0;k < sub_sub_links.getLength();k++){
+						
+						Node sub_sub_node = sub_sub_links.item(k);
+						if(sub_sub_node.getNodeType() == Node.ELEMENT_NODE){
+							
+							if("abbr".equals(sub_sub_node.getNodeName())){
+								abbr = sub_sub_node.getFirstChild().getNodeValue();
+							}
+							
+							if("value".equals(sub_sub_node.getNodeName())){
+								value = sub_sub_node.getFirstChild().getNodeValue();
+							}
+							
+							if("code".equals(sub_sub_node.getNodeName())){
+								code = Integer.parseInt(sub_sub_node.getFirstChild().getNodeValue());
+							}
+						}
+						
+					}
+					
+					
+					Resource res = new Resource(value,abbr,code);
+					sub_list.add(res);
+				}
+				
+				Resource res = new Resource(name,"",id,sub_list);
+				defined_resource_coop_all_list.add(res);
+			
+			}
+			
+			
+			is.close();
+			
 			
 			
 			

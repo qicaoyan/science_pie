@@ -8,12 +8,13 @@ import android.util.Log;
 import com.science.services.MyApplication;
 
 public class Url {
-	//public static String BASEURL="http://192.168.1.102:8080/";
-	public static String BASEURL="http://123.57.207.9/";
+	public static String BASEURL= MyApplication.platform;
 	public static String HOTPAGEURL0=Url.BASEURL+"hot/hotList?typeid=0&classid=";
 	public static String HOTPAGEURL1=Url.BASEURL+"hot/hotList?typeid=0&classid=";
 	public static String HOTPAGEURL2=Url.BASEURL+"hot/hotList?typeid=0&classid=";
 	public static String HOTPAGEURL3=Url.BASEURL+"hot/hotList?typeid=0&classid=";
+	
+	public static String HotpageBaseUrl = Url.BASEURL + "hot/hotList?";
 	
 	public static String HOTPAGEDETIALURL0=Url.BASEURL+"hot/hotList?typeid=1&classid=";
 	public static String HOTPAGEDETIALURL1=Url.BASEURL+"hot/hotList?typeid=1&classid=";
@@ -21,11 +22,14 @@ public class Url {
 	public static String HOTPAGEDETIALURL3=Url.BASEURL+"hot/hotList?typeid=1&classid=";
 	
 	public static String ProgramList=Url.BASEURL+"GetProject/GetProjectByWeek?";
-	public static String ProjectListBase = Url.BASEURL + "GetProject/GetTopProject?";
-	public static String ProjectUsual  = Url.BASEURL + "GetProject/GetUsualProject?";
+	public static String ProjectTop = Url.BASEURL + "getProject/getTopProject?";
+	public static String ProjectUsual  = Url.BASEURL + "getProject/getUsualProject?";
+	public static String ProjectExpireUrl = Url.BASEURL + "getProject/getEndProject?";
 	public static String ProjectContentBaseUrl = Url.BASEURL + "GetProject/GetProjectDetail?";
 	public static String programAvailableList=Url.BASEURL+"/GetProject/GetProjectAvailable?label=";
-	public static String DocumentLIST = Url.BASEURL+"GetPaper/GetPaperTitle?";
+	
+	
+	public static String DocumentLIST = Url.BASEURL+"getPaper/getPaperTitle?";
 	public static String DocumentContentBase=Url.BASEURL+"GetPaper/GetPaperTitle?cnkiId=";
 	public static String DocumentDetailBase = Url.BASEURL + "GetPaper/GetPaperDetail?";
 	public static String LOGINURL=Url.BASEURL+"/index/login?";
@@ -35,16 +39,21 @@ public class Url {
 	public static String removeCollection=Url.BASEURL+"/collection/deleteCollection?";
 	public static String getCollection=Url.BASEURL+"/collection/getCollection?";
 	public static String getMessage=Url.BASEURL+"/message/getMessageInBox?";
+	public static String updateCid=Url.BASEURL+"/Getui/setcid?cid=";
+	public static String updateTags=Url.BASEURL+"/getui/getPushtags?";
 	
 	public static String CommentList = Url.BASEURL + "comment/getComment?";
 	public static String ReleaseComment = Url.BASEURL + "comment/setComment?";
 	public static String DeleteComment = Url.BASEURL + "comment/deleteComment?";
+	public static String LikeCommontUrl = Url.BASEURL + "comment/likeComment?";
 	public static final int MAX_ID = Integer.MAX_VALUE;
 	
 	public static String RegisterURL = Url.BASEURL + "Register/register?";
 	
 	public static String AddShoucangURL = Url.BASEURL + "collection/addCollection?";
 	public static String DeleteShoucangURL = Url.BASEURL + "collection/deleteCollection?";
+	
+	public static String SendToEmailBaseUrl = Url.BASEURL + "mail/sendMail?";
 //	public static String HOTPAGEURL0="http://10.107.7.48:8080/hot/hotList?typeId=0&plateId=";
 //	public static String HOTPAGEURL1="http://10.107.7.48:8080/hot/hotList?typeId=0&plateId=";
 //	public static String HOTPAGEURL2="http://10.107.7.48:8080/hot/hotList?typeId=0&plateId=";
@@ -53,6 +62,20 @@ public class Url {
 //	public static String LOGINURL="http://10.107.7.48:8080/index/login?name=";
 	
 	
+	public static String TechTrendKywdAlysBaseUrl = Url.BASEURL + "trend/keywordAnalysis?";
+	public static String TechTrendAcdmAffrBaseUrl = Url.BASEURL + "/trend/industryTrends?";
+	
+	public static String LogoutBaseUrl        = Url.BASEURL + "index/logout?";
+	
+	public static String CoopResourceListBaseUrl = Url.BASEURL + "resource/getResList?";
+	
+	public static String CheckUpdateUrl = Url.BASEURL + "version/checkAppVersion?";
+	
+	public static String ContentLikeUrl = Url.BASEURL + "like/addLike?";
+	
+	public static String EditMyInfoUrl = Url.BASEURL + "getMyData/updateData?";
+	
+	public static String GetMyInfoUrl = Url.BASEURL + "getMyData/getData?";
 	public static String composeUrl(String ... args)
 	{
 		StringBuffer sb = new StringBuffer();
@@ -64,12 +87,171 @@ public class Url {
 	}
 	
 	
-    public static String composeDocListUrl(int doc_id,int doc_type,String doc_keywords)
+	
+	public static void changeBaseURL(String baseUrl){
+		
+		BASEURL= baseUrl;
+		HOTPAGEURL0=Url.BASEURL+"hot/hotList?typeid=0&classid=";
+		HOTPAGEURL1=Url.BASEURL+"hot/hotList?typeid=0&classid=";
+		HOTPAGEURL2=Url.BASEURL+"hot/hotList?typeid=0&classid=";
+		HOTPAGEURL3=Url.BASEURL+"hot/hotList?typeid=0&classid=";
+		
+		HotpageBaseUrl = Url.BASEURL + "hot/hotList?";
+		
+		HOTPAGEDETIALURL0=Url.BASEURL+"hot/hotList?typeid=1&classid=";
+		HOTPAGEDETIALURL1=Url.BASEURL+"hot/hotList?typeid=1&classid=";
+		HOTPAGEDETIALURL2=Url.BASEURL+"hot/hotList?typeid=1&classid=";
+		HOTPAGEDETIALURL3=Url.BASEURL+"hot/hotList?typeid=1&classid=";
+		
+		ProgramList = Url.BASEURL+"GetProject/GetProjectByWeek?";
+		ProjectTop = Url.BASEURL + "getProject/getTopProject?";
+		ProjectUsual = Url.BASEURL + "getProject/getUsualProject?";
+		ProjectExpireUrl = Url.BASEURL + "getProject/getEndProject?";
+		ProjectContentBaseUrl = Url.BASEURL + "GetProject/GetProjectDetail?";
+		programAvailableList=Url.BASEURL+"/GetProject/GetProjectAvailable?label=";
+		
+		
+		DocumentLIST = Url.BASEURL+"getPaper/getPaperTitle?";
+		DocumentContentBase=Url.BASEURL+"GetPaper/GetPaperTitle?cnkiId=";
+		DocumentDetailBase = Url.BASEURL + "GetPaper/GetPaperDetail?";
+		LOGINURL=Url.BASEURL+"/index/login?";
+		DOWNLOADKEYWORDS=Url.BASEURL+"personalTags/getPersonalTags?";
+		UpdateKeywords=Url.BASEURL+"personalTags/setPersonalTags?tagsString=";
+		addCollection=Url.BASEURL+"/collection/addCollection?";
+		removeCollection=Url.BASEURL+"/collection/deleteCollection?";
+		getCollection=Url.BASEURL+"/collection/getCollection?";
+		getMessage=Url.BASEURL+"/message/getMessageInBox?";
+		updateCid=Url.BASEURL+"/Getui/setcid?cid=";
+		updateTags=Url.BASEURL+"/getui/getPushtags?";
+		
+		CommentList = Url.BASEURL + "comment/getComment?";
+		ReleaseComment = Url.BASEURL + "comment/setComment?";
+		DeleteComment = Url.BASEURL + "comment/deleteComment?";
+		LikeCommontUrl = Url.BASEURL + "comment/likeComment?";
+		
+		RegisterURL = Url.BASEURL + "Register/register?";
+		
+		AddShoucangURL = Url.BASEURL + "collection/addCollection?";
+		DeleteShoucangURL = Url.BASEURL + "collection/deleteCollection?";
+		
+		SendToEmailBaseUrl = Url.BASEURL + "mail/sendMail?";
+//		public static String HOTPAGEURL0="http://10.107.7.48:8080/hot/hotList?typeId=0&plateId=";
+//		public static String HOTPAGEURL1="http://10.107.7.48:8080/hot/hotList?typeId=0&plateId=";
+//		public static String HOTPAGEURL2="http://10.107.7.48:8080/hot/hotList?typeId=0&plateId=";
+//		public static String HOTPAGEURL3="";
+	//	
+//		public static String LOGINURL="http://10.107.7.48:8080/index/login?name=";
+		
+		
+		TechTrendKywdAlysBaseUrl = Url.BASEURL + "trend/keywordAnalysis?";
+		TechTrendAcdmAffrBaseUrl = Url.BASEURL + "/trend/industryTrends?";
+		
+		LogoutBaseUrl        = Url.BASEURL + "index/logout?";
+		
+		CoopResourceListBaseUrl = Url.BASEURL + "resource/getResList?";
+		
+		CheckUpdateUrl = Url.BASEURL + "version/checkAppVersion?";
+		
+		ContentLikeUrl = Url.BASEURL + "like/addLike?";
+		
+		EditMyInfoUrl = Url.BASEURL + "getMyData/updateData?";
+		
+		GetMyInfoUrl = Url.BASEURL + "getMyData/getData?";
+	}
+	
+	
+	
+	
+	
+	public static String composeLogoutUrl(){
+		return composeUrl(Url.LogoutBaseUrl,"sid=",MyApplication.sidString);
+		
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * 
+	 * @param type_id
+	 * @param class_id
+	 * @param id1
+	 * @param id2
+	 * @return热点
+	 */
+	
+	public static String composeHotPageUrl(int type_id,int class_id,int id){
+		
+		return composeUrl(Url.HotpageBaseUrl,"sid=",MyApplication.sidString,
+				         "&typeid=",""+type_id,"&classid=",""+class_id,"&id=",""+id);
+	}
+	
+	
+	
+	
+	
+	/**
+	 * 
+	 * @return获取置顶项目的URL
+	 */
+	public static String composeHotProjectUrl(int id){
+		
+		return composeUrl(Url.ProjectTop , "sid=",MyApplication.sidString,"&id=","" + id);
+	}
+	
+	
+	/**
+	 * 
+	 * @param src1
+	 * @param src2
+	 * @param type
+	 * @return 进行筛选项目
+	 */
+
+	public static String composeUsualProject(int src1,int src2,int type,int id,String date){
+		
+			try {
+				date = URLEncoder.encode(date,"UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		
+		return composeUrl(Url.ProjectUsual,"sid=",MyApplication.sidString,
+				         "&projSource1=",""+src1,"&projSource2=","" + src2,
+				         "&projType=","" + type,"&id=","" + id,"&startdate=",date);
+	}
+	
+	
+	public static String composeExpireProjectUrl(int src1,int src2,int type,int id,String date){
+	    
+		try {
+			date = URLEncoder.encode(date, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return composeUrl(Url.ProjectExpireUrl,"sid=",MyApplication.sidString,
+		         "&projSource1=",""+src1,"&projSource2=","" + src2,
+		         "&projType=","" + type,"&id=","" + id,"&startdate=",date);
+	}
+	
+	
+    public static String composeDocListUrl(String pdate,int doc_id,int doc_type,String doc_keywords)
     {
     	
-        doc_keywords = URLEncoder.encode(doc_keywords);
-    	return composeUrl(Url.DocumentLIST,"sid=",MyApplication.sidString,
-    			   "&Id=",Integer.toString(doc_id),"&source=",Integer.toString(doc_type),
+        try {
+			doc_keywords = URLEncoder.encode(doc_keywords,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return composeUrl(Url.DocumentLIST,"sid=",MyApplication.sidString,"&pdate=",pdate,
+    			   "&id=",Integer.toString(doc_id),"&source=",Integer.toString(doc_type),
     			   "&keyWords=",doc_keywords);
     	
     }
@@ -99,12 +281,12 @@ public class Url {
 	
 	
     
-    public static String composeCommentListUrl(int article_type,int article_id,int comment_id)
+    public static String composeCommentListUrl(String article_type,int article_id,int comment_id)
     {
     	if(comment_id < 0)
     		comment_id = DefaultUtil.MAX_VALUE;
     	
-    	return composeUrl(Url.CommentList,"sid=",MyApplication.sidString,"&articleType=",Integer.toString(article_type),
+    	return composeUrl(Url.CommentList,"sid=",MyApplication.sidString,"&articleType=",article_type,
     			          "&articleId=",Integer.toString(article_id),"&id=",Integer.toString(comment_id));
     }
     
@@ -140,11 +322,11 @@ public class Url {
    * @return
    */
     
-  public static String compseReleaseCommentUrl(int upper_comment,int upper_customer,int article_type,int article_id,String content){
+  public static String compseReleaseCommentUrl(int upper_comment,int upper_customer,String article_type,int article_id,String content){
 	
 	content = URLEncoder.encode(content);
 	return composeUrl(Url.ReleaseComment,"sid=",MyApplication.sidString,"&upper_comment=",Integer.toString(upper_comment),
-			           "&upper_customer=",Integer.toString(upper_customer),"&articleType=",Integer.toString(article_type),
+			           "&upper_customer=",Integer.toString(upper_customer),"&articleType=",article_type,
 			           "&articleId=",Integer.toString(article_id),
 			           "&content=",content);
 	
@@ -154,7 +336,19 @@ public class Url {
     
     
     
+  
+  /**
+   * 获取评论点赞的URL
+   */
     
+  public static String composeUploadCommentLikeUrl(int comment_id){
+	  
+	  return composeUrl(Url.LikeCommontUrl,"sid=",MyApplication.sidString,"&commentid=","" + comment_id);
+  }
+  
+  
+  
+  
     
     /**
      * 
@@ -171,6 +365,14 @@ public class Url {
     
     public static String composeRegisterUrl(String nickname,String password,String email){
     	
+    	try {
+			nickname = URLEncoder.encode(nickname, "UTF-8");
+			
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
     	return composeUrl(Url.RegisterURL,"sid=",MyApplication.sidString,"&username=",email,
     			         "&nickname=",nickname,"&password=",password);
     }
@@ -178,30 +380,136 @@ public class Url {
     
     
     
-    public static String composeAddShoucangUrl(int article_type,int article_id,String url,String title){
+    public static String composeAddShoucangUrl(String article_type,int article_id,String url,String title){
     	
     	try {
 			url = URLEncoder.encode(url,"UTF-8");
+			title = URLEncoder.encode(title, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	return composeUrl(Url.AddShoucangURL,"sid=",MyApplication.sidString,
-    			          "&articleType=",Integer.toString(article_type),
+    			          "&articleType=",article_type,
     			          "&articleId=",Integer.toString(article_id),
          		          "&url=",url,"&title=",title);
     
     }
     
     
-    public static String composeDeleteShoucangUrl(int article_type,int article_id)
+    public static String composeDeleteShoucangUrl(String article_type,int article_id)
     {
        	return composeUrl(Url.DeleteShoucangURL,"sid=",MyApplication.sidString,
-		          "&articleType=",Integer.toString(article_type),
+		          "&articleType=",article_type,
 		          "&articleId=",Integer.toString(article_id));
     }
     
     
     
     
+    
+    /**
+     * 
+     * @param mailTo 发给谁
+     * @param title  文章的标题
+     * @param content 内容（一般含有url）
+     * @return发送文章到自己的邮箱
+     */
+    
+    public static String composeSendToEmailUrl(String mail_to,String title,String content){
+    	
+    	
+    	try {
+    		title = URLEncoder.encode(title,"UTF-8");
+			content = URLEncoder.encode(content,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return composeUrl(Url.SendToEmailBaseUrl,"sid=",MyApplication.sidString,"&mailTo=",
+    			mail_to,"&title=",title,"&content=",content);
+    }
+    
+    
+    
+    /**
+     * 科技趋势---关键词分析
+     */
+    
+    public static String composeTechTrendKywdAlysUrl(String keyword){
+    	
+    	return composeUrl(Url.TechTrendKywdAlysBaseUrl,"sid=",MyApplication.sidString,"&keyword=",keyword);
+    }
+    
+    
+    
+    
+    
+    
+    /***
+     * 科技趋势---业界动态
+     */
+    public static String composeTechTrendAcdmAffrUrl(int src1,int src2,int id){
+    	
+    	return composeUrl(Url.TechTrendAcdmAffrBaseUrl,"sid=",MyApplication.sidString,"&projSource1=",
+    			          "" + src1,"&projSource2=","" + src2,"&id=","" + id);
+    }
+    
+    
+    
+    
+    
+    
+    public static String composeCoopResourceListUrl(int location,int res_type,String keyword,int page){
+    	
+    	return composeUrl(Url.CoopResourceListBaseUrl,"sid=",MyApplication.sidString,"&location=",
+    			          "" + location,"&resType=","" + res_type,"&keyword=",keyword,"&page=","" + page);
+    }
+    
+    
+    
+    public static String composeCheckUpdateUrl(double version){
+    	
+    	return composeUrl(Url.CheckUpdateUrl,"sid=",MyApplication.sidString,"&versionNum=","" + version);
+    }
+    
+    
+    public static String composeGetCollectionUrl(String id){
+    	
+    	return composeUrl(Url.getCollection,"sid=",MyApplication.sidString,"&id=",id);
+    }
+
+    
+    public static String composeLikeContentUrl(String article_type,int id){
+    	
+    	return composeUrl(Url.ContentLikeUrl,"sid=",MyApplication.sidString,"&articleType=","" + article_type,
+    			         "&articleId=","" + id);
+    	
+    }
+    
+    public static String composeEditMyInfoUrl(String nickname,String profession,String workunit,String worklocation,String email ){
+    	
+    	try {
+			nickname = URLEncoder.encode(nickname,"UTF-8");
+			profession = URLEncoder.encode(profession,"UTF-8");
+			workunit = URLEncoder.encode(workunit,"UTF-8");
+			worklocation = URLEncoder.encode(worklocation,"UTF-8");
+			email = URLEncoder.encode(email,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return composeUrl(Url.EditMyInfoUrl,"sid=",MyApplication.sidString,"&nickname=",nickname,"&profession=",
+    			         profession,"&workunit=",workunit,"&worklocation=",worklocation,"&email=",email);
+    }
+    
+    
+    
+    
+    
+    public static String composeGetMyInfoUrl(){
+    	
+    	return composeUrl(Url.GetMyInfoUrl,"sid=",MyApplication.sidString);
+    }
 }

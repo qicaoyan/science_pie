@@ -24,6 +24,7 @@ public class JsonGetMyMessageHandler {
 	public String reString=null;
 	public List<Map<String, Object>> list=null;
 	
+	
 	public JsonGetMyMessageHandler(String str)
 	{
 		json=str;

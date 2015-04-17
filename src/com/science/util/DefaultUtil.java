@@ -11,5 +11,6 @@ public class DefaultUtil {
 	public static final String EMPTY = "";
 	public static final String RESULT_OK = "200";
 	public static final String RESULT_ERROR = "111111";
+	public static final int    NETWORK_DISCONNECTED = -1;
 	
 }

@@ -66,6 +66,18 @@ public class MyHeaderView extends LinearLayout {
 	}
 
 
+	/*隐藏主页按钮*/
+	public void hideHeaderView(String name){
+		
+		if("home".equals(name)){
+			home_btn.setVisibility(View.INVISIBLE);
+		}
+		
+	}
+	
+	
+	
+	
 	public MyHeaderView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -130,10 +142,10 @@ public class MyHeaderView extends LinearLayout {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-				if(application.IsLogin())		
+				//if(application.IsLogin())		
 					headContent.startActivity(new Intent(headContent,SettingManageActivity.class));
-				else
-					fm.Login();
+//				else
+//					fm.Login();
 
 				//((Activity) headContent).finish();
 			}

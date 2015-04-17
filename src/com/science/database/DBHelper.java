@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-	private static final String DATABASE_NAME = "collection_list.db";
+	private static final String DATABASE_NAME = "my_collection_list.db";
 	private static final int DATABASE_VERSION = 1;
 	
 	private String DBName;
@@ -28,7 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		if (DATABASE_NAME.equals(this.DBName)) {
 			// 存放收藏记录的表,结构 �? type id title description imgs
 			String sqlString_createTableCollection = "CREATE TABLE IF NOT EXISTS collection" +  
-            "(type INTEGER PRIMARY_KEY, id INTEGER PRIMARY KEY, title VARCHAR, description VARCHAR, url VARCHARs)";
+            "(account VARCHAR PRIMARY_KEY,type INTEGER PRIMARY_KEY, id INTEGER PRIMARY KEY, title VARCHAR, description VARCHAR, url VARCHARs)";
 			// 存放博客和博客的作�?�对应关系的表，结构�? blog_id copyright
 			String sqlString_createTableBolgCopyright = "CREATE TABLE IF NOT EXISTS blog_copyright"
 					+ "(blog_id VARCHAR PRIMARY KEY, copyright VARCHAR)";

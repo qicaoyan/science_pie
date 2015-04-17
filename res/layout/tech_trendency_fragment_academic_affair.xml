@@ -43,7 +43,7 @@
         android:layout_height="1px"
         android:src="@color/middle_blue"/>
 
-        <ListView android:id="@+id/tech_trend_acdm_affr_list"
+        <com.science.view.MyPullToRefreshListView android:id="@+id/tech_trend_acdm_affr_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@color/middle_gray"
@@ -52,5 +52,5 @@
             >
      
             
-        </ListView>
+       </com.science.view.MyPullToRefreshListView>
 </LinearLayout>

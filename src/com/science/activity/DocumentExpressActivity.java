@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.Inflater;
@@ -18,10 +19,15 @@ import com.science.adapter.DocumentTagAdapter;
 import com.science.fragment.DocumentExpressFragment;
 import com.science.interfaces.OnLoadingStateChangedListener;
 import com.science.json.JsonDcumentListHandler;
+import com.science.services.DataCache;
 import com.science.services.MyApplication;
+import com.science.util.AppUtil;
+import com.science.util.DefaultUtil;
 import com.science.util.Url;
 import com.science.view.MyHeaderView;
 import com.science.view.MyImageButton;
+import com.science.view.MyTagView;
+import com.science.view.MyTagView.OnTagChangeListener;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -39,6 +45,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -69,6 +76,7 @@ public class DocumentExpressActivity extends FragmentActivity {
 	private MyImageButton fold_btn;
 	private WindowManager wm;
 	private TextView other_tag_tv;
+	private MyTagView tag_view;
 	private int rows;
 	private int num_cols;//表示一行有几个
 	private boolean  hide;//表示折叠按钮是否处于折叠状态
@@ -87,15 +95,22 @@ public class DocumentExpressActivity extends FragmentActivity {
     private MyApplication application;
     
     
-             
+    /*定义一些常参数*/         
     private final int       UPDATE_TAG_VIEW = 0;
+    public static final int       DOC_CHI = 201;
+    public static final int       DOC_ENG = 202;
+    public static final int       DOC_WORK = 203;
+    public static final int       DOC_NSF = 204;
+    private final String    DEFAULT_DOC_KEYWORD = "-1";
     
-    private int              doc_id;
-    private int              doc_type ;
-    private String            doc_keywords;
+    private int              doc_id = 0;
+    private int              doc_type = DOC_CHI;
+    private String            doc_keywords = "";
+    private String            pdate = "";
     public static  final boolean HIDE = false;
     public static final boolean SHOW = true;
-    private StringBuffer current_keyword;
+    private StringBuffer current_keyword = new StringBuffer("");;
+    
     
     private StringBuffer doc_list_url;
     
@@ -110,6 +125,14 @@ public class DocumentExpressActivity extends FragmentActivity {
     private ViewPager doc_view_pager;
     private CommonFragmentPagerAdapter doc_fragment_adapter;
     private FragmentManager fm;
+    
+    
+    private Fragment[] fragments;
+    
+    private List<List<Map<String,Object>>> frag_saved_data;
+    private int curr_fragment_index;
+    private String[] tag_words;//记录标签的关键词数组 
+    private OnTagChangeListener on_tag_change_listener;
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -134,6 +157,7 @@ public class DocumentExpressActivity extends FragmentActivity {
 		application = (MyApplication) this.getApplication();
 		doc_list = null;
 		tags_state = new int[8];
+		tag_words = new String[8];
 		for(int i = 0;i < 8;i++)
 		{
 			tags_state[i] = 0;
@@ -143,6 +167,31 @@ public class DocumentExpressActivity extends FragmentActivity {
 		
 		all_keywords_num = application.non_null_keywords_list.size();
 	    rows = (all_keywords_num + 3)/4;
+	    
+	    //表示当前的关键词
+	    
+	    current_keyword = new StringBuffer("");
+	    current_keyword.append(DEFAULT_DOC_KEYWORD);
+	    on_tag_change_listener = new OnTagChangeListener(){
+
+			@Override
+			public void onTagChange(StringBuffer sb) {
+				// TODO Auto-generated method stub
+				DocumentExpressFragment frag = (DocumentExpressFragment) fragments[curr_fragment_index];
+				doc_type = DOC_CHI + curr_fragment_index;
+				frag.loadDocument(pdate, doc_id, doc_type, sb);
+				//frag.updateDocListFragment(doc_id, doc_type, sb);
+			}
+	    	
+	    };
+	    
+	    
+	    
+	    frag_saved_data = new ArrayList<List<Map<String,Object>>>();
+	    frag_saved_data.add(new ArrayList<Map<String,Object>>());
+	    frag_saved_data.add(new ArrayList<Map<String,Object>>());
+	    frag_saved_data.add(new ArrayList<Map<String,Object>>());
+	    frag_saved_data.add(new ArrayList<Map<String,Object>>());
 	}
 	
 
@@ -162,39 +211,32 @@ public class DocumentExpressActivity extends FragmentActivity {
 		String[] header_button_strs = {"中文文献","英文文献","工作文献","NSF"};
 		doc_header_view.SetHeaderButtons(header_button_strs);
 
-		
-
-
-		//其他标签
-//		other_tag_tv = (TextView)findViewById(R.id.tag_input);
-//		other_tag_tv.setText(other_tag_str);
-//		other_tag_tv.setOnClickListener(other_tag_click_listener);
-//
-//		
-//		fold_btn = (MyImageButton)findViewById(R.id.fold_btn);
-//		tag_tab_layout = (TableLayout)findViewById(R.id.tag_tab_layout);
-//		other_tag_layout = (RelativeLayout)findViewById(R.id.other_tag_layout);
-//
-//		setTagLayout(true);
-
-		
-
-
-		
-		
-		
+		tag_view = (MyTagView) findViewById(R.id.doc_tag_view);
+		tag_view.setOnTagChangeListener(on_tag_change_listener);
 		//设置fragment
 		fm = this.getSupportFragmentManager();
 		
 		doc_view_pager = (ViewPager) findViewById(R.id.doc_view_pager);
-		doc_fragment_chi = new DocumentExpressFragment(201, new String[]{"城市化"});
-		doc_fragment_eng = new DocumentExpressFragment(202, new String[]{"城市化"});
-		doc_fragment_work = new DocumentExpressFragment(203, new String[]{"城市化"});
-		doc_fragment_nsf = new DocumentExpressFragment(204, new String[]{"城市化"});
-		doc_fragment_adapter = new CommonFragmentPagerAdapter(fm, new Fragment[]{doc_fragment_chi,doc_fragment_eng,doc_fragment_work,doc_fragment_nsf});
+		
+		
+		//设置当前关键词
+		current_keyword = tag_view.getTagKeywords();
+		//Log.i("关键词", current_keyword.toString());
+		doc_fragment_chi = new DocumentExpressFragment();
+		doc_fragment_eng = new DocumentExpressFragment();
+		//doc_fragment_chi = new DocumentExpressFragment(0,DOC_CHI, current_keyword,frag_saved_data.get(0));
+		//doc_fragment_eng = new DocumentExpressFragment(0,DOC_ENG, current_keyword,frag_saved_data.get(1));	
+		doc_fragment_work = new DocumentExpressFragment(0,DOC_WORK, current_keyword,frag_saved_data.get(2));
+		doc_fragment_nsf = new DocumentExpressFragment(0,DOC_NSF, current_keyword,frag_saved_data.get(3));
+		
+		
+		fragments = new Fragment[]{doc_fragment_chi,doc_fragment_eng,doc_fragment_work,doc_fragment_nsf};
+		
+		
+		doc_fragment_adapter = new CommonFragmentPagerAdapter(fm,fragments );
 		doc_view_pager.setAdapter(doc_fragment_adapter);
 		doc_view_pager.setCurrentItem(0);
-		
+		doc_fragment_chi.loadDocument(pdate, doc_id, doc_type, current_keyword);
 		doc_view_pager.setOnPageChangeListener(new OnPageChangeListener(){
 
 			@Override
@@ -213,6 +255,16 @@ public class DocumentExpressActivity extends FragmentActivity {
 			public void onPageSelected(int position) {
 				// TODO Auto-generated method stub
 				doc_header_view.SetSelected(position);	
+				//DocumentExpressFragment last_frag = (DocumentExpressFragment) fragments[curr_fragment_index];
+				//last_frag.saveDocFragment(frag_saved_data.get(curr_fragment_index));
+				curr_fragment_index = position;
+				DocumentExpressFragment frag = (DocumentExpressFragment) fragments[curr_fragment_index];
+				doc_type = DOC_CHI + curr_fragment_index;
+				frag.loadDocument(pdate, doc_id, doc_type, current_keyword);
+				//frag.reLoadDocFragment(frag_saved_data.get(position));
+				//frag.updateDocListFragment(doc_id, doc_type, current_keyword);
+				//frag.reLoadDocFragment();
+				
 			}
 			
 		});
@@ -226,6 +278,15 @@ public class DocumentExpressActivity extends FragmentActivity {
 				// TODO Auto-generated method stub
 				
 				doc_view_pager.setCurrentItem(v.getId());
+				//DocumentExpressFragment last_frag = (DocumentExpressFragment) fragments[curr_fragment_index];
+				//last_frag.saveDocFragment(frag_saved_data.get(curr_fragment_index));
+				curr_fragment_index = v.getId();
+				DocumentExpressFragment frag = (DocumentExpressFragment) fragments[curr_fragment_index];
+				doc_type = DOC_CHI + curr_fragment_index;
+				frag.loadDocument(pdate, doc_id, doc_type, current_keyword);
+				//frag.reLoadDocFragment(frag_saved_data.get(v.getId()));
+				//frag.updateDocListFragment(doc_id, doc_type, current_keyword);
+				//frag.reLoadDocFragment();
 			}
 			
 		};
@@ -235,6 +296,11 @@ public class DocumentExpressActivity extends FragmentActivity {
 		doc_header_view.SetOnHeadButtonClickListener(doc_header_tab_listener, 2);
 		doc_header_view.SetOnHeadButtonClickListener(doc_header_tab_listener, 3);
 		doc_header_view.SetSelected(0);
+		
+		
+		
+		
+		
 	}
 	
 	
@@ -290,6 +356,7 @@ public class DocumentExpressActivity extends FragmentActivity {
 			tv.setTag(tag_id);
 			tv.setOnClickListener(tag_click_listener);
 			tr.addView(tv);
+			tag_words[j*num_cols + i] = tv.getText().toString();
 		  }
 		  
 		  tag_tab_layout.addView(tr);
@@ -311,20 +378,7 @@ public class DocumentExpressActivity extends FragmentActivity {
         doc_header_view.SetSelected(0);
         
         //设置fold按钮的监听事件
-//        fold_btn.setOnClickListener(new OnClickListener(){
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				hide = !hide;
-//				if(hide)
-//					v.setBackground(getResources().getDrawable(R.drawable.fold));
-//				else
-//				    v.setBackground(getResources().getDrawable(R.drawable.unfold));
-//				//handler.sendEmptyMessage(DocumentExpressActivity.UPDATE_TAG_VIEW);
-//			}
-//        	
-//        });
+
 	}
 	
 	
@@ -377,7 +431,9 @@ public class DocumentExpressActivity extends FragmentActivity {
 	
 
 	
-	
+	public void setContent(int i){
+		
+	}
 	
 	
 	
@@ -402,20 +458,35 @@ public class DocumentExpressActivity extends FragmentActivity {
 			}
 			
 			
+			/*更新标签StringBuffer先清空*/
+			current_keyword.setLength(0);
+			
+			
 			for(int i = 0;i < tags_state.length;i++)
 			{
-				if(i != tag_id)
-				{
-					tags_state[i] = 0;	
+
+				if(tags_state[i] == 1){
+					
+					current_keyword.append(tag_words[i]);
+					current_keyword.append("||");
 				}
+				
 			}
+			//需要将最后的两个"||"删除掉
+			current_keyword.delete(current_keyword.length() - 2, current_keyword.length() - 1);
+			
+			
+			DocumentExpressFragment frag = (DocumentExpressFragment) fragments[curr_fragment_index - DOC_CHI];
+			doc_type = DOC_CHI + curr_fragment_index;
+			frag.updateDocListFragment(doc_id, doc_type, current_keyword);
+			
 			
 
-			doc_keywords = application.keywords[tag_id];
-			if(tags_state[tag_id] == 1)
-			strUrl = Url.composeDocListUrl(doc_id,doc_type,doc_keywords);
-			else
-			strUrl = composeDocListUrl(doc_id,doc_type,new StringBuffer());
+//			doc_keywords = application.keywords[tag_id];
+//			if(tags_state[tag_id] == 1)
+//			strUrl = Url.composeDocListUrl(doc_id,doc_type,doc_keywords);
+//			else
+//			strUrl = composeDocListUrl(doc_id,doc_type,new StringBuffer());
 			
 			setTagLayout(hide);
 			
@@ -463,8 +534,25 @@ public class DocumentExpressActivity extends FragmentActivity {
 	
 	
 	
-	
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
+				&& event.getAction() == KeyEvent.ACTION_DOWN) {
+			
+			if(DataCache.doc_lists != null)
+			{
+				for(int i = 0;i < DataCache.doc_lists.size();i++){
+					DataCache.doc_lists .get(i).clear();
+				}
+			}
+			this.finish();
+			return false;
+		} else {
+			return super.dispatchKeyEvent(event);
+		}
+	}
 
+	
 
 
 	

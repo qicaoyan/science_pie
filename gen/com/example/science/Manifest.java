@@ -10,10 +10,13 @@ package com.example.science;
 public final class Manifest {
     public static final class permission {
         /**  自定义权限 
- <permission
+
+    <permission
         android:name="getui.permission.GetuiService.com.example.com"
         android:protectionLevel="normal" >
-    </permission> 
+    </permission>
+
+    
          */
         public static final String demo="getui.permission.GetuiService.com.getui.demo";
     }

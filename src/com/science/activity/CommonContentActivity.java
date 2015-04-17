@@ -1,11 +1,23 @@
 package com.science.activity;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.example.science.R;
 import com.science.services.FunctionManage;
 import com.science.services.MyApplication;
 import com.science.services.ToastProxy;
 import com.science.util.DefaultUtil;
 import com.science.util.ShoucangUtil;
+import com.science.util.Url;
 import com.science.view.MyHeaderView;
 import com.science.view.MyImageButton;
 
@@ -15,6 +27,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -49,13 +63,21 @@ public class CommonContentActivity extends Activity{
     private String title;
     private Intent intent;
     private String theme;
-    private int article_type;
+    private int article_type1;
+    private int article_type2;
+    private String article_type = "";
     private int article_id;
     private String url;
     //function fm
+    private MyApplication application;
     private FunctionManage fm;
     private ShoucangUtil shoucang_util;
 
+    /*一些状态信息*/
+    private final int  SEND_MAIL_OK = 0;
+    private final int  SEND_MAIL_FAIL = 1;
+    private final int  LIKE_CONTENT_OK = 2;
+    private final int  LIKE_CONTENT_FAIL = 3;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -66,11 +88,15 @@ public class CommonContentActivity extends Activity{
 		
 		intent = this.getIntent();
 		url = intent.getStringExtra("url");
+		
 		act_class = intent.getStringExtra("act_class");
 		theme = intent.getStringExtra("theme");
-		article_type = intent.getIntExtra("article_type", DefaultUtil.INAVAILABLE);
-		article_id = intent.getIntExtra("article_id", DefaultUtil.INAVAILABLE);
+		article_type1 = intent.getIntExtra("articleType1", DefaultUtil.INAVAILABLE);
+		article_type2 = intent.getIntExtra("articleType2", DefaultUtil.INAVAILABLE);
+		article_type = intent.getStringExtra("articleType");
+		article_id = intent.getIntExtra("id", DefaultUtil.INAVAILABLE);
 		
+		application = MyApplication.getInstance();
 		fm = new FunctionManage(this);
 		
 		
@@ -87,7 +113,7 @@ public class CommonContentActivity extends Activity{
 		//初始化未收藏
 		shoucang_util = new ShoucangUtil(this);
 		shoucang = checkShoucang();
-		shoucang_btn.updateButtonState(shoucang);
+		//shoucang_btn.updateButtonState(shoucang);
 		
 
 	}
@@ -99,6 +125,9 @@ public class CommonContentActivity extends Activity{
 		bar = (ProgressBar)main.findViewById(R.id.documentcontentmyProgressBar);
 		
 		MyHeaderView header_view = (MyHeaderView) main.findViewById(R.id.item_header);
+		
+		
+		
 		if(act_class.equals("document"))
 			header_view.SetHeaderText("文献速递");
 		else if(act_class.equals("project"))
@@ -108,6 +137,18 @@ public class CommonContentActivity extends Activity{
 			title=intent.getStringExtra("title");
 			header_view.SetHeaderText(title);
 		}
+		else if(act_class.equals("关键词分析")){
+			//title = intent.getStringExtra("title");
+			header_view.SetHeaderText("关键词分析");
+		}
+		else if(act_class.equals("业界动态")){
+			header_view.SetHeaderText("业界动态");
+		}else if(act_class.equals("我的收藏")){
+			header_view.SetHeaderText("我的收藏");
+		}
+		
+		
+		header_view.SetHeaderText(act_class);
 		go_back_btn = (MyImageButton)findViewById(R.id.go_back);
 		shoucang_btn = (MyImageButton)findViewById(R.id.shoucang);
 		comment_btn = (MyImageButton)findViewById(R.id.common_comment_btn);
@@ -139,7 +180,7 @@ public class CommonContentActivity extends Activity{
 				
 				
 				
-				MyApplication application = MyApplication.getInstance();
+				final MyApplication application = MyApplication.getInstance();
 				if(!application.IsLogin())
 				{
 					fm.Login();
@@ -158,17 +199,18 @@ public class CommonContentActivity extends Activity{
 							shoucang = true;
 							shoucang_btn.updateButtonState(true);
 							//收藏至本地
-							shoucang_util.addToLocalShoucang(article_type, article_id, theme, "四天前", url);
-							toastAtBottom("收藏成功");
+							//shoucang_util.addToLocalShoucang(application.user_name,Integer.parseInt(article_type), article_id, theme, "四天前", url);
+							//toastAtBottom("收藏成功");
+							Toast.makeText(CommonContentActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
 							break;
 						case ShoucangUtil.RESULT_ADD_FAIL:
-							toastAtBottom("收藏失败");
+							//toastAtBottom("收藏失败");
 							break;
 						case ShoucangUtil.RESULT_DELETE_OK:
 							shoucang = false;
 							shoucang_btn.updateButtonState(false);
-							shoucang_util.dropFromLocalShoucang(article_type, article_id);
-							toastAtBottom("取消收藏");
+							//shoucang_util.dropFromLocalShoucang(application.user_name,Integer.parseInt(article_type), article_id);
+							//toastAtBottom("取消收藏");
 							break;
 						case ShoucangUtil.RESULT_DELETE_FAIL:
 							toastAtBottom("无法取消收藏");
@@ -177,6 +219,7 @@ public class CommonContentActivity extends Activity{
 					}
 				};
 				shoucang_util.setOnShoucangListener(listener);
+				//shoucang_util.addShoucang(article_type, article_id, url, theme);
 				if(!shoucang)
 			    {
 			    	
@@ -202,8 +245,17 @@ public class CommonContentActivity extends Activity{
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				
-				toastAtBottom("喜欢    +  1");
+				if(!application.IsLogin())
+				{
+					fm.Login();
+				}
+				else
+				{
+				String url = Url.composeLikeContentUrl(article_type, article_id);
+				ContentLikeThread thread = new ContentLikeThread(url);
+				new Thread(thread).start();
+				}
+                
 
 			}
 			
@@ -217,8 +269,8 @@ public class CommonContentActivity extends Activity{
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
 				intent.putExtra("theme",theme);
-				intent.putExtra("article_type", article_type);
-				Log.i("article_type", ""+article_type);
+				intent.putExtra("articleType", article_type);
+				//Log.i("article_type", "" + article_type1);
 				intent.putExtra("article_id", article_id);
 				intent.setClass(CommonContentActivity.this, CommentDetailActivity.class);
 				startActivity(intent);
@@ -246,33 +298,66 @@ public class CommonContentActivity extends Activity{
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				EditText edit_box = new EditText(CommonContentActivity.this);
-				//edit_box.setText(other_tag_str);
-				edit_box.setHint("请输入邮箱");
+				
+				
+				
+				
+				if(!application.IsLogin())
+				{
+					fm.Login();
+					
+				}
+				
+				else{
+				
+				
+				LinearLayout layout = new LinearLayout(CommonContentActivity.this);
+				layout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+				layout.setOrientation(LinearLayout.VERTICAL);
+				final EditText email_edit_box = new EditText(CommonContentActivity.this);
+				email_edit_box.setText(application.user_name);
+				
+				
+				final EditText title_edit_box = new EditText(CommonContentActivity.this);
+				title_edit_box.setText(theme);
+				
+				
+				final EditText content_edit_box = new EditText(CommonContentActivity.this);
+				content_edit_box.setText("点击链接" + url + "   "+ "进入文章");
+				
+				layout.addView(email_edit_box);
+				layout.addView(title_edit_box);
+				layout.addView(content_edit_box);
+				
 				new AlertDialog.Builder(CommonContentActivity.this)
 				.setTitle("发送文章到邮箱")
-				.setIcon(android.R.drawable.ic_dialog_info)
-				.setView(edit_box)
+				.setIcon(R.drawable.icon_email)
+				.setView(layout)
 				.setPositiveButton("发送", new DialogInterface.OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						//other_tag_str = other_input_ed.getText().toString();
-						//other_tag_tv.setText(other_tag_str);
+				
+						String str_url = Url.composeSendToEmailUrl(email_edit_box.getText().toString(), 
+								title_edit_box.getText().toString(), content_edit_box.getText().toString());
+						SendEmailThread thread = new SendEmailThread(str_url);
+						new Thread(thread).start();
 					}
 				})
 				.setNegativeButton("取消",null)
 				.show();
 			}
-	    	
+		}
+			
+			
 	    });
+	    
 	}
 	
 	
 	public boolean checkShoucang()
 	{
-		return shoucang_util.containInShoucang(article_type, article_id);
+		return shoucang_util.containInShoucang(article_type1, article_id);
 	}
 	
 	
@@ -326,5 +411,148 @@ public class CommonContentActivity extends Activity{
 		toast.setToastView(CommonContentActivity.this, info, ToastProxy.LENGTH_SHORT);
 		toast.show();
 	}
+	
+	
+	
+	
+	/**
+	 * 
+	 * @author ming
+	 *发送文章到邮箱的线程
+	 */
+	private class SendEmailThread implements Runnable{
+
+		private String str_url;
+		public SendEmailThread(String url){
+			
+			this.str_url = url;
+		}
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			
+			URL url;
+			try {
+				url = new URL(str_url);
+				URLConnection conn = url.openConnection();
+				conn.connect();
+				InputStream is = conn.getInputStream();
+				InputStreamReader reader = new InputStreamReader(is,"UTF-8");
+				BufferedReader buf_reader = new BufferedReader(reader);
+				StringBuffer sb = new StringBuffer();
+				String str;
+				while((str = buf_reader.readLine()) != null)
+				{
+					sb.append(str);
+				}
+				
+				String str_temp = sb.toString();
+				JSONObject obj = new JSONObject(str_temp);
+				int a = str_temp.indexOf("{");
+				str_temp = str_temp.substring(a);
+				int code = Integer.parseInt(obj.getString("code"));
+				if(code == 200)
+					handler.sendEmptyMessage(SEND_MAIL_OK);
+				else
+					handler.sendEmptyMessage(SEND_MAIL_FAIL);
+					
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			
+		}
+		
+	};
+	
+	
+	
+	
+	/**
+	 * 
+	 * @author ming
+	 *点赞文章的线程
+	 */
+	private class ContentLikeThread implements Runnable{
+
+		private String str_url;
+		public ContentLikeThread(String url){
+			
+			this.str_url = url;
+		}
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			
+			URL url;
+			try {
+				url = new URL(str_url);
+				URLConnection conn = url.openConnection();
+				conn.connect();
+				InputStream is = conn.getInputStream();
+				InputStreamReader reader = new InputStreamReader(is,"UTF-8");
+				BufferedReader buf_reader = new BufferedReader(reader);
+				StringBuffer sb = new StringBuffer();
+				String str;
+				while((str = buf_reader.readLine()) != null)
+				{
+					sb.append(str);
+				}
+				
+				String str_temp = sb.toString();
+				JSONObject obj = new JSONObject(str_temp);
+				int a = str_temp.indexOf("{");
+				str_temp = str_temp.substring(a);
+				int code = Integer.parseInt(obj.getString("code"));
+				if(code == 200)
+					handler.sendEmptyMessage(LIKE_CONTENT_OK);
+				else
+					handler.sendEmptyMessage(LIKE_CONTENT_FAIL);
+					
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			
+		}
+		
+	};
+	
+	private Handler handler = new Handler(){
+	   @Override
+	   public void handleMessage(Message msg){
+		   
+		   switch(msg.what){
+		   
+		   case SEND_MAIL_OK:
+			   Toast.makeText(CommonContentActivity.this, "成功发送至邮箱", Toast.LENGTH_SHORT).show();
+			   break;
+			   
+		   case SEND_MAIL_FAIL:
+			   Toast.makeText(CommonContentActivity.this, "发送失败，请检查邮箱是否正确或者网络连接", Toast.LENGTH_SHORT).show();
+			   break;
+		   case LIKE_CONTENT_OK:
+			   Toast.makeText(CommonContentActivity.this, "喜欢 + 1", Toast.LENGTH_SHORT).show();
+			   //toastAtBottom("喜欢    +  1");
+			   break;
+		   case LIKE_CONTENT_FAIL:
+			   break;
+		   }
+	   }
+	};
 	
 }
