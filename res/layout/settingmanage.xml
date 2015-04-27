@@ -28,7 +28,7 @@
         android:textColor="@color/white"
         android:textSize="20dip"
         android:layout_marginTop="5dip"
-        android:text = "Charlie"/>
+        android:text = "未登录"/>
     </LinearLayout>
     
     

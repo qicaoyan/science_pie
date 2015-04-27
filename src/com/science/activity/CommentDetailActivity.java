@@ -47,6 +47,7 @@ import android.text.format.DateFormat;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -163,7 +164,7 @@ public class CommentDetailActivity extends Activity {
     	if(comment_theme != null)
     	tv.setText(comment_theme);
     	back_btn = (MyImageButton)findViewById(R.id.go_back);
-
+    	comment_list_view.setAdapter(comment_list_adapter);
     	
     	
     }
@@ -372,170 +373,131 @@ public class CommentDetailActivity extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
-			View v = getLayoutInflater().inflate(R.layout.comment_item, null);
-            convertView = v;
 			
-			TextView customer_name_tv = (TextView) v.findViewById(R.id.customer_name_tv);
-			TextView date_tv = (TextView) v.findViewById(R.id.date_tv);
-			final TextView comment_detail_tv = (TextView) v.findViewById(R.id.comment_detail_tv);
+			ViewHolder holder = null;
+			if(convertView == null){
+				holder = new ViewHolder();
+				convertView = LayoutInflater.from(CommentDetailActivity.this).inflate(R.layout.comment_item, null);
+			    holder.customer_name_tv = (TextView) convertView.findViewById(R.id.customer_name_tv);
+			    holder.comment_time_tv = (TextView) convertView.findViewById(R.id.comment_time_tv);
+			    holder.comment_content_tv = (TextView) convertView.findViewById(R.id.comment_detail_tv);
+			    holder.comment_replay_view =  convertView.findViewById(R.id.comment_replay);
+			    holder.comment_like_btn = (MyImageButton) convertView.findViewById(R.id.comment_like);
+			    holder.comment_like_num_tv = (TextView)convertView.findViewById(R.id.comment_like_num);
+			    holder.comment_delete_tv = (TextView) convertView.findViewById(R.id.comment_delete);
+			    
+			    convertView.setTag(holder);
+			}
+			else{
+				holder = (ViewHolder) convertView.getTag();
+			}
 			
-			Comment cu = comment_list.get(position);
-			if(cu == null)
-				return null;
-			String customer_name = cu.customer_name;
-			String comment_time = cu.comment_time;
-            int    comment_like_num = cu.comment_like_num;
 			
-			customer_name_tv.setText(customer_name);
-			date_tv.setText(comment_time);
-			comment_detail_tv.setClickable(true);
-			comment_detail_tv.setMovementMethod(LinkMovementMethod.getInstance());  
-			OnShowMoreListener listener = new OnShowMoreListener(){
+			if(holder != null){
+				
+				final Comment cu = comment_list.get(position);
+				if(cu == null)
+					return null;
 
-				@Override
-				public void showMore() {
-					// TODO Auto-generated method stub
-					comment_list_adapter.notifyDataSetChanged();
+				holder.customer_name_tv.setText(cu.customer_name);
+				holder.comment_time_tv.setText(cu.comment_time);
+				holder.comment_content_tv.setText(cu.comment_content);
+				holder.comment_content_tv.setMovementMethod(LinkMovementMethod.getInstance());
+				OnShowMoreListener listener = new OnShowMoreListener(){
+
+					@Override
+					public void showMore() {
+						// TODO Auto-generated method stub
+						comment_list_adapter.notifyDataSetChanged();
+					}
 					
+				};
+				
+				cu.setSpannableCommentContent(holder.comment_content_tv, listener);
+				
+				final int index = position;
+				if(application.user_name.equals(cu.customer_name)){
+					holder.comment_replay_view.setVisibility(View.GONE);
+					holder.comment_delete_tv.setVisibility(View.VISIBLE);
+					//holder.comment_delete_tv.setVisibility(Paint.UNDERLINE_TEXT_FLAG);
+					holder.comment_delete_tv.setOnClickListener(new OnClickListener(){
+						@Override
+						public void onClick(View arg0) {
+							deleteComment(index);
+						}
+					});
+				}else{
+					holder.comment_replay_view.setOnClickListener(new OnClickListener(){
+
+						@Override
+						public void onClick(View arg0) {
+							// TODO Auto-generated method stub
+							if(application.IsLogin()){
+								replyComment(index);
+							}
+							else{
+								fm.Login();
+							}
+						}
+						
+					});
 				}
 				
-			};
-			
-			
-			cu.setSpannableCommentContent(comment_detail_tv,listener);
-			
-			final int index = position;
-			
-			
-			
-			
-
-			
-			
-			
-			
-			//设置回复事件
-			View rv = v.findViewById(R.id.comment_replay);
-			if(application.user_name.equals(customer_name))
-			{
-				rv.setVisibility(View.GONE);
-			}
-			else
-			{
-			rv.setOnClickListener(new OnClickListener(){
-
-				@Override
-				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
-					if(application.IsLogin())
-					{
-					   replyComment(index);
-					}
-					else
-					{
-						fm.Login();
-					}
+				
+				
+				//设置点赞的事件
+				Animation like_anim = AnimationUtils.loadAnimation(getBaseContext(), R.anim.comment_like_anim);
+				if(cu.comment_like_num > 0){
+					holder.comment_like_num_tv.setText("" + cu.comment_like_num);
+				}else
+				{
+					holder.comment_like_num_tv.setVisibility(View.GONE);
 				}
 				
-			});
-			}
-			
-			//设置删除事件
-			TextView tv = (TextView) v.findViewById(R.id.delete_reply);
-			if(application.user_name.equals(customer_name))
-			{
-				tv.setVisibility(View.VISIBLE);
-				tv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-				tv.setOnClickListener(new OnClickListener(){
+				holder.comment_like_btn.setOnClickListener(new OnClickListener(){
 
 					@Override
 					public void onClick(View arg0) {
 						// TODO Auto-generated method stub
-						deleteComment(index);
+						if(application.IsLogin()){
+							comment_list.get(index).like = true;
+							cu.comment_id = comment_list.get(index).comment_id;
+							new Thread(upload_like_thread).start();
+						}
 					}
 					
 				});
-			}
-			else
-				tv.setVisibility(View.GONE);
-			
-			
-			
-			
-			//设置点赞的动画
-			final Animation like_anim = AnimationUtils.loadAnimation(getBaseContext(), R.anim.comment_like_anim);
-			final MyImageButton  like_btn = (MyImageButton) v.findViewById(R.id.comment_like);
-			final TextView       like_num_tv = (TextView) v.findViewById(R.id.comment_like_num);
-			
-			if(comment_like_num > 0){
-				like_num_tv.setText(""+comment_like_num);
-			}
-			else
-			{
-				like_num_tv.setVisibility(View.INVISIBLE);
-			}
-			
-			like_anim.setAnimationListener(new AnimationListener(){
-
-				@Override
-				public void onAnimationEnd(Animation arg0) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void onAnimationRepeat(Animation arg0) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void onAnimationStart(Animation arg0) {
-					// TODO Auto-generated method stub
-					if(!comment_list.get(index).like)
-						like_btn.setBackground(getResources().getDrawable(R.drawable.icon_like1));
-					else
-					{
-						like_btn.setBackground(getResources().getDrawable(R.drawable.icon_like2));
-					}
-				}
 				
-			});
+			}
 			
 			
-			/*设置点赞事件*/
 			
-			like_btn.setOnClickListener(new OnClickListener(){
-
-				@Override
-				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
-	                if(!application.IsLogin())
-	                {
-	                	fm.Login();
-	                }
-	                else
-	                {
-//					if(!comment_list.get(index).like)
-//					{
-						comment_list.get(index).like = true;
-						comment_id = comment_list.get(index).comment_id;
-						new Thread(upload_like_thread).start();
-//					}
-//					else
-//						comment_list.get(index).like = false;
-//					like_btn.startAnimation(like_anim);
-	                }
-//	                
-				}
-				
-			});
 			
+			
+			
+			
+			
+			
+	
 			
 			
 			return convertView;
 		}
     	
+		
+		
+		class ViewHolder{
+			
+			TextView customer_name_tv;
+			TextView comment_time_tv ;
+			TextView comment_content_tv;
+			View comment_replay_view ;
+			TextView comment_delete_tv;
+			MyImageButton  comment_like_btn;
+			TextView       comment_like_num_tv;
+		}
+		
+		
     }
     
     
@@ -545,7 +507,7 @@ public class CommentDetailActivity extends Activity {
 		public void run() {
 			// TODO Auto-generated method stub
 			comment_list_url = Url.composeCommentListUrl(article_type, article_id, max_id);
-			Log.i("comment_list_url", comment_list_url);
+			//Log.i("comment_list_url", comment_list_url);
 				URL url;
 				try {
 					url = new URL(comment_list_url);
@@ -558,10 +520,11 @@ public class CommentDetailActivity extends Activity {
 					if(temp != null)
 					{
 						//comment_list = temp;
-						Collections.sort(temp);
-						comment_list = temp;
+						//Collections.sort(temp);
+						//comment_list = temp;
+						if(Comment.mergeCommentList(comment_list, temp))
 						handler.sendEmptyMessage(LOADING_COMMENT_SUCCEED);
-						Log.i("LoadingInfo", "加载评论成功");	
+						//Log.i("LoadingInfo", "加载评论成功");	
 					}
 					else
 					{
@@ -627,7 +590,7 @@ public class CommentDetailActivity extends Activity {
 			// TODO Auto-generated method stub
 			String str_url = Url.compseReleaseCommentUrl(comment_id,root_id, 
                     article_type, article_id, comment_content);
-			Log.i("uploading_comment_url", str_url);
+			    
 				URL url;
 				try {
 					url = new URL(str_url);
@@ -636,7 +599,9 @@ public class CommentDetailActivity extends Activity {
 					InputStream is = conn.getInputStream();
 					boolean state = getResultState(is);
 					if(state)
+					{
 						handler.sendEmptyMessage(UPLOAD_COMMENT_SUCCEED);
+					}
 					else
 						handler.sendEmptyMessage(UPLOAD_COMMENT_FAIL);
 						
@@ -701,7 +666,7 @@ public class CommentDetailActivity extends Activity {
     		{
     		case LOADING_COMMENT_SUCCEED:
     			comment_list_adapter.notifyDataSetChanged();
-    			comment_list_view.setAdapter(comment_list_adapter);
+    			//comment_list_view.setAdapter(comment_list_adapter);
     			break;
     		case LOADING_COMMENT_FAIL:
     			
@@ -711,9 +676,9 @@ public class CommentDetailActivity extends Activity {
     			Toast.makeText(getBaseContext(), "评论成功", Toast.LENGTH_SHORT).show();
     			input_box.setText("");
     			input_box.setHint("我来说两句");
-    			if(comment_list != null)
-    			    comment_list.clear();
-    			comment_list_adapter.notifyDataSetChanged();
+//    			if(comment_list != null)
+//    			    comment_list.clear();
+    			//comment_list_adapter.notifyDataSetChanged();
     			send_btn.setEnabled(false);
     			send_btn.setImageResource(R.drawable.send_disable);
     			requestData();

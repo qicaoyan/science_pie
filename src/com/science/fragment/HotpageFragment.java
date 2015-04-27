@@ -179,7 +179,7 @@ public class HotpageFragment extends Fragment {
 				Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
 				intent.setClass(activity, CommonContentActivity.class);//从哪里跳到哪里
 				intent.putExtra("url", url);//传递数据
-				intent.putExtra("title", title);
+				intent.putExtra("theme", title);
 				String act_class = "";
 				if(class_id == 4)
 					act_class = "创业项目";
@@ -575,7 +575,7 @@ public class HotpageFragment extends Fragment {
 					
 					
 					   if(drawable == null){
-						   holder1.imageView.setImageResource(R.drawable.sync);
+						   holder1.imageView.setImageResource(R.drawable.icon_empty);
 					   }
 					   else
 					   {

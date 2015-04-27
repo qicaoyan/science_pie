@@ -292,37 +292,43 @@ public class AppUtil {
     	switch (Integer.parseInt(code)) {
     	
 		case 0:
-			 name="科技新闻/趋势";
+			 name="访问学者";
 			break;
 		case 1:
-			 name="项目申报心得";
+			 name="招聘信息";
 			break;
 		case 2:
-			name="项目解读/动态";
+			name="学术前沿";
 			break;
 		case 3:
-			name="热门需求";
-			break;
-		case 101:
-			name="热门项目";
-			break;
-		case 102:
-			name="即将到期项目";
-			break;
-		case 103:
 			name="项目解读";
 			break;
-		case 201:
+		case 4:
+			name = "创业项目";
+			break;
+		case 5:
+			name="热门项目";
+			break;
+		case 6:
+			name="即将到期项目";
+			break;
+		case 7:
 			name="中文文献";
 			break;
-		case 202:
+		case 8:
 			name="英文文献";
 			break;
-		case 203:
+		case 9:
 			name="工作文献";
 			break;
-		case 204:
-			name="NSF";
+		case 10:
+			name="NSF文献";
+			break;
+		case 11:
+			name="业界动态";
+			break;	
+		case 12:
+			name = "关键词分析";
 			break;
 		default:
 			break;

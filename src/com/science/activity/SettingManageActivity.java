@@ -29,6 +29,7 @@ public class SettingManageActivity extends Activity{
 	private LinearLayout myMessage=null;
 	private LinearLayout mySetting = null;
 	private CircularImage    my_photo;
+	private TextView         my_nickname = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,6 +63,7 @@ public class SettingManageActivity extends Activity{
 		mySetting = (LinearLayout)findViewById(R.id.setting_settings);
 		my_photo = (CircularImage) findViewById(R.id.setting_my_photo);
 		my_photo.setImageResource(R.drawable.shezhitouxiang);
+		my_nickname = (TextView) findViewById(R.id.setting_info_my_name);
 	}
 	
 	private void InitData()
@@ -75,6 +77,9 @@ public class SettingManageActivity extends Activity{
 				onBackPressed();
 			}
 		});
+		
+		if(myApplication.IsLogin())
+		my_nickname.setText(myApplication.user_name);
 	}
 	
 	private void SetListener()
@@ -114,12 +119,26 @@ public class SettingManageActivity extends Activity{
 				}
 				break;
 			case R.id.settingpublish:
+				if(myApplication.IsLogin())
+				{
 				Intent publish=new Intent(SettingManageActivity.this,MyPublishActivity.class);
 				startActivity(publish);
+				}
+				else{
+					fm.Login();
+				}
 				break;
 			case R.id.settingmymessage:
 //				Intent message=new Intent(SettingManageActivity.this,MyMessageActivity.class);
 //				startActivity(message);
+				if(myApplication.IsLogin())
+				{
+				   Intent message=new Intent(SettingManageActivity.this,MyMessageActivity.class);
+				  startActivity(message);
+				}
+				else{
+					fm.Login();
+				}
 				break;
 			case R.id.setting_settings:
 				Intent setting =new Intent(SettingManageActivity.this,MySettingActivity.class);

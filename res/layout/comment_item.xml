@@ -4,12 +4,16 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingTop="15dip"
+    android:paddingLeft="5dip"
+    android:paddingRight="5dip"
     >
     
     <LinearLayout 
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/comment_bg">
+        android:background="@drawable/patchable_corner_bg"
+        android:paddingBottom="20dip">
+        
     <ImageView android:id="@+id/photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,7 +33,7 @@
             android:text="Science"
             android:textColor="@color/text_dark_gray"
             android:textSize="13sp"/>
-        <TextView android:id="@+id/date_tv"
+        <TextView android:id="@+id/comment_time_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="昨天  16:32"
@@ -107,7 +111,7 @@
            android:textSize="15sp"
            android:layout_marginLeft="10dip"
            android:visibility="gone"
-           android:id="@+id/delete_reply"
+           android:id="@+id/comment_delete"
            />
     
 

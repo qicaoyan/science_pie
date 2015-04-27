@@ -192,6 +192,10 @@ public class DocumentExpressActivity extends FragmentActivity {
 	    frag_saved_data.add(new ArrayList<Map<String,Object>>());
 	    frag_saved_data.add(new ArrayList<Map<String,Object>>());
 	    frag_saved_data.add(new ArrayList<Map<String,Object>>());
+	    
+	    
+	    
+	    
 	}
 	
 

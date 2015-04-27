@@ -72,7 +72,7 @@ public class MySettingActivity extends Activity {
 		
 		
 		my_photo_iv = (CircularImage)findViewById(R.id.setting_settings_my_photo);
-		my_photo_iv.setImageResource(R.drawable.profile_photo);
+		my_photo_iv.setImageResource(R.drawable.shezhitouxiang);
 		
 		
 		setting_setting_abount_view = findViewById(R.id.setting_setting_abount);

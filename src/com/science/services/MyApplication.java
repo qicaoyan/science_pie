@@ -38,7 +38,7 @@ public class MyApplication extends Application{
 	public static Map<String,String> my_keywords = null;
 	static MyApplication instance;
 	public static  String [] keywords=null;
-
+	public static boolean hasLauncher = false;;
 	public static String user_name = DefaultUtil.EMPTY;	//存储当前的用户名
 	public static String password = "";//最后肯定要改成加密的形式
 
@@ -80,7 +80,7 @@ public class MyApplication extends Application{
 			}
 		}
 		instance= this;
-
+		hasLauncher = true;
 		
 		
 		/*生成ResourceDefine 很重要*/

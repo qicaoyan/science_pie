@@ -124,14 +124,14 @@ public class MyPublishActivity extends Activity {
 		mypublisneed.setImageDrawable(getResources().getDrawable(R.drawable.wofabudexuqiu));
 		
 		resourceList=new ArrayList<Map<String,Object>>();
-		Map<String , Object> map1=new HashMap<String, Object>();
-		map1.put("title", "北京市关于征集2014年中央文化产业发展专项资金一般项目的通知");
-		map1.put("time", "4天前");
-		map1.put("url", "http://123.57.207.9/static/news/default/news_38.jpg");
-		map1.put("abstract", "项目摘要");
-		resourceList.add(map1);
-		
-		needListView.setAdapter(new MyAdapte(resourceList));
+//		Map<String , Object> map1=new HashMap<String, Object>();
+//		map1.put("title", "北京市关于征集2014年中央文化产业发展专项资金一般项目的通知");
+//		map1.put("time", "4天前");
+//		map1.put("url", "http://123.57.207.9/static/news/default/news_38.jpg");
+//		map1.put("abstract", "项目摘要");
+//		resourceList.add(map1);
+//		
+//		needListView.setAdapter(new MyAdapte(resourceList));
 	}
 	
 	private void SetListener()

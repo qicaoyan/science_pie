@@ -4,10 +4,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.science.interfaces.ListMerger;
 import com.science.interfaces.OnShowMoreListener;
 import com.science.util.DefaultUtil;
 
@@ -127,6 +129,15 @@ public class Comment implements Comparable{
 		
 		
 	}
+	
+	
+	
+	
+	public Comment(int comment_id,int root_id,int article_type,int article_id,String comment_content){
+		
+		
+	}
+	
 	
 	
 	
@@ -401,6 +412,67 @@ public class Comment implements Comparable{
 	private class Time{
 		public int year,month,day,hour,minute,second;
 	}
+
+	
+	
+	
+  public static boolean mergeCommentList(List<Comment> dst,List<Comment> src){
+	  
+	  ListMerger<Comment> merger = new ListMerger<Comment>(){
+
+		@Override
+		public boolean mergeTwoListBackward(List<Comment> list1,
+				List<Comment> list2) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean mergeTwoListForward(List<Comment> dst,
+				List<Comment> src) {
+			// TODO Auto-generated method stub
+			boolean merged = false;
+			if(dst == null || src == null)
+				return false;
+			
+			for(int i = 0;i < src.size();i++){
+
+				int id2 = (Integer) src.get(i).comment_id;
+				int j = 0;
+				for(j = 0;j < dst.size();j++){
+					int id1 = (Integer) dst.get(j).comment_id;
+					if(id1 == id2)
+					{
+						break;
+					}
+				}
+				
+				if(j >= dst.size())
+				{
+					dst.add(0,src.get(i));
+					merged = true;
+				}
+			}
+			
+			
+			return merged;
+		}
+
+		@Override
+		public boolean mergeTwoList(List<Comment> list1, List<Comment> list2,
+				boolean direction) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		  
+	  };
+	  
+	  
+	  
+	return  merger.mergeTwoListForward(dst, src);
+	  
+	  
+  }
 	
 	
 	

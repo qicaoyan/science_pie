@@ -15,23 +15,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/hotpagecontent"
-            android:orientation="vertical">"
+            android:orientation="vertical"
+            android:paddingTop="15dip"
+            android:paddingBottom="15dip"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip">
             
 				<LinearLayout 
 				    android:layout_width="match_parent"
 				    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dip"
-                    android:layout_marginLeft="20dip"
-                    android:layout_marginRight="20dip"
 				    android:id="@+id/hotpageblock1"
 				    android:orientation="vertical"
 				    >
-				    <ListView 
+				    <com.science.view.NoScrollListView 
 	                     android:layout_width="match_parent"
-	                     android:layout_height="wrap_content"
+	                     android:layout_height="match_parent"
 	                     android:background="@color/white"
-	                     android:id="@+id/hotpageListView1">	                     
-	                 </ListView> 
+	                     android:id="@+id/hotpageListView1"/>	                     
+	                 
 
 				    
                 	  <ProgressBar
@@ -46,46 +47,40 @@
 				    android:layout_width="match_parent"
 				    android:layout_height="wrap_content"
                     android:layout_marginTop="15dip"
-                    android:layout_marginLeft="20dip"
-                    android:layout_marginRight="20dip"
 				    android:orientation="vertical"
 				    >
-	                 <ListView 
+	                  <com.science.view.NoScrollListView 
 	                     android:layout_width="match_parent"
 	                     android:layout_height="wrap_content"
 	                     android:background="@color/white"
-	                     android:id="@+id/hotpageListView2"> 		                     
-	                 </ListView>
+	                     android:id="@+id/hotpageListView2"/> 		                     
+	                 
 				</LinearLayout>
 								<LinearLayout 
 				    android:layout_width="match_parent"
 				    android:layout_height="wrap_content"
                     android:layout_marginTop="15dip"
-                    android:layout_marginLeft="20dip"
-                    android:layout_marginRight="20dip"
 				    android:orientation="vertical"
 				    >
-	                 <ListView 
+	                  <com.science.view.NoScrollListView 
 	                     android:layout_width="match_parent"
 	                     android:layout_height="wrap_content"
 	                     android:background="@color/white"
-	                     android:id="@+id/hotpageListView3"> 		                     
-	                 </ListView>
+	                     android:id="@+id/hotpageListView3"/> 		                     
+	                 
 				</LinearLayout>
 				<LinearLayout 
 				    android:layout_width="match_parent"
 				    android:layout_height="wrap_content"
                     android:layout_marginTop="15dip"
-                    android:layout_marginLeft="20dip"
-                    android:layout_marginRight="20dip"
 				    android:orientation="vertical"
 				    >
-	                 <ListView 
+	                 <com.science.view.NoScrollListView 
 	                     android:layout_width="match_parent"
 	                     android:layout_height="wrap_content"
 	                     android:background="@color/white"
-	                     android:id="@+id/hotpageListView4"> 		                     
-	                 </ListView>
+	                     android:id="@+id/hotpageListView4"/> 		                     
+	                 
 				</LinearLayout>
 
         </LinearLayout>

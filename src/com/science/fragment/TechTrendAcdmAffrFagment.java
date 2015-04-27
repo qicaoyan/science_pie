@@ -284,6 +284,8 @@ public class TechTrendAcdmAffrFagment extends Fragment {
 				intent.putExtra("act_class", act_class);
 				intent.putExtra("url", url);
 				intent.putExtra("theme", theme);
+				intent.putExtra("articleType", tech_trend_acdm_affr_list.get(index).get("articleType").toString());
+				intent.putExtra("id", (Integer)tech_trend_acdm_affr_list.get(index).get("id"));
 				activity.startActivity(intent);
 			}
 			

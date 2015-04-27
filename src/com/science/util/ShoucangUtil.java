@@ -54,6 +54,7 @@ public class ShoucangUtil {
 	public void addShoucang(String article_type,int article_id,String url,String title)
 	{
 		String str_url  = Url.composeAddShoucangUrl(article_type, article_id, url, title);
+		Log.i("str_url_shoucang", str_url);
 		//Log.i("add_shoucang_url", str_url);
 		new Thread(new ShoucangRunnable(str_url,ADD)).start();
 	}

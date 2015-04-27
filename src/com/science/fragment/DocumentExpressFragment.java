@@ -168,10 +168,8 @@ public class DocumentExpressFragment extends Fragment  implements OnLoadingState
     	
     	if(sb == null)
     		sb = new StringBuffer(DefaultUtil.EMPTY);
-    	this.type = type;
-    	this.keywords = sb;
-    	
-    	int tab = this.type - DocumentExpressActivity.DOC_CHI;
+
+    	int tab = type - DocumentExpressActivity.DOC_CHI;
     	if(tab > 3 && tab < 0)
     		return ;
     	
@@ -184,7 +182,6 @@ public class DocumentExpressFragment extends Fragment  implements OnLoadingState
     		for(int i = 0;i < 4;i++)
     		DataCache.doc_lists.add(new ArrayList<Map<String,Object>>());
     	}
-    	
     	
     	
     	//改变关键词或者类型
@@ -202,8 +199,10 @@ public class DocumentExpressFragment extends Fragment  implements OnLoadingState
     		}
     		loadable = true;
     	}
-    	
-    	
+
+    	this.type = type;
+    	this.keywords = null;
+    	this.keywords = new StringBuffer(sb.toString());
     	if(!loadable)
     		return;
     	
@@ -220,6 +219,13 @@ public class DocumentExpressFragment extends Fragment  implements OnLoadingState
 //        	else
 //        	{
             	str_url = Url.composeDocListUrl(pdate,id, type, sb.toString());
+            	
+            	if(doc_list_view != null && doc_footer_view != null)
+				if(doc_list_view.getFooterViewsCount() <= 0)
+					doc_list_view.addFooterView(doc_footer_view);
+            	 
+            	
+            	//Log.i("doc_str_url", str_url);
             	requestData();
 //        	}
         }
@@ -546,9 +552,9 @@ public class DocumentExpressFragment extends Fragment  implements OnLoadingState
 
 		@Override 
         public void onScrollStateChanged(AbsListView listview, int scrollState) { 
-	        if (scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {  
+	        if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {  
 	            // 判断是否滚动到底部  
-	            if (listview.getLastVisiblePosition() + 1== listview.getCount() && pullable && loadable) {  
+	            if(( (listview.getLastVisiblePosition() + 1 == listview.getCount()) || listview.getLastVisiblePosition() == listview.getCount() - 2)&& loadable) {  
 	                //加载更多功能的代码  
 	            	addDataForListView(); 
 	            }  

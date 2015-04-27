@@ -6,13 +6,16 @@
     
     <TextView 
         android:id="@+id/doc_title"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dip"
+        
         android:paddingLeft="30dip"
+        android:ellipsize="end"
         android:maxLines="2"
         android:paddingRight="30dip"
-        android:textSize="16sp"
+        android:textSize="18sp"
+        android:lineSpacingMultiplier="1.2"
         android:textColor="@color/text_dark_gray"
         android:text="北京市关于征集2014年中央文化产业发展专项资金一般项目的通知"/>
 

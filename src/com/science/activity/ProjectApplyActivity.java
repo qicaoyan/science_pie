@@ -169,7 +169,7 @@ public class ProjectApplyActivity extends FragmentActivity {
 		proj_view_pager.setCurrentItem(0);
 		proj_fragment_hot.loadProject(proj_src1, proj_src2, proj_type, 0, DefaultUtil.EMPTY);
 		//设置proj_apply的header
-		proj_apply_header.SetHeaderText("项目申请");
+		proj_apply_header.SetHeaderText("项目申报");
 		String[] header_btn_strs = {"热点项目","即将到期","创业项目","项目解读"};
 		proj_apply_header.SetHeaderButtons(header_btn_strs);
 		
@@ -551,7 +551,7 @@ private void setOnMenuClickListener(){
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
 				&& event.getAction() == KeyEvent.ACTION_DOWN) {
-			this.finish();
+			
 			if(DataCache.hot_project_list != null)
 			DataCache.hot_project_list.clear();
 			
@@ -560,6 +560,7 @@ private void setOnMenuClickListener(){
 			
 			if(DataCache.expire_project_list != null)
 			DataCache.expire_project_list.clear();
+			this.finish();
 			return false;
 		} else {
 			return super.dispatchKeyEvent(event);

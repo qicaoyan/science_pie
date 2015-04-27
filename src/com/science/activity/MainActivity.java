@@ -84,7 +84,7 @@ public class MainActivity extends Activity {
 	 private ArrayList<View> pageViews;  
  
 	 private MyHeaderView myHeader=null;
-	 
+	 public static boolean hasLauncher = false;
 	 // ��������ͼƬLinearLayout
 	 private ViewGroup main;
  
@@ -147,7 +147,7 @@ public class MainActivity extends Activity {
         functionManage=new FunctionManage(MainActivity.this);
      // �����ޱ��ⴰ��
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        
+        hasLauncher = true;
         initVariable();
         initViews();
         setClickListener();    
@@ -746,25 +746,17 @@ public class MainActivity extends Activity {
 			}
 
 			
-
 			String url=list0.get(arg2).get("filename");
-
 			Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
 			intent.setClass(MainActivity.this, CommonContentActivity.class);//从哪里跳到哪里
 			intent.putExtra("url", url);//传递数据
-			intent.putExtra("title",getResources().getString(R.string.hotpage_title1));
+			intent.putExtra("title",getResources().getString(R.string.hotpage_title2));
 			intent.putExtra("act_class", "访问学者");
-			
 			//传递到CommonContent页面中
-			
 			int article_id = Integer.parseInt(list0.get(arg2).get("id"));
 			intent.putExtra("id", article_id);
 			String theme = list0.get(arg2).get("title");
-			
-			
 			intent.putExtra("theme", theme);
-			
-			
 			String article_type = list0.get(arg2).get("articleType");
 			intent.putExtra("articleType", article_type);
 			startActivity(intent);
@@ -792,7 +784,6 @@ public class MainActivity extends Activity {
 			
 
 			String url=list1.get(arg2).get("filename");
-			Log.v("test", url);
 			Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
 			intent.setClass(MainActivity.this, CommonContentActivity.class);//从哪里跳到哪里
 			intent.putExtra("url", url);//传递数据
@@ -803,7 +794,7 @@ public class MainActivity extends Activity {
 			intent.putExtra("id", article_id);
 			String theme = list1.get(arg2).get("title");
 			intent.putExtra("theme", theme);
-			String article_type = list0.get(arg2).get("articleType");
+			String article_type = list1.get(arg2).get("articleType");
 			intent.putExtra("articleType", article_type);
 			startActivity(intent);
 			
@@ -828,7 +819,6 @@ public class MainActivity extends Activity {
 			}
 
 			String url=list2.get(arg2).get("filename");
-			Log.v("test", url);
 			Intent intent=new Intent();//Intent可以在不同的应用程序的Activity发送数据
 			intent.setClass(MainActivity.this, CommonContentActivity.class);//从哪里跳到哪里
 			intent.putExtra("url", url);//传递数据
@@ -841,7 +831,7 @@ public class MainActivity extends Activity {
 			String theme = list2.get(arg2).get("title");
 			 intent.putExtra("class_id",3);
 			intent.putExtra("theme", theme);
-			String article_type = list0.get(arg2).get("articleType");
+			String article_type = list2.get(arg2).get("articleType");
 			intent.putExtra("articleType", article_type);
 			startActivity(intent);
 		}
@@ -878,7 +868,7 @@ public class MainActivity extends Activity {
 			intent.putExtra("id", article_id);
 			String theme = list3.get(arg2).get("title");
 			intent.putExtra("theme", theme);
-			String article_type = list0.get(arg2).get("articleType");
+			String article_type = list3.get(arg2).get("articleType");
 			intent.putExtra("articleType", article_type);
 			startActivity(intent);
 		}
