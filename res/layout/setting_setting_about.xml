@@ -79,7 +79,9 @@
             </LinearLayout>
             
             
-            <LinearLayout android:layout_width="match_parent" android:layout_height="0dip"
+            <LinearLayout 
+                android:id="@+id/setting_setting_fankui"
+                android:layout_width="match_parent" android:layout_height="0dip"
                 android:layout_weight="1"
                 android:paddingLeft="5dip"
                 android:paddingTop="5dip"

@@ -669,16 +669,18 @@ private void requestData(){
 			public void onItemClick(AdapterView<?> parent, View v, int position,
 					long id) {
 				// TODO Auto-generated method stub
-				
+				int receive_id = 0;
 				String url = "";
 				if("人力".equals(cooper_type)){
 					url = coop_list.get(position).getCooperResUrl();
+					receive_id = coop_list.get(position).getCooperId();
 				}else if("设备".equals(cooper_type)){
 					url = faci_list.get(position).getFaciResUrl();
 				}
-				
+				coop_list.get(position).getCooperId();
 				Intent intent = new Intent(activity,CoopDetailActivity.class);
 				intent.putExtra("url", url);
+				intent.putExtra("receive_id", receive_id);
 				activity.startActivity(intent);
 //				String url = application.ComposeToken(Url.ProjectContentBaseUrl) + "&id=" + coop_list.get(position).get("id");
 //				Log.i("proj_item_url", url);

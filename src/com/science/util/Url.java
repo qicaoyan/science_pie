@@ -54,6 +54,7 @@ public class Url {
 	public static String DeleteShoucangURL = Url.BASEURL + "collection/deleteCollection?";
 	
 	public static String SendToEmailBaseUrl = Url.BASEURL + "mail/sendMail?";
+	
 //	public static String HOTPAGEURL0="http://10.107.7.48:8080/hot/hotList?typeId=0&plateId=";
 //	public static String HOTPAGEURL1="http://10.107.7.48:8080/hot/hotList?typeId=0&plateId=";
 //	public static String HOTPAGEURL2="http://10.107.7.48:8080/hot/hotList?typeId=0&plateId=";
@@ -76,6 +77,9 @@ public class Url {
 	public static String EditMyInfoUrl = Url.BASEURL + "getMyData/updateData?";
 	
 	public static String GetMyInfoUrl = Url.BASEURL + "getMyData/getData?";
+	public static String SubmitFeedbackUrl = Url.BASEURL + "feedback/submitFb?";
+	public static String SendMessageUrl = Url.BASEURL + "message/sendMessage?";
+	
 	public static String composeUrl(String ... args)
 	{
 		StringBuffer sb = new StringBuffer();
@@ -511,5 +515,29 @@ public class Url {
     public static String composeGetMyInfoUrl(){
     	
     	return composeUrl(Url.GetMyInfoUrl,"sid=",MyApplication.sidString);
+    }
+    
+    public static String composeSubmitFeedbackUrl(String fd_content,String eid){
+    	
+    	try {
+			fd_content = URLEncoder.encode(fd_content, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return composeUrl(Url.SubmitFeedbackUrl,"sid=",MyApplication.sidString,"&fdContent=",fd_content,"&eid=",eid);
+    }
+    
+public static String composeSendMessageUrl(int receiver_id,String message){
+    	
+    	try {
+    		message = URLEncoder.encode(message, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return composeUrl(Url.SendMessageUrl,"sid=",MyApplication.sidString,"&receiver_id=",""+receiver_id,"&message=",message);
     }
 }

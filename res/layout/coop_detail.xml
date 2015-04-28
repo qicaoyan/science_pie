@@ -22,7 +22,9 @@
        android:layout_alignParentBottom="true">
        
        
-       <TextView android:background="#363938"
+       <TextView 
+           android:id="@+id/coop_detail_contact"
+           android:background="#363938"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            android:layout_marginLeft="50dip"
