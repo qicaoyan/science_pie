@@ -14,11 +14,11 @@
         android:background="@drawable/patchable_corner_bg"
         android:paddingBottom="20dip">
         
-    <ImageView android:id="@+id/photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/photo"
+    <com.science.view.CircularImage android:id="@+id/comment_photo"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
         android:paddingLeft="10dip"
+        android:src="@drawable/shezhitouxiang"
         android:layout_marginTop="10dip"/>
     
     <LinearLayout android:layout_width="wrap_content"

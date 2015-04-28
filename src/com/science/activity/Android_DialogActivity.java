@@ -507,6 +507,8 @@ public class Android_DialogActivity extends Activity {
 		public boolean dispatchKeyEvent(KeyEvent event) {
 			if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
 					&& event.getAction() == KeyEvent.ACTION_DOWN) {
+				if(p_dialog != null)
+					p_dialog.dismiss();
 				finish();
 //	         if(p_dialog != null){
 //	        	 p_dialog.cancel();
@@ -516,7 +518,7 @@ public class Android_DialogActivity extends Activity {
 //    		if(p_dialog == null){
 //    			finish();
 //    		}
-			return true;
+			return false;
 			} else {
 				return super.dispatchKeyEvent(event);
 			}

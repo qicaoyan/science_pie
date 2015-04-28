@@ -40,6 +40,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
 import android.view.Window;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.widget.EditText;
@@ -74,6 +75,7 @@ public class CommonContentActivity extends Activity{
     private MyApplication application;
     private FunctionManage fm;
     private ShoucangUtil shoucang_util;
+    private WebSettings settings;
     private boolean enter_from_push;//表明是不是从push入口处进来
     /*一些状态信息*/
     private final int  SEND_MAIL_OK = 0;
@@ -125,6 +127,7 @@ public class CommonContentActivity extends Activity{
 	{
 		
 		webView=(WebView)main.findViewById(R.id.documentcontentwebview);
+		
 		bar = (ProgressBar)main.findViewById(R.id.documentcontentmyProgressBar);
 		
 		MyHeaderView header_view = (MyHeaderView) main.findViewById(R.id.item_header);
@@ -378,7 +381,7 @@ public class CommonContentActivity extends Activity{
 		//支持javascript
 		webView.getSettings().setJavaScriptEnabled(true); 
 		// 设置可以支持缩放 
-		webView.getSettings().setSupportZoom(false); 
+		webView.getSettings().setSupportZoom(true); 
 		// 设置出现缩放工具 
 		webView.getSettings().setBuiltInZoomControls(false);
 		//扩大比例的缩放
@@ -391,7 +394,7 @@ public class CommonContentActivity extends Activity{
 		//将图片调整到适合webview的大小
 		webView.getSettings().setUseWideViewPort(false);
 		webView.requestFocusFromTouch();
-		
+		webView.getSettings().setTextSize(WebSettings.TextSize.NORMAL);
 		webView.setWebChromeClient(new WebChromeClient() {
 	        @Override
 	        public void onProgressChanged(WebView view, int newProgress) {

@@ -526,6 +526,7 @@ public final class R {
         public static final int comment_like=0x7f0c0005;
         public static final int comment_like_num=0x7f0c0006;
         public static final int comment_list_view=0x7f0c000b;
+        public static final int comment_photo=0x7f0c0000;
         public static final int comment_replay=0x7f0c0007;
         public static final int comment_theme_title=0x7f0c000a;
         public static final int comment_time_tv=0x7f0c0002;
@@ -689,7 +690,6 @@ public final class R {
         public static final int other_text=0x7f0c001e;
         public static final int password_input_box=0x7f0c00ea;
         public static final int pg=0x7f0c0071;
-        public static final int photo=0x7f0c0000;
         public static final int programendtieme=0x7f0c00ca;
         public static final int programstarttime=0x7f0c00c9;
         public static final int programtitle=0x7f0c00c7;
