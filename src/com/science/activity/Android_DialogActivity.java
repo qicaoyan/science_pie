@@ -18,6 +18,7 @@ import cn.sharesdk.wechat.friends.Wechat;
 
 import com.example.science.R;
 import com.science.json.JsonLoginHandler;
+import com.science.services.DataCache;
 import com.science.services.FunctionManage;
 import com.science.services.MyApplication;
 import com.science.util.RegisterUtil;
@@ -370,7 +371,8 @@ public class Android_DialogActivity extends Activity {
 		            setResult(400, data);  
 		            //关闭掉这个Activity  
 		            //finish();
-		            Toast.makeText(Android_DialogActivity.this, "fail", Toast.LENGTH_LONG).show();
+		            Toast.makeText(Android_DialogActivity.this, "登录失败，请检查网络连接以及用户名密码是否正确", Toast.LENGTH_LONG).show();
+				    p_dialog.dismiss();
 				}
 				else if(msg.what== MSG_SHOW_ERROR) {
 				Toast.makeText(Android_DialogActivity.this, "授权失败", Toast.LENGTH_SHORT).show();
@@ -500,22 +502,43 @@ public class Android_DialogActivity extends Activity {
 	    }
 	    
 	    
-	    @Override
-	    public boolean onKeyDown(int keyCode, KeyEvent event){
-	    	
-	    	if(keyCode == KeyEvent.KEYCODE_BACK){
-	    		if(p_dialog != null){
-	    			if(p_dialog.isShowing())
-	    		        p_dialog.dismiss();
-	    			else
-	    				finish();
-	    		}
-	    		if(p_dialog == null){
-	    			finish();
-	    		}
-	    		return true;
-	    	}
-	    	
-	    	return super.onKeyDown(keyCode, event);
-	    }
+	    
+		@Override
+		public boolean dispatchKeyEvent(KeyEvent event) {
+			if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
+					&& event.getAction() == KeyEvent.ACTION_DOWN) {
+				finish();
+//	         if(p_dialog != null){
+//	        	 p_dialog.cancel();
+//    		        p_dialog.dismiss();
+//    		     Toast.makeText(this, "取消", Toast.LENGTH_SHORT).show();   
+//    		}
+//    		if(p_dialog == null){
+//    			finish();
+//    		}
+			return true;
+			} else {
+				return super.dispatchKeyEvent(event);
+			}
+		}   
+	    
+	    
+//	    @Override
+//	    public boolean onKeyDown(int keyCode, KeyEvent event){
+//	    	
+//	    	if(keyCode == KeyEvent.KEYCODE_BACK){
+//	    		if(p_dialog != null){
+//	    			if(p_dialog.isShowing())
+//	    		        p_dialog.dismiss();
+//	    			else
+//	    				finish();
+//	    		}
+//	    		if(p_dialog == null){
+//	    			finish();
+//	    		}
+//	    		return true;
+//	    	}
+//	    	
+//	    	return super.onKeyDown(keyCode, event);
+//	    }
 }

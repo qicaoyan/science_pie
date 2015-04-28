@@ -88,7 +88,7 @@ public class JsonProgramListHandler {
 		        	}
 		        	else
 		        	{
-		        		map.put("mark",0);
+		        		map.put("mark",3);
 		        	}
 		        	//map.put("label", temp.getString("label"));
 		        	list.add(map);

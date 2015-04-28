@@ -77,11 +77,10 @@ public class JsonHotPageMainHandler {
 		        for (int i = 0; i < array.length(); ++i) {
 		        	JSONObject temp = (JSONObject) array.opt(i);
 		        	Map<String, String> map=new HashMap<String, String>();
-		        	Log.v("test",temp.getString("title"));
 		        	map.put("title", temp.getString("title"));
 
 		        	map.put("id", temp.getString("id"));
-
+                    map.put("articleType", temp.getString("articleType"));
 		        	map.put("imgurl",temp.getString("titlepic"));
 		        	map.put("filename", temp.getString("filename"));
 		        	list.add(map);

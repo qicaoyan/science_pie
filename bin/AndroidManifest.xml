@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.science"
-    android:versionCode="13"
-    android:versionName="0.44" >
+    android:versionCode="16"
+    android:versionName="0.47" >
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -49,8 +49,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.science.activity.SplashScreen"
-            android:label="@string/app_name"
-            android:launchMode="singleTask" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,13 +58,12 @@
         </activity>
         <activity
             android:name="com.science.activity.MainActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">"
         </activity>
         <activity
             android:name="com.science.activity.MainPageActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" 
+            android:launchMode="singleInstance">
         </activity>
         <activity
             android:name="com.science.activity.DocumentListActivity"
@@ -85,15 +83,13 @@
         </activity>
         <activity
             android:name="com.science.activity.HotPageListActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.science.activity.CommonContentActivity"
-            android:exported ="true"
             android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait" 
+            android:launchMode="singleTop">"
             <intent-filter >
                 <action android:name = "com.science.action.CommentContentActivity"/>
             </intent-filter>

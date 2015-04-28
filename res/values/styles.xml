@@ -171,7 +171,7 @@
      <!-- 合作研究每个合作者的字体样式-->
      <style name = "coop_cooper_text_name_style">
          
-         <item name ="android:textSize">16sp</item>  
+         <item name ="android:textSize">18sp</item>  
          <item name ="android:textColor">@color/text_dark_gray</item>    
           
      </style>
@@ -192,7 +192,7 @@
       
     
    <style name = "coop_cooper_text_introduction_style">
-     <item name ="android:textSize">13sp</item>  
+     <item name ="android:textSize">15sp</item>  
          <item name ="android:textColor">@color/text_light_gray</item>    
           
    </style>
@@ -226,7 +226,7 @@
 
   <style name = "tech_trend_kywd_text">
       <item name = "android:textColor">@color/dark_gray</item>
-      <item name = "android:textSize">16sp</item>
+      <item name = "android:textSize">18sp</item>
   </style>
    
     <style name = "tech_trend_kywd_breviary_text">

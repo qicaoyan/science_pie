@@ -321,16 +321,16 @@ public class MyTagView extends LinearLayout  implements OnFocusChangeListener{
 					
 					
 					
-					for(int i = 0;i < tags_state.length;i++)
-					{
-
-						if(tags_state[i] == 1){
-							
-							kywd.append(tag_words[i]);
-							kywd.append("||");
-						}
-						
-					}
+//					for(int i = 0;i < tags_state.length;i++)
+//					{
+//
+//						if(tags_state[i] == 1){
+//							
+//							kywd.append(tag_words[i]);
+//							kywd.append("||");
+//						}
+//						
+//					}
 					
 					
 //					//需要将最后的两个"||"删除掉

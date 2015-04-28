@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
 import com.science.activity.CommonContentActivity;
+import com.science.activity.MainActivity;
 import com.science.util.AppUtil;
 
 public class PushReceiver extends BroadcastReceiver {
@@ -50,31 +51,32 @@ public class PushReceiver extends BroadcastReceiver {
 					String title = obj.getString("title");
 					String name=AppUtil.BlockCodeToBlockText(block_id);
 					
-					
+			        
 					//Intent intentContent=new Intent(context,CommonContentActivity.class);
 					Intent intentContent=new Intent();
-					intentContent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					intentContent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					intentContent.putExtra("url", url);//传递数据
 					intentContent.putExtra("theme", title);
 					intentContent.putExtra("act_class", name);
 					intentContent.putExtra("articleType", article_type);
 					intentContent.putExtra("id", id);
 					
-					intentContent.setClass(context, CommonContentActivity.class);
+					intentContent.putExtra("enterFromPush", true);
+					intentContent.setClass(context.getApplicationContext(), CommonContentActivity.class);
 					//intentContent.setAction("com.science.activity.CommonContentActivity");
 					
-					Thread.sleep(1000);
-					context.startActivity(intentContent);
+					//Thread.sleep(4000);
+					context.getApplicationContext().startActivity(intentContent);
+					
+					
+
+					
 					
 					//Toast.makeText(context, "透传测试"+data, Toast.LENGTH_LONG).show();
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		        
+				} 
 
 				
 			}

@@ -251,6 +251,7 @@ public class MyInfoActivity extends Activity{
 			switch(msg.what){
 			case EDIT_MY_INFO_OK:
 				Toast.makeText(MyInfoActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+				finish();
 				break;
 			case GET_MY_INFO_OK:
 				nickname_edit.setText(my_info.get("nickname").toString());

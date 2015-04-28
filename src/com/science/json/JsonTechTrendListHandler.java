@@ -59,6 +59,7 @@ public class JsonTechTrendListHandler {
 		        	map.put("id", temp.getInt("id"));
 		        	map.put("title", temp.getString("title"));
 		        	map.put("url", temp.getString("url"));
+		        	map.put("articleType", temp.getString("articleType"));
 		        	//map.put("img_url", temp.getString("titlepic"));
 		        	list.add(map);
 		        }

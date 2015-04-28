@@ -79,7 +79,8 @@
             
 
             <RelativeLayout 
-                android:layout_width="225dip"
+                android:layout_weight="1000"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/input_box"
                 android:layout_marginLeft="15dip"
@@ -104,6 +105,7 @@
             
             
             <com.science.view.MyImageButton
+                android:layout_weight="1"
                 android:id="@+id/send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

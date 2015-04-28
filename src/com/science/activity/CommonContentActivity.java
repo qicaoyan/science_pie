@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.science.R;
+import com.science.services.DataCache;
 import com.science.services.FunctionManage;
 import com.science.services.MyApplication;
 import com.science.services.ToastProxy;
@@ -31,6 +32,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -72,7 +74,7 @@ public class CommonContentActivity extends Activity{
     private MyApplication application;
     private FunctionManage fm;
     private ShoucangUtil shoucang_util;
-
+    private boolean enter_from_push;//表明是不是从push入口处进来
     /*一些状态信息*/
     private final int  SEND_MAIL_OK = 0;
     private final int  SEND_MAIL_FAIL = 1;
@@ -91,15 +93,13 @@ public class CommonContentActivity extends Activity{
 		
 		act_class = intent.getStringExtra("act_class");
 		theme = intent.getStringExtra("theme");
-		article_type1 = intent.getIntExtra("articleType1", DefaultUtil.INAVAILABLE);
-		article_type2 = intent.getIntExtra("articleType2", DefaultUtil.INAVAILABLE);
+//		article_type1 = intent.getIntExtra("articleType1", DefaultUtil.INAVAILABLE);
+//		article_type2 = intent.getIntExtra("articleType2", DefaultUtil.INAVAILABLE);
 		article_type = intent.getStringExtra("articleType");
 		article_id = intent.getIntExtra("id", DefaultUtil.INAVAILABLE);
-		
+		enter_from_push = intent.getBooleanExtra("enterFromPush", false);
 		application = MyApplication.getInstance();
 		fm = new FunctionManage(this);
-		
-		
 		setContentView(main);
 		initView();
 		setListener();
@@ -112,10 +112,13 @@ public class CommonContentActivity extends Activity{
 		
 		//初始化未收藏
 		shoucang_util = new ShoucangUtil(this);
-		shoucang = checkShoucang();
+		shoucang = false;
 		//shoucang_btn.updateButtonState(shoucang);
-		
-
+//		Log.i("article_type", article_type);
+//		Log.i("article_id", ""+article_id);
+//        Log.i("url",url);
+//        Log.i("theme",theme);
+//        
 	}
 	
 	private void initView()
@@ -157,6 +160,13 @@ public class CommonContentActivity extends Activity{
 		like_btn = (MyImageButton) findViewById(R.id.common_like_btn);
 		email_btn = (MyImageButton) findViewById(R.id.common_email_btn);
 
+		LinearLayout bottom_layout = (LinearLayout) findViewById(R.id.common_bottom_layout);
+		if(act_class.equals("关键词分析")){
+			bottom_layout.setVisibility(View.INVISIBLE);
+			shoucang_btn.setVisibility(View.INVISIBLE);
+			share_btn.setVisibility(View.INVISIBLE);
+		}
+		
 		//LayoutInflater inflater = getLayoutInflater();
 	}
 	
@@ -213,7 +223,7 @@ public class CommonContentActivity extends Activity{
 							//toastAtBottom("取消收藏");
 							break;
 						case ShoucangUtil.RESULT_DELETE_FAIL:
-							toastAtBottom("无法取消收藏");
+							//toastAtBottom("无法取消收藏");
 							break;
 						}
 					}
@@ -555,5 +565,25 @@ public class CommonContentActivity extends Activity{
 		   }
 	   }
 	};
+	
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
+				&& event.getAction() == KeyEvent.ACTION_DOWN) {
+			
+               if(enter_from_push && !MainActivity.hasLauncher){
+            	   
+            	   Intent intent = new Intent(this,MainActivity.class);
+            	   startActivity(intent);
+               }
+			
+		     this.finish();
+		     return false;
+		}
+		else{
+			return super.dispatchKeyEvent(event);
+		}
+	}
+	
 	
 }

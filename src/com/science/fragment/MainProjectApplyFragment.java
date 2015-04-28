@@ -132,7 +132,11 @@ public class MainProjectApplyFragment extends Fragment {
     	this.inflater = inflater;
 		initVariable();
 		initView();
-	   
+	    if(DataCache.usual_project_list!=null){
+	    	if(!DataCache.usual_project_list.isEmpty()){
+	    		DataCache.usual_project_list.clear();
+	    	}
+	    }
 		//setOnClickListener();
     	return view;
     }
@@ -318,23 +322,23 @@ public class MainProjectApplyFragment extends Fragment {
 		if(DataCache.usual_project_list == null){
 			DataCache.usual_project_list = new ArrayList<Map<String,Object>>();
 		}
-		if(DataCache.usual_project_list.isEmpty()){
+//		if(!DataCache.usual_project_list.isEmpty()){
 			
 			if(proj_list != null)
 			{
 				merger.mergeTwoListBackward(proj_list, DataCache.usual_project_list);
 			}
-			else
-			{
-				proj_list = new ArrayList<Map<String,Object>>();
-				proj_list.addAll(DataCache.usual_project_list);
-			}	
+//			else
+//			{
+//				proj_list = new ArrayList<Map<String,Object>>();
+//				proj_list.addAll(DataCache.usual_project_list);
+//			}	
 			if(proj_list_adapter != null)
 			{
 			proj_list_adapter.notifyDataSetChanged();
 			//proj_list_view.setAdapter(proj_list_adapter);
 			}
-		}
+	//	}
 
 		str_url = Url.composeUsualProject(proj_src1, proj_src2, proj_type, id, date);
 		
@@ -346,9 +350,7 @@ public class MainProjectApplyFragment extends Fragment {
 				
 				try{
 			    
-				Thread.sleep(1000);	
-				loadable = false;
-				Thread.sleep(500);
+				Thread.sleep(500);	
 				URL url = new URL(str_url);
 				URLConnection conn = url.openConnection();
 				conn.connect();
@@ -424,7 +426,7 @@ public class MainProjectApplyFragment extends Fragment {
 				
 				try{
 				
-			    Thread.sleep(3000);	
+			    Thread.sleep(500);	
 				URL url = new URL(str_url);
 				URLConnection conn = url.openConnection();
 				conn.connect();
@@ -518,7 +520,7 @@ public class MainProjectApplyFragment extends Fragment {
 		if(tab == ProjectApplyActivity.PROJ_HOT){
 			
 			loadable = false;
-			loadHotProject(0);
+			//loadHotProject(0);
 			loadUsualProject(proj_src1,proj_src2,proj_type,proj_id,date);
 			
 		}else if(tab == ProjectApplyActivity.PROJ_EXPIRE)
@@ -655,7 +657,7 @@ public class MainProjectApplyFragment extends Fragment {
 		public   TextView comment_num_tv;
 		public   TextView start_time_tv;
 		public   TextView end_time_tv;
-		public   ImageView expire_flag_iv;
+		public   ImageView project_flag_iv;
 	  }
 	
 	
@@ -697,22 +699,9 @@ public class MainProjectApplyFragment extends Fragment {
 				holder.comment_num_tv = (TextView)view.findViewById(R.id.proj_comment_num_text);
 				holder.start_time_tv = (TextView) view.findViewById(R.id.start_time);
 				holder.end_time_tv = (TextView) view.findViewById(R.id.end_time);
-				holder.expire_flag_iv = (ImageView) view.findViewById(R.id.proj_expire_flag);
+				holder.project_flag_iv = (ImageView) view.findViewById(R.id.proj_expire_flag);
 				
-				
-				/*如果是置顶（热门）项目就去掉前面的过期标志*/
-				if(tab == ProjectApplyActivity.PROJ_HOT)
-					holder.expire_flag_iv.setVisibility(View.INVISIBLE);
-				else{
-					//int mark = (Integer) proj_list.get(position).get("mark");
-				//	if(mark == -1)
-						//holder.expire_flag_iv.setImageDrawable(getResources().getDrawable(R.drawable.icon_green_point));
-					//else if(mark == 1)
-						holder.expire_flag_iv.setImageDrawable(getResources().getDrawable(R.drawable.icon_red_point));
-				}
-				
-				
-				
+
 				String title = (String) proj_list.get(position).get("title");
 				holder.title_tv.setText(title);
 				
@@ -743,16 +732,43 @@ public class MainProjectApplyFragment extends Fragment {
 			holder.comment_num_tv.setText("" + proj_list.get(position).get("plnum"));
 			holder.start_time_tv.setText((String) proj_list.get(position).get("startTime"));
 			holder.end_time_tv.setText((String) proj_list.get(position).get("endTime"));
-			/*如果是置顶（热门）项目就去掉前面的过期标志*/
-			if(tab == ProjectApplyActivity.PROJ_HOT)
-				holder.expire_flag_iv.setVisibility(View.INVISIBLE);
-			else{
-				//int mark = (Integer) proj_list.get(position).get("mark");
-				//if(mark == -1)
-				//	holder.expire_flag_iv.setImageDrawable(getResources().getDrawable(R.drawable.icon_green_point));
-				//else if(mark == 1)
-					holder.expire_flag_iv.setImageDrawable(getResources().getDrawable(R.drawable.icon_red_point));
+			
+
+			switch((Integer)proj_list.get(position).get("mark")){
+		     
+			case 0://置顶
+				holder.project_flag_iv.setBackgroundResource(R.drawable.icon_top);
+				break;
+			case 1://新开始
+				holder.project_flag_iv.setBackgroundResource(R.drawable.shape_icon_dot_green);
+				break;
+			case 2://正申报
+				holder.project_flag_iv.setBackgroundResource(R.drawable.shape_icon_dot_green);
+				break;
+			case 3://即将到期
+				holder.project_flag_iv.setBackgroundResource(R.drawable.shape_icon_dot_red);
+				break;
+			case 4://到期
+				holder.project_flag_iv.setBackgroundResource(R.drawable.shape_icon_dot_gray);
+				break;
+			default:
+				break;
 			}
+			
+			
+			/*如果是置顶（热门）项目就去掉前面的过期标志*/
+//			if(tab == ProjectApplyActivity.PROJ_HOT)
+//				
+//				
+//				
+//				holder.expire_flag_iv.setVisibility(View.INVISIBLE);
+//			else{
+//				//int mark = (Integer) proj_list.get(position).get("mark");
+//				//if(mark == -1)
+//				//	holder.expire_flag_iv.setImageDrawable(getResources().getDrawable(R.drawable.icon_green_point));
+//				//else if(mark == 1)
+//					holder.expire_flag_iv.setImageDrawable(getResources().getDrawable(R.drawable.icon_red_point));
+//			}
 			
 			
 			return convertView;
@@ -785,8 +801,8 @@ public class MainProjectApplyFragment extends Fragment {
         @Override 
         public void onScroll(AbsListView listView, int firstVisibleItem,int visibleItemCount, int totalItemCount) { 
             
-        	if(visibleItemCount + 1 < totalItemCount)
-        		pullable = true;
+//        	if(visibleItemCount + 1 < totalItemCount)
+//        		pullable = true;
 
         } 
    
@@ -794,9 +810,9 @@ public class MainProjectApplyFragment extends Fragment {
 
 		@Override 
         public void onScrollStateChanged(AbsListView listview, int scrollState) { 
-	        if (scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {  
+	        if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {  
 	            // 判断是否滚动到底部  
-	            if (listview.getLastVisiblePosition() + 1 == listview.getCount()&& pullable&& loadable) {  
+	            if(( (listview.getLastVisiblePosition() + 1 == listview.getCount()) || listview.getLastVisiblePosition() == listview.getCount() - 2)&& loadable) {  
 	                //加载更多功能的代码  
 	            	addDataForListView(); 
 	            }  
