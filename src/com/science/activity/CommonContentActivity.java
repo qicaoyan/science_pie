@@ -511,6 +511,7 @@ public class CommonContentActivity extends Activity{
 				int a = str_temp.indexOf("{");
 				str_temp = str_temp.substring(a);
 				int code = Integer.parseInt(obj.getString("code"));
+
 				if(code == 200)
 					handler.sendEmptyMessage(LIKE_CONTENT_OK);
 				else

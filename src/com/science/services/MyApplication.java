@@ -44,7 +44,7 @@ public class MyApplication extends Application{
 
 	public static SharedPreferences shared_prefs;
 	public static Editor            editor;
-	public String eid;
+	public static String eid;
 	public  static List<StringBuffer> non_null_keywords_list = new ArrayList<StringBuffer>();
 	/*存储当前版本的号*/
 	public static int local_version = 1;

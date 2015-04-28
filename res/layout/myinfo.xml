@@ -8,7 +8,7 @@
     <include 
         layout="@layout/settingheader"
         />
-    <com.science.view.CircularImage 
+    <com.science.view.CircularImage
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/shezhitouxiang"
@@ -128,7 +128,7 @@
 	    android:gravity="center_horizontal"
 	    android:layout_marginTop="20dip"
 	    >
-	    <com.science.view.MyImageButton 
+	    <com.science.view.MyImageButton
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:background="@color/settingbg"

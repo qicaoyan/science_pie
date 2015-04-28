@@ -3,6 +3,7 @@ package com.science.activity;
 import com.example.science.R;
 import com.science.adapter.CommonFragmentPagerAdapter;
 import com.science.fragment.CoopReleaseSourceFragment;
+import com.science.fragment.DocumentExpressFragment;
 import com.science.view.MyHeaderView;
 
 import android.app.Activity;
@@ -10,6 +11,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 public class CoopReleaseActivity extends FragmentActivity{
 
@@ -43,6 +46,37 @@ public class CoopReleaseActivity extends FragmentActivity{
     	 coop_release_view_pager = (ViewPager) findViewById(R.id.coop_release_view_pager);
     	 coop_release_view_pager.setAdapter(coop_release_frgament_adapter);
     	 coop_release_view_pager.setCurrentItem(0);
+    	 
+    	 
+//    	 OnClickListener coop_release_tab_listener = new OnClickListener(){
+//
+// 			@Override
+// 			public void onClick(View v) {
+// 				// TODO Auto-generated method stub
+// 				
+// 				doc_view_pager.setCurrentItem(v.getId());
+// 				//DocumentExpressFragment last_frag = (DocumentExpressFragment) fragments[curr_fragment_index];
+// 				//last_frag.saveDocFragment(frag_saved_data.get(curr_fragment_index));
+// 				curr_fragment_index = v.getId();
+// 				DocumentExpressFragment frag = (DocumentExpressFragment) fragments[curr_fragment_index];
+// 				doc_type = DOC_CHI + curr_fragment_index;
+// 				frag.loadDocument(pdate, doc_id, doc_type, current_keyword);
+// 				//frag.reLoadDocFragment(frag_saved_data.get(v.getId()));
+// 				//frag.updateDocListFragment(doc_id, doc_type, current_keyword);
+// 				//frag.reLoadDocFragment();
+// 			}
+// 			
+// 		};
+ 		
+ //		coop_release_header_view.SetOnHeadButtonClickListener(coop_release_tab_listener, 0);
+ //		coop_release_header_view.SetOnHeadButtonClickListener(coop_release_tab_listener, 1);
+ //        coop_release_header_view.SetSelected(0);
+ 		
+ 		
      }
-    
+     
+		
+		
+		
+
 }
