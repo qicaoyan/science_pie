@@ -1,5 +1,6 @@
 package com.science.activity;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -14,12 +15,21 @@ import com.science.json.JsonGetMyInfoHandler;
 import com.science.model.ResourceDefine;
 import com.science.services.MyApplication;
 import com.science.util.Url;
+import com.science.view.CircularImage;
 import com.science.view.MyImageButton;
 
+
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -55,6 +65,9 @@ public class MyInfoActivity extends Activity{
 	private ImageButton headerback=null;
 	private TextView headertitle;
 	
+	private CircularImage avatar;
+	private static final int IMAGE_REQUEST_CODE = 2;
+	private static final int RESULT_REQUEST_CODE = 3;
 	
 	private final int EDIT_MY_INFO_OK = 0;
 	private final int GET_MY_INFO_OK = 1;
@@ -95,6 +108,9 @@ public class MyInfoActivity extends Activity{
 		save_btn = (MyImageButton) findViewById(R.id.setting_info_save);
 		organization_edit = (EditText) findViewById(R.id.setting_info_organization_edit);
 		email_edit = (EditText) findViewById(R.id.setting_info_email_edit);
+		avatar = (CircularImage) findViewById(R.id.avatar);
+		
+		avatar.setOnClickListener(onClickListener);
 		
 		save_btn.setOnClickListener(onClickListener);
 	}
@@ -167,6 +183,15 @@ public class MyInfoActivity extends Activity{
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			switch (v.getId()){
+			case R.id.avatar:
+				Intent intentFromGallery = new Intent();
+				intentFromGallery.setType("image/*"); // 设置文件类型
+				intentFromGallery
+						.setAction(Intent.ACTION_GET_CONTENT);
+				startActivityForResult(intentFromGallery,
+						IMAGE_REQUEST_CODE);
+				break;
+				
 			
 			case R.id.setting_info_save:
 				
@@ -266,7 +291,10 @@ public class MyInfoActivity extends Activity{
 				identity_spinner.setSelection(pos);
 				pos = 0;
 				
-				organization_edit.setText(my_info.get("organization").toString());
+				String organization = (String) my_info.get("organization");
+				if(organization == null)
+					organization = "";
+				organization_edit.setText(organization);
 				
 				for(int i = 0;i < area_spinner.getCount();i++){
 					
@@ -288,7 +316,63 @@ public class MyInfoActivity extends Activity{
 		}
 	};
 	
-	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		//结果码不等于取消时候
+		if (resultCode != RESULT_CANCELED) {
+
+			switch (requestCode) {
+			case IMAGE_REQUEST_CODE:
+				startPhotoZoom(data.getData());
+				break;
+			
+			case RESULT_REQUEST_CODE:
+				if (data != null) {
+					getImageToView(data);
+				}
+				break;
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	/**
+	 * 裁剪图片方法实现
+	 * 
+	 * @param uri
+	 */
+	public void startPhotoZoom(Uri uri) {
+
+		Intent intent = new Intent("com.android.camera.action.CROP");
+		intent.setDataAndType(uri, "image/*");
+		// 设置裁剪
+		intent.putExtra("crop", "true");
+		// aspectX aspectY 是宽高的比例
+		intent.putExtra("aspectX", 1);
+		intent.putExtra("aspectY", 1);
+		// outputX outputY 是裁剪图片宽高
+		intent.putExtra("outputX", 320);
+		intent.putExtra("outputY", 320);
+		intent.putExtra("return-data", true);
+		startActivityForResult(intent, 3);
+	}
+
+	/**
+	 * 保存裁剪之后的图片数据
+	 * 
+	 * @param picdata
+	 */
+	private void getImageToView(Intent data) {
+		Bundle extras = data.getExtras();
+		if (extras != null) {
+			Bitmap photo = extras.getParcelable("data");
+			Drawable drawable = new BitmapDrawable(photo);
+			avatar.setImageDrawable(drawable);
+			Log.i("saveAvatar", "true");
+		}
+		Log.i("saveAvatar", "false");
+	}	
 
 	
 }

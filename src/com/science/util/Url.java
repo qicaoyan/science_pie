@@ -79,6 +79,7 @@ public class Url {
 	public static String GetMyInfoUrl = Url.BASEURL + "getMyData/getData?";
 	public static String SubmitFeedbackUrl = Url.BASEURL + "feedback/submitFb?";
 	public static String SendMessageUrl = Url.BASEURL + "message/sendMessage?";
+	public static String FindPasswordUrl = Url.BASEURL + "Register/sendMail?";
 	
 	public static String composeUrl(String ... args)
 	{
@@ -540,4 +541,16 @@ public static String composeSendMessageUrl(int receiver_id,String message){
     	
     	return composeUrl(Url.SendMessageUrl,"sid=",MyApplication.sidString,"&receiver_id=",""+receiver_id,"&message=",message);
     }
+public static String composeFindPasswordUrl(String mail_to,String content){
+	
+	
+	try {
+		content = URLEncoder.encode(content,"UTF-8");
+	} catch (UnsupportedEncodingException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return composeUrl(Url.FindPasswordUrl,"sid=",MyApplication.sidString,"&mailTo=",
+			mail_to,"&content=",content);
+}
 }

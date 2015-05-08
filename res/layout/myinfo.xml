@@ -9,8 +9,9 @@
         layout="@layout/settingheader"
         />
     <com.science.view.CircularImage
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/avatar"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
         android:src="@drawable/shezhitouxiang"
         android:background="@color/settingbg"
         android:scaleType="fitCenter"

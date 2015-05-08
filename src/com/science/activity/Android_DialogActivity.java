@@ -1,10 +1,16 @@
 package com.science.activity;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -17,6 +23,7 @@ import cn.sharesdk.wechat.friends.Wechat;
 
 
 import com.example.science.R;
+
 import com.science.json.JsonLoginHandler;
 import com.science.services.DataCache;
 import com.science.services.FunctionManage;
@@ -52,6 +59,8 @@ public class Android_DialogActivity extends Activity {
 		static final int MSG_SHOW_COMPLETE=4;
 		static final int MSG_SHOW_ERROR=5;
 		static final int MSG_SHOW_CANCEL=6;
+		static final int SEND_MAIL_OK=7;
+		static final int SEND_MAIL_FAIL=8;
 	
 		
 		public ProgressDialog p_dialog;  
@@ -65,6 +74,7 @@ public class Android_DialogActivity extends Activity {
 		
 		public EditText editTextUserName=null;
 		public EditText editTextPassWord=null;
+		private EditText editText;
 		
 		public TextView tvRegister=null;
 		public TextView tvForgetPassWord=null;
@@ -287,6 +297,9 @@ public class Android_DialogActivity extends Activity {
 					});
 					break;
 				case R.id.logindialogfogetpassword:
+					editText=new EditText(Android_DialogActivity.this);
+					AlertDialog builder_forgetpassword =new AlertDialog.Builder(Android_DialogActivity.this).setTitle("找回密码").setView(editText).setMessage("若忘记密码，请填写您的注册邮箱，点击确认后前往注册邮箱，查收找回密码的邮件并修改密码。").setPositiveButton("确定", listener).setNegativeButton("取消", null).show(); 
+					
 					
 					break;
 				case R.id.logindialoglogin:
@@ -333,6 +346,43 @@ public class Android_DialogActivity extends Activity {
 				}
 			}
 		};
+		//找回密码的listener
+		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener()  
+
+	    {  
+
+	        public void onClick(DialogInterface dialog, int which)  
+
+	        {  
+
+	            switch (which)  
+
+	            {  
+
+	            case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序  
+
+	            	String email_edit_box= editText.getText().toString();
+					email_edit_box = email_edit_box.replaceAll("@","$");
+					String content ="";
+					String str_url = Url.composeFindPasswordUrl(editText.getText().toString(), 
+							content);
+					FindPasswordThread thread = new FindPasswordThread(str_url);
+					new Thread(thread).start();
+	                break;  
+
+	            case AlertDialog.BUTTON_NEGATIVE:// "取消"第二个按钮取消对话框  
+
+	                break;  
+
+	            default:  
+
+	                break;  
+
+	            }  
+
+	        }  
+
+	    };    
 	    
 	    private class MyHandler extends Handler
 	    {
@@ -393,6 +443,13 @@ public class Android_DialogActivity extends Activity {
 				else if(msg.what== MSG_SHOW_CANCEL){
 				Toast.makeText(Android_DialogActivity.this, "取消授权", Toast.LENGTH_SHORT).show();
 				}
+				else if(msg.what== 7){
+				   Toast.makeText(Android_DialogActivity.this, "成功发送至注册邮箱", Toast.LENGTH_SHORT).show();
+				}
+				else if(msg.what== 8){
+					
+				   Toast.makeText(Android_DialogActivity.this, "发送失败，请检查注册邮箱是否填写正确或者网络是否已连接", Toast.LENGTH_SHORT).show();
+				}
 			}
 
 			@Override
@@ -402,6 +459,66 @@ public class Android_DialogActivity extends Activity {
 			}
 	    	
 	    }
+
+
+		/**
+		 * 
+		 * @author ming
+		 *密码找回的线程
+		 */
+		private class FindPasswordThread implements Runnable{
+
+			private String str_url;
+			public  FindPasswordThread(String url){
+				
+				this.str_url = url;
+			}
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				
+				URL url;
+				try {
+					url = new URL(str_url);
+					URLConnection conn = url.openConnection();
+					conn.connect();
+					InputStream is = conn.getInputStream();
+					InputStreamReader reader = new InputStreamReader(is,"UTF-8");
+					BufferedReader buf_reader = new BufferedReader(reader);
+					StringBuffer sb = new StringBuffer();
+					String str;
+					while((str = buf_reader.readLine()) != null)
+					{
+						sb.append(str);
+					}
+					
+					String str_temp = sb.toString();
+					JSONObject obj = new JSONObject(str_temp);
+					int a = str_temp.indexOf("{");
+					str_temp = str_temp.substring(a);
+					int code = Integer.parseInt(obj.getString("code"));
+					Log.i("status send email", str_temp);
+					if(code == 200)
+						myHandler.sendEmptyMessage(7);
+					else
+						myHandler.sendEmptyMessage(8);
+						
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				
+			}
+			
+		};
+	    
 	    
 	    public class MyThread implements Runnable
 	    {
