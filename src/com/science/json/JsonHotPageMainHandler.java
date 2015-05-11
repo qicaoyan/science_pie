@@ -64,14 +64,13 @@ public class JsonHotPageMainHandler {
 	        
 	        Log.v("test", sb.toString());
 	        String strTemp=sb.toString();
+	        Log.i("strTemp", strTemp);
 	        int a=strTemp.indexOf("{");
 	        strTemp=strTemp.substring(a);
 	        JSONObject obj = new JSONObject(strTemp);
 	        codeString=obj.getString("code");
-	        Log.v("test",codeString);
 	        messageString=obj.getString("message");
 	        if (codeString.equals("200")) {
-	        	Log.v("test", "parse json success");
 	        	JSONObject tempJsonObject=(JSONObject) obj.get("result");
 		        JSONArray array = tempJsonObject.getJSONArray("Hot.list");
 		        for (int i = 0; i < array.length(); ++i) {

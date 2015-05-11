@@ -41,6 +41,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,8 @@ public class SettingAbountActivity extends Activity {
 	private View version_info_view;
 	private TextView version_name_tv;
 	private ProgressDialog pd;
+	
+	private ImageButton back_ib;
 	
 	private View feedback_view;
 	private EditText editText;
@@ -72,7 +75,17 @@ public class SettingAbountActivity extends Activity {
 		version_name_tv.setText("版本号    " + MyApplication.local_version_name);
 		check_update_view.setClickable(true);
 		check_update_view.setOnClickListener(onClickListener);
+		back_ib = (ImageButton)findViewById(R.id.settingback);
 		
+		back_ib.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				onBackPressed();
+			}
+			
+		});
 		
 	//feedback
 		feedback_view = findViewById(R.id.setting_setting_fankui);
@@ -86,6 +99,8 @@ public class SettingAbountActivity extends Activity {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			switch(v.getId()){
+			
+			
 			case R.id.setting_setting_fankui:
 				
 //				LayoutInflater layoutInflater = LayoutInflater.from(SettingAbountActivity.this);

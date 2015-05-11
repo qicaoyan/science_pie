@@ -89,6 +89,7 @@ public class SettingManageActivity extends Activity{
 		myPublish.setOnClickListener(onClickListener);
 		myMessage.setOnClickListener(onClickListener);
 		mySetting.setOnClickListener(onClickListener);
+		my_photo.setOnClickListener(onClickListener);
 	}
 	
 	private View.OnClickListener onClickListener=new OnClickListener() {
@@ -143,6 +144,16 @@ public class SettingManageActivity extends Activity{
 			case R.id.setting_settings:
 				Intent setting =new Intent(SettingManageActivity.this,MySettingActivity.class);
 				startActivity(setting);
+				break;
+			case R.id.setting_my_photo:
+				if(myApplication.IsLogin())
+				{
+				
+				}
+				else{
+					
+					fm.Login();
+				}
 				break;
 			default:
 				break;

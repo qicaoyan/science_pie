@@ -27,17 +27,21 @@ import com.example.science.R.menu;
 import com.science.interfaces.OnShowMoreListener;
 import com.science.json.JsonCommentListHandler;
 import com.science.model.Comment;
+import com.science.services.DownloadFile;
 import com.science.services.FunctionManage;
 import com.science.services.MyApplication;
 import com.science.util.DefaultUtil;
 import com.science.util.Url;
+import com.science.view.CircularImage;
 import com.science.view.MyImageButton;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.text.Editable;
@@ -96,6 +100,7 @@ public class CommentDetailActivity extends Activity {
 	private final int IDLE_STATE = -1;//表示空闲状态
 	private final int SELF = -1;
 	private MyImageButton back_btn;
+	private CircularImage comment_photo_iv;
 	private EditText input_box;
 	private MyImageButton send_btn;
 	private int comment_state;
@@ -165,8 +170,8 @@ public class CommentDetailActivity extends Activity {
     	tv.setText(comment_theme);
     	back_btn = (MyImageButton)findViewById(R.id.go_back);
     	comment_list_view.setAdapter(comment_list_adapter);
-    	
-    	
+//    	comment_photo_iv = (CircularImage) findViewById(R.id.comment_photo);
+//    	comment_photo_iv.setImageResource(R.drawable.shezhitouxiang);
     }
     
     
@@ -385,7 +390,7 @@ public class CommentDetailActivity extends Activity {
 			    holder.comment_like_btn = (MyImageButton) convertView.findViewById(R.id.comment_like);
 			    holder.comment_like_num_tv = (TextView)convertView.findViewById(R.id.comment_like_num);
 			    holder.comment_delete_tv = (TextView) convertView.findViewById(R.id.comment_delete);
-			    
+			    holder.comment_photo_iv = (CircularImage) convertView.findViewById(R.id.comment_photo);
 			    convertView.setTag(holder);
 			}
 			else{
@@ -402,6 +407,7 @@ public class CommentDetailActivity extends Activity {
 				holder.customer_name_tv.setText(cu.customer_name);
 				holder.comment_time_tv.setText(cu.comment_time);
 				holder.comment_content_tv.setText(cu.comment_content);
+				holder.comment_photo_iv.setImageResource(R.drawable.shezhitouxiang);
 				holder.comment_content_tv.setMovementMethod(LinkMovementMethod.getInstance());
 				OnShowMoreListener listener = new OnShowMoreListener(){
 
@@ -423,7 +429,7 @@ public class CommentDetailActivity extends Activity {
 					holder.comment_delete_tv.setOnClickListener(new OnClickListener(){
 						@Override
 						public void onClick(View arg0) {
-							deleteComment(index);
+							showDeleteDialog(index);
 						}
 					});
 				}else{
@@ -487,7 +493,7 @@ public class CommentDetailActivity extends Activity {
 		
 		
 		class ViewHolder{
-			
+		    CircularImage comment_photo_iv;
 			TextView customer_name_tv;
 			TextView comment_time_tv ;
 			TextView comment_content_tv;
@@ -498,7 +504,55 @@ public class CommentDetailActivity extends Activity {
 		}
 		
 		
+		
+		
+		/**
+		 * 
+		 * @param index表示删除哪条评论
+		 */
+		private void showDeleteDialog(final int index){
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(CommentDetailActivity.this);
+			
+			
+            MyApplication.checkVersionUpdate();
+			
+			
+			
+			
+
+			builder.setTitle("提醒");
+			builder.setMessage("确定删除该评论吗?");
+			builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface v, int arg1) {
+					// TODO Auto-generated method stub
+				}
+			});
+			
+			
+			builder.setPositiveButton("确定",new DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					// TODO Auto-generated method stub
+					deleteComment(index);
+				}
+				
+			});
+		
+			builder.create();
+			builder.show();
+		}
+		
+		
     }
+    
+    
+    
+    
+    
     
     
     private class LoadingCommentThread implements Runnable{
