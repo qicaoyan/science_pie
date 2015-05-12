@@ -74,7 +74,10 @@ public class JsonDownLoadsKeywords {
 	        	JSONArray array = tempJsonObject.getJSONArray("core.list");
 		        for (int i = 0; i < array.length(); ++i) {
 		        	String strKeywords=array.opt(i).toString();
-		        	map.put(Integer.toString(i), array.opt(i).toString());
+		        	if(strKeywords.equals(" ")){
+		        		strKeywords = "";
+		        	}
+		        	map.put(Integer.toString(i), strKeywords);
 		        }
 		        return map;
 			}

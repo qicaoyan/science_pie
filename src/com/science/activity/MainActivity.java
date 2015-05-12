@@ -1297,7 +1297,7 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated method stub
 			URL url;
 			try {
-				url = new URL(myApplication.ComposeToken(Url.DOWNLOADKEYWORDS));
+				url = new URL(Url.composeGetPersonalTags());
 				URLConnection con = url.openConnection();
 				con.connect();
 				InputStream input = con.getInputStream();
@@ -1327,13 +1327,17 @@ public class MainActivity extends Activity {
 				    		String temp="";
 				    		for(int i=0;i<myApplication.keywords.length;i++)
 				    		{
+				    			if(myApplication.keywords[i].isEmpty())
+				    			   temp += " ";
+				    			else
 				    			temp+=myApplication.keywords[i];
-				    			temp+=" ";
+				    			if(i < myApplication.keywords.length - 1)
+				    			temp +="||";
 				    		}
-				    		temp=URLEncoder.encode(temp, "utf8");
-							Log.i("MainActivity", myApplication.ComposeToken(Url.UpdateKeywords+temp));
-							
-							url = new URL(myApplication.ComposeToken(Url.UpdateKeywords+temp));
+
+							url = new URL(Url.composeUpdateKeywordsUrl(temp));
+							//url = new URL(myApplication.ComposeToken(Url.UpdateKeywords+temp));
+							Log.i("MainActivityMMMM", temp);
 							URLConnection con = url.openConnection();
 							con.connect();
 							InputStream input = con.getInputStream();
