@@ -553,4 +553,9 @@ public static String composeFindPasswordUrl(String mail_to,String content){
 	return composeUrl(Url.FindPasswordUrl,"sid=",MyApplication.sidString,"&mailTo=",
 			mail_to,"&content=",content);
 }
+
+
+public static String composeGetMyMessageUrl(int page){
+	 return composeUrl(Url.getMessage,"sid=",MyApplication.sidString,"&page=","" + page);
+}
 }

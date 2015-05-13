@@ -106,6 +106,7 @@ public class MySettingActivity extends Activity {
 				  if(fm.Logout() == 204){
 					  
 					  handler.sendEmptyMessage(LOGOUT_OK);
+					  MyApplication.sidString = "";
 				  }
 				}
 
@@ -136,6 +137,8 @@ public class MySettingActivity extends Activity {
 				fm.Login();
 				MyApplication.Logout();
 				//Toast.makeText(MySettingActivity.this, "网络未连接", Toast.LENGTH_SHORT).show();
+				Intent intent1 = new Intent(MySettingActivity.this, MainActivity.class);
+				startActivity(intent1);
 				break;
 			case LOGOUT_FAIL:
 				//Toast.makeText(MySettingActivity.this, "网络未连接", Toast.LENGTH_SHORT).show();

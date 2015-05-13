@@ -104,52 +104,7 @@ public class Android_DialogActivity extends Activity {
 	        InitView();
 	        SetOnClickeListener();
 	        
-//	        LayoutInflater factory = LayoutInflater  
-//                    .from(Android_DialogActivity.this);  
-//            final View DialogView = factory.inflate(R.layout.logindialog, null);
-//            editTextUserName=(EditText)DialogView.findViewById(R.id.AccountEditText);
-//            editTextPassWord=(EditText)DialogView.findViewById(R.id.PasswordEidtText);
-//            
-//            AlertDialog dlg = new AlertDialog.Builder(  
-//                    Android_DialogActivity.this)  
-//                    .setTitle("登陆框")  
-//                    .setView(DialogView)  
-//                    .setPositiveButton("确定",  
-//                            new DialogInterface.OnClickListener() {  
-//
-//                                @Override  
-//                                public void onClick(  
-//                                        DialogInterface dialog,  
-//                                        int which) {  
-//                                    // TODO Auto-generated method  
-//                                    // stub  
-//                                    p_dialog = ProgressDialog  
-//                                            .show(Android_DialogActivity.this,  
-//                                                    "请等待",  
-//                                                    "正在为您登录...",  
-//                                                    true);
-//                                    
-//                                    userName=editTextUserName.getText().toString().trim();
-//                                    userPass=editTextPassWord.getText().toString().trim();
-//                                    
-//                            		MyThread mThread=new MyThread();
-//                            		new Thread(mThread).start();
-//                                }  
-//                            })  
-//                    .setNegativeButton("取消",  
-//                            new DialogInterface.OnClickListener() {  
-//
-//                                @Override  
-//                                public void onClick(  
-//                                        DialogInterface dialog,  
-//                                        int which) {  
-//                                    // TODO Auto-generated method  
-//                                    // stub  
-//                                    Android_DialogActivity.this  
-//                                            .finish();  
-//                                }  
-//                            }).create();  
-//            dlg.show();  
+
 	    }  
 		@Override
 		protected void onStop() {
@@ -406,7 +361,8 @@ public class Android_DialogActivity extends Activity {
 		            //保存用户名和密码
 		            if(name!=null&&pass!=null)
 		            {
-		            	functionManage.SaveLoginInfo(name,pass);	
+		            	//functionManage.SaveLoginInfo(name,pass);	
+		            	MyApplication.getInstance().changeUserInfo();
 		            }
 		            functionManage.UpdataTags();
 		            //关闭掉这个Activity

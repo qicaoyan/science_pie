@@ -144,8 +144,8 @@ public class MyHeaderView extends LinearLayout {
 
 				//if(application.IsLogin())		
 					headContent.startActivity(new Intent(headContent,SettingManageActivity.class));
-//				else
-//					fm.Login();
+				//else
+				//	fm.Login();
 
 				//((Activity) headContent).finish();
 			}

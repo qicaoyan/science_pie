@@ -188,6 +188,7 @@ public class MainActivity extends Activity {
         PushManager.getInstance().initialize(this.getApplicationContext());
         functionManage.UpdateCid();
        // PushManager.getInstance().setTag(this,temp);
+        //new FunctionManage(this).Login();
     }
 
 		@Override

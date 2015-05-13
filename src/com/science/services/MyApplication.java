@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.science.activity.DocumentExpressActivity;
+import com.science.activity.MainActivity;
 import com.science.activity.Android_DialogActivity.MyThread;
 import com.science.json.JsonCheckUpdateHandler;
 import com.science.json.JsonLoginHandler;
@@ -19,6 +21,7 @@ import com.science.util.Url;
 import android.R.string;
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -41,9 +44,11 @@ public class MyApplication extends Application{
 	public static boolean hasLauncher = false;;
 	public static String user_name = DefaultUtil.EMPTY;	//存储当前的用户名
 	public static String password = "";//最后肯定要改成加密的形式
-
+    public static String nickname = "";
 	public static SharedPreferences shared_prefs;
+	public static SharedPreferences user_info_prefs;
 	public static Editor            editor;
+	public static Editor            user_info_editor;
 	public static String eid;
 	public  static List<StringBuffer> non_null_keywords_list = new ArrayList<StringBuffer>();
 	/*存储当前版本的号*/
@@ -103,9 +108,11 @@ public class MyApplication extends Application{
 		}
 		
 		
-		SharedPreferences mySharedPreferences= getSharedPreferences("LoginInfo", Activity.MODE_PRIVATE); 
-		user_name = mySharedPreferences.getString("name", "");
-		password = mySharedPreferences.getString("pass", "");
+		//user_info_prefs= getSharedPreferences("LoginInfo", Activity.MODE_PRIVATE); 
+		//user_info_editor = shared_prefs.edit();
+		user_name = shared_prefs.getString("name", "");
+		password = shared_prefs.getString("pass", "");
+		sidString = shared_prefs.getString("sid", "");
 //		if(shared_prefs != null){
 //			
 //			editor = shared_prefs.edit();
@@ -139,6 +146,7 @@ public class MyApplication extends Application{
 				InputStream input = con.getInputStream();
 				sidString=jsonLoginHandler.getListItems(input);
 				user_name = name;	
+				editor.putString("sid", sidString);
 				return sidString;
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
@@ -172,6 +180,7 @@ public class MyApplication extends Application{
 		//my_keywords.clear();
 		if(non_null_keywords_list != null)
 		non_null_keywords_list.clear();
+		
 	}
 	
 	
@@ -232,7 +241,7 @@ public class MyApplication extends Application{
 	
 	public  Boolean IsLogin()
 	{
-		if (sidString!=null) {
+		if (sidString!=null&&!sidString.isEmpty()) {
 			return true;
 		}
 		else {
@@ -366,8 +375,11 @@ public class MyApplication extends Application{
 	
 	public static void changeUserInfo(){
 		
-		editor.putString("username", user_name);
+		editor.putString("name", user_name);
 		editor.putString("password", password);
+		editor.putString("sid", sidString);
+		editor.putString("nickname",nickname);
+		editor.commit();
 	}
 	
 	

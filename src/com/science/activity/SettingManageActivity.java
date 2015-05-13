@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -79,7 +80,14 @@ public class SettingManageActivity extends Activity{
 		});
 		
 		if(myApplication.IsLogin())
-		my_nickname.setText(myApplication.user_name);
+		{
+			if(myApplication.nickname.isEmpty() || myApplication.nickname == null)
+				my_nickname.setText("未设置昵称");
+			else
+		        my_nickname.setText(myApplication.user_name);
+		}
+		
+		//Log.i("user_name",myApplication.user_name);
 	}
 	
 	private void SetListener()
