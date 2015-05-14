@@ -29,7 +29,8 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="其他关键词分析"
-                style = "@style/common_search_input_text_style"/>
+                style = "@style/common_search_input_text_style"
+                android:imeOptions="actionSearch"/>
             <com.science.view.MyImageButton android:id="@+id/tech_trend_kywd_alys_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -105,7 +105,10 @@ public class FunctionManage {
 	public  void Login()
 	{
 		//GetLoginInfo();
-		if (name==null||pass==null) {
+		//if (name==null||pass==null) {
+		if(MyApplication.sidString == null)
+			MyApplication.sidString = "";
+		if(MyApplication.sidString.isEmpty()){
 			Intent intent=new Intent();
 			intent.setAction("com.science.intent.action.LOGIN");
 			context.startActivity(intent);
@@ -429,7 +432,7 @@ public class FunctionManage {
 		//用putString的方法保存数据 
 		editor.putString("name", userName); 
 		editor.putString("pass", userPass); 
-		
+		//editor.putString("", value)
 		//提交当前数据 
 		editor.commit(); 
 	}

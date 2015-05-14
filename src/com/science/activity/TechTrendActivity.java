@@ -12,9 +12,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.Window;
+import android.widget.EditText;
 
 public class TechTrendActivity extends FragmentActivity{
 
@@ -23,6 +26,7 @@ public class TechTrendActivity extends FragmentActivity{
 	private MyHeaderView               tech_trend_header_view;
 	private TechTrendKywdAlysFragment  tech_trend_kywd_alys_fragment;
 	private TechTrendAcdmAffrFagment tech_trend_acdm_affr_fragment;
+	
     @Override
     public void onCreate(Bundle savedInstanceState){
     	super.onCreate(savedInstanceState);
@@ -82,5 +86,7 @@ public class TechTrendActivity extends FragmentActivity{
     	
     	tech_trend_header_view.SetOnHeadButtonClickListener(on_tech_trend_tab_listener, 0);
     	tech_trend_header_view.SetOnHeadButtonClickListener(on_tech_trend_tab_listener, 1);
+    	
+    	
     }
 }

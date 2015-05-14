@@ -556,9 +556,17 @@ public static String composeFindPasswordUrl(String mail_to,String content){
 }
 
 
+
    public static String composeGetPersonalTags(){
 	   return composeUrl(Url.DOWNLOADKEYWORDS,"sid=",MyApplication.sidString);
    }
+
+
+public static String composeGetMyMessageUrl(int page){
+	 return composeUrl(Url.getMessage,"sid=",MyApplication.sidString,"&page=","" + page);
+}
+
+
   
    public static String composeUpdateKeywordsUrl(String keyword){
 	try {
@@ -577,6 +585,7 @@ public static String composeFindPasswordUrl(String mail_to,String content){
    public static String composeUploadCid(String cid){
 	   return composeUrl(Url.UploadCidUrl,"sid=",MyApplication.sidString,"&cid=",MyApplication.cid);
    }
+
 
 
 

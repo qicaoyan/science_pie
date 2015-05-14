@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -79,7 +80,16 @@ public class SettingManageActivity extends Activity{
 		});
 		
 		if(myApplication.IsLogin())
-		my_nickname.setText(myApplication.user_name);
+		{
+			if(myApplication.user.userName == null || myApplication.user.userName.isEmpty())
+				my_nickname.setText("未设置昵称");
+			else
+		        my_nickname.setText(MyApplication.getInstance().user.userNickName);
+		}else{
+			my_nickname.setText("未登录");
+		}
+		
+		//Log.i("user_name",myApplication.user_name);
 	}
 	
 	private void SetListener()
@@ -161,5 +171,16 @@ public class SettingManageActivity extends Activity{
 		}
 	};
 	
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		if(myApplication.IsLogin() && my_nickname != null){
+			if(myApplication.user.userNickName == null || myApplication.user.userNickName.isEmpty())
+				my_nickname.setText("未设置昵称");
+			else
+		        my_nickname.setText(MyApplication.getInstance().user.userNickName);
+		}
+	}
 
 }

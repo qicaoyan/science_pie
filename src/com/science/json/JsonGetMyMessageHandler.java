@@ -60,7 +60,7 @@ public class JsonGetMyMessageHandler {
 	            sb.append(str);  
 	        }  
 	        
-	        Log.v("test", sb.toString());
+	        Log.i("testaaaaaaaa", sb.toString());
 	        String strTemp=sb.toString();
 	        int a=strTemp.indexOf("{");
 	        strTemp=strTemp.substring(a);

@@ -160,8 +160,8 @@ public class MyMessageActivity extends Activity {
 			// TODO Auto-generated method stub
 			URL url;
 			try {
-				String urlStr=Url.getMessage+"&page=";
-				urlStr+=page.toString();
+				String urlStr= Url.composeGetMyMessageUrl(1);
+//				urlStr+=page.toString();
 				url = new URL(myApplication.ComposeToken(urlStr));
 				URLConnection con = url.openConnection();
 				con.connect();
