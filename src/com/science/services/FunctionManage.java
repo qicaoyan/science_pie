@@ -57,6 +57,8 @@ public class FunctionManage {
 	{
 		//GetLoginInfo();
 		//if (name==null||pass==null) {
+		if(MyApplication.sidString == null)
+			MyApplication.sidString = "";
 		if(MyApplication.sidString.isEmpty()){
 			Intent intent=new Intent();
 			intent.setAction("com.science.intent.action.LOGIN");

@@ -35,7 +35,7 @@ public class MyApplication extends Application{
 
 	public static String loginurl=null;
 	public static String loginState=null;
-	public  static String sidString=null;
+	public  static String sidString="";
 	public static String result=null;
 	public static JsonLoginHandler jsonLoginHandler=new JsonLoginHandler();
 	public static Map<String,String> my_keywords = null;

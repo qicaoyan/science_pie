@@ -34,7 +34,7 @@ public class Url {
 	public static String DocumentDetailBase = Url.BASEURL + "GetPaper/GetPaperDetail?";
 	public static String LOGINURL=Url.BASEURL+"/index/login?";
 	public static String DOWNLOADKEYWORDS=Url.BASEURL+"personalTags/getPersonalTags?";
-	public static String UpdateKeywords=Url.BASEURL+"personalTags/setPersonalTags?tagsString=";
+	public static String UpdateKeywords=Url.BASEURL+"personalTags/setPersonalTags?";
 	public static String addCollection=Url.BASEURL+"/collection/addCollection?";
 	public static String removeCollection=Url.BASEURL+"/collection/deleteCollection?";
 	public static String getCollection=Url.BASEURL+"/collection/getCollection?";
@@ -121,7 +121,7 @@ public class Url {
 		DocumentDetailBase = Url.BASEURL + "GetPaper/GetPaperDetail?";
 		LOGINURL=Url.BASEURL+"/index/login?";
 		DOWNLOADKEYWORDS=Url.BASEURL+"personalTags/getPersonalTags?";
-		UpdateKeywords=Url.BASEURL+"personalTags/setPersonalTags?tagsString=";
+		UpdateKeywords=Url.BASEURL+"personalTags/setPersonalTags?";
 		addCollection=Url.BASEURL+"/collection/addCollection?";
 		removeCollection=Url.BASEURL+"/collection/deleteCollection?";
 		getCollection=Url.BASEURL+"/collection/getCollection?";
@@ -555,7 +555,26 @@ public static String composeFindPasswordUrl(String mail_to,String content){
 }
 
 
+
 public static String composeGetMyMessageUrl(int page){
 	 return composeUrl(Url.getMessage,"sid=",MyApplication.sidString,"&page=","" + page);
 }
+
+public static String composeGetPersonalTags(){
+	return composeUrl(Url.DOWNLOADKEYWORDS,"sid=",MyApplication.sidString);
+}
+  
+public static String composeUpdateKeywordsUrl(String keyword){
+	try {
+		keyword = URLEncoder.encode(keyword, "UTF-8");
+	} catch (UnsupportedEncodingException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return composeUrl(Url.UpdateKeywords,"sid=",MyApplication.sidString,"&tagString=",keyword);
+}
+
+
+
+
 }

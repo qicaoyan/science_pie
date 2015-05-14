@@ -16,9 +16,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
@@ -38,6 +40,7 @@ public class TechTrendKywdAlysFragment extends Fragment {
 	private Activity    activity;
 	private RelativeLayout kywd_alys_none_hint_layout;
 	private EditText       kywd_alys_einput_et;
+	
 	private MyImageButton  kywd_alys_search_btn;
 	private ListView    kywd_alys_list_view;
 	private List<KywdAlys> kywd_alys_list;
@@ -122,7 +125,31 @@ public class TechTrendKywdAlysFragment extends Fragment {
 	    	
 	    });
 	    
-	    
+	    kywd_alys_einput_et.setOnKeyListener(new OnKeyListener(){
+
+    		@Override
+			public boolean onKey(View arg0, int keyCode, KeyEvent arg2) {
+    			// TODO Auto-generated method stub
+				String keyword = kywd_alys_einput_et.getText().toString();
+				if(!keyword.isEmpty()){
+					
+					String url = Url.composeTechTrendKywdAlysUrl(keyword);
+					String act_class = "关键词分析";
+					String theme = "\"" + keyword + "\"";
+					Intent intent = new Intent();
+					intent.setClass(activity, CommonContentActivity.class);
+					intent.putExtra("act_class", act_class);
+					intent.putExtra("url", url);
+					intent.putExtra("theme", theme);
+					activity.startActivity(intent);
+				}
+				else{
+					Toast.makeText(activity, "关键词不能为空", Toast.LENGTH_SHORT).show();
+				}
+				return false;
+			}
+    		
+    	});
 	    
 	}
 	

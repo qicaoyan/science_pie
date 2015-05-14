@@ -68,7 +68,8 @@
        android:paddingLeft="30dip"
        >
     <LinearLayout android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center">
     <com.science.view.MyImageButton
         android:id="@+id/comment_like"
         android:layout_width="wrap_content"
@@ -76,6 +77,13 @@
         android:src="@drawable/icon_like1"
         android:background="@color/transparent"
         android:layout_marginLeft="30dip"/>
+     <TextView android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="喜欢"
+           android:textColor="@color/text_light_gray"
+           android:textSize="15sp"
+           android:layout_marginLeft="2dip"
+           android:layout_gravity="center_vertical"/>
     <TextView android:id="@+id/comment_like_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -88,7 +96,8 @@
     <LinearLayout android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/comment_replay"
-        android:layout_marginLeft="10dip">
+        android:layout_marginLeft="10dip"
+        android:gravity="center_vertical">
         
        <ImageView
         android:layout_width="wrap_content"
@@ -99,7 +108,8 @@
            android:text="回复"
            android:textColor="@color/text_light_gray"
            android:textSize="15sp"
-           android:layout_marginLeft="2dip"/>
+           android:layout_marginLeft="2dip"
+           />
     </LinearLayout>
     
     
@@ -112,6 +122,7 @@
            android:layout_marginLeft="10dip"
            android:visibility="gone"
            android:id="@+id/comment_delete"
+           android:gravity="center_vertical"
            />
     
 
