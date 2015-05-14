@@ -5,10 +5,12 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.igexin.sdk.PushManager;
 import com.science.activity.Android_DialogActivity.MyThread;
 import com.science.json.JsonCheckUpdateHandler;
 import com.science.json.JsonLoginHandler;
@@ -45,6 +47,7 @@ public class MyApplication extends Application{
 	public static SharedPreferences shared_prefs;
 	public static Editor            editor;
 	public static String eid;
+	public static String cid;
 	public  static List<StringBuffer> non_null_keywords_list = new ArrayList<StringBuffer>();
 	/*存储当前版本的号*/
 	public static int local_version = 1;
@@ -106,12 +109,6 @@ public class MyApplication extends Application{
 		SharedPreferences mySharedPreferences= getSharedPreferences("LoginInfo", Activity.MODE_PRIVATE); 
 		user_name = mySharedPreferences.getString("name", "");
 		password = mySharedPreferences.getString("pass", "");
-//		if(shared_prefs != null){
-//			
-//			editor = shared_prefs.edit();
-//			double version = shared_prefs.getFloat("localVersion", 0.1f);
-//			local_version = version;
-//		}
 		
 		checkVersionUpdate();
 	}
@@ -371,9 +368,54 @@ public class MyApplication extends Application{
 	}
 	
 	
+	public  void uploadDeviceId(){
+		new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				String strUrl = Url.composeUploadDevideId(MyApplication.eid);
+				try {
+					URL url = new URL(strUrl);
+					URLConnection conn = url.openConnection();
+					conn.connect();
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		});
+	}
 	
 	
 	
+	public  void uploadCid(){
+		new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				try {
+					String cidString=PushManager.getInstance().getClientid(MyApplication.getInstance().getBaseContext());
+					MyApplication.cid = cidString;
+					URL url = new URL(Url.composeUploadCid(cidString));
+					URLConnection con = url.openConnection();
+					con.connect();
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		});
+	}
 	
 	
 }
