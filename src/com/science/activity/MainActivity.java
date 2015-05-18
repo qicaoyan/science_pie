@@ -1503,8 +1503,8 @@ public class MainActivity extends Activity {
 		
 		
 		
-		Log.i("local_version", "" + MyApplication.local_version);
-		Log.i("server_version", "" + MyApplication.server_version);
+		//Log.i("local_version", "" + MyApplication.local_version);
+		//Log.i("server_version", "" + MyApplication.server_version);
 		if(MyApplication.local_version < MyApplication.server_version)
 		{
 		

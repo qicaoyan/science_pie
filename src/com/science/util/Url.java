@@ -84,11 +84,22 @@ public class Url {
 	public static String UploadCidUrl = Url.BASEURL + "getui/setcid?";
 	public static String composeUrl(String ... args)
 	{
+
 		StringBuffer sb = new StringBuffer();
+		String sid = MyApplication.sidString;
+		if(sid.isEmpty())
+			sid = "null";
+		
 		for(int i = 0; i < args.length;i++)
 		{
 			sb.append(args[i]);
+			if(i == 0)
+				sb.append("sid=" + sid);
+		
+			    
 		}
+		
+		
 		return sb.toString();
 	}
 	
@@ -170,7 +181,7 @@ public class Url {
 	
 	
 	public static String composeLogoutUrl(){
-		return composeUrl(Url.LogoutBaseUrl,"sid=",MyApplication.sidString);
+		return composeUrl(Url.LogoutBaseUrl);
 		
 	}
 	
@@ -189,8 +200,7 @@ public class Url {
 	 */
 	
 	public static String composeHotPageUrl(int type_id,int class_id,int id){
-		
-		return composeUrl(Url.HotpageBaseUrl,"sid=",MyApplication.sidString,
+		return composeUrl(Url.HotpageBaseUrl,
 				         "&typeid=",""+type_id,"&classid=",""+class_id,"&id=",""+id);
 	}
 	
@@ -204,7 +214,7 @@ public class Url {
 	 */
 	public static String composeHotProjectUrl(int id){
 		
-		return composeUrl(Url.ProjectTop , "sid=",MyApplication.sidString,"&id=","" + id);
+		return composeUrl(Url.ProjectTop,"&id=","" + id);
 	}
 	
 	
@@ -226,7 +236,7 @@ public class Url {
 			}
 		
 		
-		return composeUrl(Url.ProjectUsual,"sid=",MyApplication.sidString,
+		return composeUrl(Url.ProjectUsual,
 				         "&projSource1=",""+src1,"&projSource2=","" + src2,
 				         "&projType=","" + type,"&id=","" + id,"&startdate=",date);
 	}
@@ -241,7 +251,7 @@ public class Url {
 			e.printStackTrace();
 		}
 		
-		return composeUrl(Url.ProjectExpireUrl,"sid=",MyApplication.sidString,
+		return composeUrl(Url.ProjectExpireUrl,
 		         "&projSource1=",""+src1,"&projSource2=","" + src2,
 		         "&projType=","" + type,"&id=","" + id,"&startdate=",date);
 	}
@@ -256,7 +266,7 @@ public class Url {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	return composeUrl(Url.DocumentLIST,"sid=",MyApplication.sidString,"&pdate=",pdate,
+    	return composeUrl(Url.DocumentLIST,"&pdate=",pdate,
     			   "&id=",Integer.toString(doc_id),"&source=",Integer.toString(doc_type),
     			   "&keyWords=",doc_keywords);
     	
@@ -279,7 +289,7 @@ public class Url {
     		str_id2 = Integer.toString(Id2);
     	
     	
-    	return composeUrl(Url.HOTPAGEDETIALURL0,"sid=",MyApplication.sidString,
+    	return composeUrl(Url.HOTPAGEDETIALURL0,
     			          "&typeId=",Integer.toString(typeId),"&plateId=",str_id1,
     			          "&Id1=",Integer.toString(Id1),"&Id2=",str_id2);
     }
@@ -292,7 +302,7 @@ public class Url {
     	if(comment_id < 0)
     		comment_id = DefaultUtil.MAX_VALUE;
     	
-    	return composeUrl(Url.CommentList,"sid=",MyApplication.sidString,"&articleType=",article_type,
+    	return composeUrl(Url.CommentList,"&articleType=",article_type,
     			          "&articleId=",Integer.toString(article_id),"&id=",Integer.toString(comment_id));
     }
     
@@ -331,7 +341,7 @@ public class Url {
   public static String compseReleaseCommentUrl(int upper_comment,int upper_customer,String article_type,int article_id,String content){
 	
 	content = URLEncoder.encode(content);
-	return composeUrl(Url.ReleaseComment,"sid=",MyApplication.sidString,"&upper_comment=",Integer.toString(upper_comment),
+	return composeUrl(Url.ReleaseComment,"&upper_comment=",Integer.toString(upper_comment),
 			           "&upper_customer=",Integer.toString(upper_customer),"&articleType=",article_type,
 			           "&articleId=",Integer.toString(article_id),
 			           "&content=",content);
@@ -349,7 +359,7 @@ public class Url {
     
   public static String composeUploadCommentLikeUrl(int comment_id){
 	  
-	  return composeUrl(Url.LikeCommontUrl,"sid=",MyApplication.sidString,"&commentid=","" + comment_id);
+	  return composeUrl(Url.LikeCommontUrl,"&commentid=","" + comment_id);
   }
   
   
@@ -364,7 +374,7 @@ public class Url {
      */
     public static String composeDeleteCommentUrl(int comment_id)
     {
-    	return composeUrl(Url.DeleteComment,"sid=",MyApplication.sidString,"&commentid=",
+    	return composeUrl(Url.DeleteComment,"&commentid=",
     			          Integer.toString(comment_id));
     }
     
@@ -379,7 +389,7 @@ public class Url {
 			e.printStackTrace();
 		}
     	
-    	return composeUrl(Url.RegisterURL,"sid=",MyApplication.sidString,"&username=",email,
+    	return composeUrl(Url.RegisterURL,"&username=",email,
     			         "&nickname=",nickname,"&password=",password);
     }
     
@@ -395,7 +405,7 @@ public class Url {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	return composeUrl(Url.AddShoucangURL,"sid=",MyApplication.sidString,
+    	return composeUrl(Url.AddShoucangURL,
     			          "&articleType=",article_type,
     			          "&articleId=",Integer.toString(article_id),
          		          "&url=",url,"&title=",title);
@@ -405,7 +415,7 @@ public class Url {
     
     public static String composeDeleteShoucangUrl(String article_type,int article_id)
     {
-       	return composeUrl(Url.DeleteShoucangURL,"sid=",MyApplication.sidString,
+       	return composeUrl(Url.DeleteShoucangURL,
 		          "&articleType=",article_type,
 		          "&articleId=",Integer.toString(article_id));
     }
@@ -432,7 +442,7 @@ public class Url {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	return composeUrl(Url.SendToEmailBaseUrl,"sid=",MyApplication.sidString,"&mailTo=",
+    	return composeUrl(Url.SendToEmailBaseUrl,"&mailTo=",
     			mail_to,"&title=",title,"&content=",content);
     }
     
@@ -444,7 +454,7 @@ public class Url {
     
     public static String composeTechTrendKywdAlysUrl(String keyword){
     	
-    	return composeUrl(Url.TechTrendKywdAlysBaseUrl,"sid=",MyApplication.sidString,"&keyword=",keyword);
+    	return composeUrl(Url.TechTrendKywdAlysBaseUrl,"&keyword=",keyword);
     }
     
     
@@ -457,7 +467,7 @@ public class Url {
      */
     public static String composeTechTrendAcdmAffrUrl(int src1,int src2,int id){
     	
-    	return composeUrl(Url.TechTrendAcdmAffrBaseUrl,"sid=",MyApplication.sidString,"&projSource1=",
+    	return composeUrl(Url.TechTrendAcdmAffrBaseUrl,"&projSource1=",
     			          "" + src1,"&projSource2=","" + src2,"&id=","" + id);
     }
     
@@ -468,7 +478,7 @@ public class Url {
     
     public static String composeCoopResourceListUrl(int location,int res_type,String keyword,int page){
     	
-    	return composeUrl(Url.CoopResourceListBaseUrl,"sid=",MyApplication.sidString,"&location=",
+    	return composeUrl(Url.CoopResourceListBaseUrl,"&location=",
     			          "" + location,"&resType=","" + res_type,"&keyword=",keyword,"&page=","" + page);
     }
     
@@ -476,19 +486,19 @@ public class Url {
     
     public static String composeCheckUpdateUrl(double version){
     	
-    	return composeUrl(Url.CheckUpdateUrl,"sid=",MyApplication.sidString,"&versionNum=","" + version);
+    	return composeUrl(Url.CheckUpdateUrl,"&versionNum=","" + version);
     }
     
     
     public static String composeGetCollectionUrl(String id){
     	
-    	return composeUrl(Url.getCollection,"sid=",MyApplication.sidString,"&id=",id);
+    	return composeUrl(Url.getCollection,"&id=",id);
     }
 
     
     public static String composeLikeContentUrl(String article_type,int id){
     	
-    	return composeUrl(Url.ContentLikeUrl,"sid=",MyApplication.sidString,"&articleType=","" + article_type,
+    	return composeUrl(Url.ContentLikeUrl,"&articleType=","" + article_type,
     			         "&articleId=","" + id);
     	
     }
@@ -506,7 +516,7 @@ public class Url {
 			e.printStackTrace();
 		}
     	
-    	return composeUrl(Url.EditMyInfoUrl,"sid=",MyApplication.sidString,"&nickname=",nickname,"&profession=",
+    	return composeUrl(Url.EditMyInfoUrl,"&nickname=",nickname,"&profession=",
     			         profession,"&workunit=",workunit,"&worklocation=",worklocation,"&email=",email);
     }
     
@@ -516,7 +526,7 @@ public class Url {
     
     public static String composeGetMyInfoUrl(){
     	
-    	return composeUrl(Url.GetMyInfoUrl,"sid=",MyApplication.sidString);
+    	return composeUrl(Url.GetMyInfoUrl);
     }
     
     public static String composeSubmitFeedbackUrl(String fd_content,String eid){
@@ -528,7 +538,7 @@ public class Url {
 			e.printStackTrace();
 		}
     	
-    	return composeUrl(Url.SubmitFeedbackUrl,"sid=",MyApplication.sidString,"&fdContent=",fd_content,"&eid=",eid);
+    	return composeUrl(Url.SubmitFeedbackUrl,"&fdContent=",fd_content,"&eid=",eid);
     }
     
 public static String composeSendMessageUrl(int receiver_id,String message){
@@ -540,7 +550,7 @@ public static String composeSendMessageUrl(int receiver_id,String message){
 			e.printStackTrace();
 		}
     	
-    	return composeUrl(Url.SendMessageUrl,"sid=",MyApplication.sidString,"&receiver_id=",""+receiver_id,"&message=",message);
+    	return composeUrl(Url.SendMessageUrl,"&receiver_id=",""+receiver_id,"&message=",message);
     }
 public static String composeFindPasswordUrl(String mail_to,String content){
 	
@@ -551,19 +561,19 @@ public static String composeFindPasswordUrl(String mail_to,String content){
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-	return composeUrl(Url.FindPasswordUrl,"sid=",MyApplication.sidString,"&mailTo=",
+	return composeUrl(Url.FindPasswordUrl,"&mailTo=",
 			mail_to,"&content=",content);
 }
 
 
 
    public static String composeGetPersonalTags(){
-	   return composeUrl(Url.DOWNLOADKEYWORDS,"sid=",MyApplication.sidString);
+	   return composeUrl(Url.DOWNLOADKEYWORDS);
    }
 
 
 public static String composeGetMyMessageUrl(int page){
-	 return composeUrl(Url.getMessage,"sid=",MyApplication.sidString,"&page=","" + page);
+	 return composeUrl(Url.getMessage,"&page=","" + page);
 }
 
 
@@ -575,15 +585,15 @@ public static String composeGetMyMessageUrl(int page){
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-	return composeUrl(Url.UpdateKeywords,"sid=",MyApplication.sidString,"&tagsString=",keyword);
+	return composeUrl(Url.UpdateKeywords,"&tagsString=",keyword);
   }
 
    public static String composeUploadDevideId(String eid){
-	   return composeUrl(Url.UploadDevideIdUrl,"sid=",MyApplication.sidString,"&eid=",eid);
+	   return composeUrl(Url.UploadDevideIdUrl,"&eid=",eid);
   }
    
    public static String composeUploadCid(String cid){
-	   return composeUrl(Url.UploadCidUrl,"sid=",MyApplication.sidString,"&cid=",MyApplication.cid);
+	   return composeUrl(Url.UploadCidUrl,"&cid=",MyApplication.cid);
    }
 
 

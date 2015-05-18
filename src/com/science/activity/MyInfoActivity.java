@@ -9,6 +9,8 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 
+import cn.smssdk.gui.CommonDialog;
+
 import com.example.science.R;
 import com.science.json.JsonCommonResponseStateHandler;
 import com.science.json.JsonGetMyInfoHandler;
@@ -20,6 +22,7 @@ import com.science.view.MyImageButton;
 
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -67,7 +70,7 @@ public class MyInfoActivity extends Activity{
 	
 	private ImageButton headerback=null;
 	private TextView headertitle;
-	
+	private Dialog pd;
 	private CircularImage avatar;
 	private static final int IMAGE_REQUEST_CODE = 2;
 	private static final int RESULT_REQUEST_CODE = 3;
@@ -226,10 +229,11 @@ public class MyInfoActivity extends Activity{
 				area = area_spinner.getSelectedItem().toString();
 				email = email_edit.getText().toString();
 			   
-			    
-				if(nickname.length() < 5){
+			    pd = CommonDialog.ProgressDialog(MyInfoActivity.this);
+			    pd.show();
+				if(nickname.length() <= 0){
 					
-					Toast.makeText(MyInfoActivity.this, "昵称太短", Toast.LENGTH_SHORT).show();
+					Toast.makeText(MyInfoActivity.this, "昵称不能为空", Toast.LENGTH_SHORT).show();
 				    break;
 				}
 				
@@ -255,7 +259,7 @@ public class MyInfoActivity extends Activity{
 					break;
 				}
 				
-				 MyApplication.getInstance().user.userName = nickname;
+				 MyApplication.getInstance().user.userNickName = nickname;
 				 MyApplication.getInstance().user.userIdentity = identity;
 				 MyApplication.getInstance().user.userOrganization = organization;
 				 MyApplication.getInstance().user.userArea = area;
@@ -306,7 +310,12 @@ public class MyInfoActivity extends Activity{
 			
 			switch(msg.what){
 			case EDIT_MY_INFO_OK:
+				if(pd != null){
+					if(pd.isShowing())
+						pd.dismiss();
+				}
 				Toast.makeText(MyInfoActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+				myApplication.changeUserInfo();
 				finish();
 				break;
 			case GET_MY_INFO_OK:
@@ -339,6 +348,8 @@ public class MyInfoActivity extends Activity{
 				pos = 0;
 				
 				email_edit.setText(MyApplication.getInstance().user.userEmail);
+				
+				
 				break;
 			default:
 				break;

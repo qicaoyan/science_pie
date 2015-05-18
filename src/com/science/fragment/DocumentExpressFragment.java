@@ -219,7 +219,7 @@ public class DocumentExpressFragment extends Fragment  implements OnLoadingState
 //        	else
 //        	{
             	str_url = Url.composeDocListUrl(pdate,id, type, sb.toString());
-            	
+            	Log.i("doc_urllllllllll", str_url);
             	if(doc_list_view != null && doc_footer_view != null)
 				if(doc_list_view.getFooterViewsCount() <= 0)
 					doc_list_view.addFooterView(doc_footer_view);
