@@ -299,7 +299,7 @@ public class FunctionManage {
 				URL url;
 				String cidString=PushManager.getInstance().getClientid(context);
 				url = new URL(myApplication.ComposeToken(Url.updateCid+PushManager.getInstance().getClientid(context)));
-				Log.i("cid",PushManager.getInstance().getClientid(context));
+				//Log.i("cid",PushManager.getInstance().getClientid(context));
 				URLConnection con = url.openConnection();
 				con.connect();
 				InputStream input = con.getInputStream();

@@ -22,6 +22,7 @@ import com.science.view.MyImageButton;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -29,6 +30,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -68,10 +71,14 @@ public class MyInfoActivity extends Activity{
 	private CircularImage avatar;
 	private static final int IMAGE_REQUEST_CODE = 2;
 	private static final int RESULT_REQUEST_CODE = 3;
+	private static final int IMAGE2_REQUEST_CODE = 100;
 	
 	private final int EDIT_MY_INFO_OK = 0;
 	private final int GET_MY_INFO_OK = 1;
 	private Map<String,Object> my_info;
+	
+	private File sdcardTempFile;
+	private int crop = 300;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,6 +89,9 @@ public class MyInfoActivity extends Activity{
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.myinfo);
 		setTheme(android.R.style.Theme_Translucent_NoTitleBar);
+		
+		sdcardTempFile = new File("/mnt/sdcard/", "tmp_pic_" + SystemClock.currentThreadTimeMillis() + ".jpg");
+
 		
 		InitVariable();
 		InitViews();
@@ -184,12 +194,23 @@ public class MyInfoActivity extends Activity{
 			// TODO Auto-generated method stub
 			switch (v.getId()){
 			case R.id.avatar:
-				Intent intentFromGallery = new Intent();
-				intentFromGallery.setType("image/*"); // 设置文件类型
-				intentFromGallery
-						.setAction(Intent.ACTION_GET_CONTENT);
-				startActivityForResult(intentFromGallery,
-						IMAGE_REQUEST_CODE);
+				 Intent intent = new Intent("android.intent.action.PICK");
+                 intent.setDataAndType(MediaStore.Images.Media.INTERNAL_CONTENT_URI, "image/*");
+                 intent.putExtra("output", Uri.fromFile(sdcardTempFile));
+                 intent.putExtra("crop", "true");
+                 intent.putExtra("aspectX", 1);// 裁剪框比例
+                 intent.putExtra("aspectY", 1);
+                 intent.putExtra("outputX", crop);// 输出图片大小
+                 intent.putExtra("outputY", crop);
+                 startActivityForResult(intent, IMAGE2_REQUEST_CODE);
+				
+				
+//				Intent intentFromGallery = new Intent();
+//				intentFromGallery.setType("image/*"); // 设置文件类型
+//				intentFromGallery
+//						.setAction(Intent.ACTION_GET_CONTENT);
+//				startActivityForResult(intentFromGallery,
+//						IMAGE_REQUEST_CODE);
 				break;
 				
 			
@@ -323,15 +344,19 @@ public class MyInfoActivity extends Activity{
 		if (resultCode != RESULT_CANCELED) {
 
 			switch (requestCode) {
-			case IMAGE_REQUEST_CODE:
-				startPhotoZoom(data.getData());
-				break;
-			
-			case RESULT_REQUEST_CODE:
-				if (data != null) {
-					getImageToView(data);
-				}
-				break;
+			case IMAGE2_REQUEST_CODE:
+                Bitmap bmp = BitmapFactory.decodeFile(sdcardTempFile.getAbsolutePath());
+                avatar.setImageBitmap(bmp);
+                break;
+//			case IMAGE_REQUEST_CODE:
+//				startPhotoZoom(data.getData());
+//				break;
+//			
+//			case RESULT_REQUEST_CODE:
+//				if (data != null) {
+//					getImageToView(data);
+//				}
+//				break;
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
