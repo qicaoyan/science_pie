@@ -80,7 +80,8 @@ public class Url {
 	public static String SubmitFeedbackUrl = Url.BASEURL + "feedback/submitFb?";
 	public static String SendMessageUrl = Url.BASEURL + "message/sendMessage?";
 	public static String FindPasswordUrl = Url.BASEURL + "Register/sendMail?";
-	
+	public static String UploadDevideIdUrl = Url.BASEURL + "Device/SetDeviceId?";
+	public static String UploadCidUrl = Url.BASEURL + "getui/setcid?";
 	public static String composeUrl(String ... args)
 	{
 		StringBuffer sb = new StringBuffer();
@@ -556,23 +557,36 @@ public static String composeFindPasswordUrl(String mail_to,String content){
 
 
 
+   public static String composeGetPersonalTags(){
+	   return composeUrl(Url.DOWNLOADKEYWORDS,"sid=",MyApplication.sidString);
+   }
+
+
 public static String composeGetMyMessageUrl(int page){
 	 return composeUrl(Url.getMessage,"sid=",MyApplication.sidString,"&page=","" + page);
 }
 
-public static String composeGetPersonalTags(){
-	return composeUrl(Url.DOWNLOADKEYWORDS,"sid=",MyApplication.sidString);
-}
+
   
-public static String composeUpdateKeywordsUrl(String keyword){
+   public static String composeUpdateKeywordsUrl(String keyword){
 	try {
 		keyword = URLEncoder.encode(keyword, "UTF-8");
 	} catch (UnsupportedEncodingException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-	return composeUrl(Url.UpdateKeywords,"sid=",MyApplication.sidString,"&tagString=",keyword);
-}
+	return composeUrl(Url.UpdateKeywords,"sid=",MyApplication.sidString,"&tagsString=",keyword);
+  }
+
+   public static String composeUploadDevideId(String eid){
+	   return composeUrl(Url.UploadDevideIdUrl,"sid=",MyApplication.sidString,"&eid=",eid);
+  }
+   
+   public static String composeUploadCid(String cid){
+	   return composeUrl(Url.UploadCidUrl,"sid=",MyApplication.sidString,"&cid=",MyApplication.cid);
+   }
+
+
 
 
 

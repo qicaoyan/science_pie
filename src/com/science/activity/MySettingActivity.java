@@ -107,6 +107,7 @@ public class MySettingActivity extends Activity {
 					  
 					  handler.sendEmptyMessage(LOGOUT_OK);
 					  MyApplication.sidString = "";
+					  MyApplication.getInstance().changeUserInfo();
 				  }
 				}
 

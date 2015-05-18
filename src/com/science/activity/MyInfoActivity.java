@@ -150,37 +150,41 @@ public class MyInfoActivity extends Activity{
 			}
 		});
 		
+		handler.sendEmptyMessage(GET_MY_INFO_OK);
 		
 		
-		new Thread(new Runnable(){
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				URL url;
-				String my_info_str_url = Url.composeGetMyInfoUrl();
-				try {
-					url = new URL(my_info_str_url);
-					URLConnection conn = url.openConnection();
-					conn.connect();
-					InputStream is = conn.getInputStream();
-					JsonGetMyInfoHandler json = new JsonGetMyInfoHandler();
-					List<Map<String,Object>> temp = json.getListItems(is);
-					if(temp != null){
-						my_info = temp.get(0);
-						handler.sendEmptyMessage(GET_MY_INFO_OK);
-					}
-				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-			
-		}).start();
+		
+		
+		
+//		new Thread(new Runnable(){
+//
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				URL url;
+//				String my_info_str_url = Url.composeGetMyInfoUrl();
+//				try {
+//					url = new URL(my_info_str_url);
+//					URLConnection conn = url.openConnection();
+//					conn.connect();
+//					InputStream is = conn.getInputStream();
+//					JsonGetMyInfoHandler json = new JsonGetMyInfoHandler();
+//					List<Map<String,Object>> temp = json.getListItems(is);
+//					if(temp != null){
+//						my_info = temp.get(0);
+//						handler.sendEmptyMessage(GET_MY_INFO_OK);
+//					}
+//				} catch (MalformedURLException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//
+//			}
+//			
+//		}).start();
 		
 		
 	}
@@ -221,6 +225,8 @@ public class MyInfoActivity extends Activity{
 				organization = organization_edit.getText().toString();
 				area = area_spinner.getSelectedItem().toString();
 				email = email_edit.getText().toString();
+			   
+			    
 				if(nickname.length() < 5){
 					
 					Toast.makeText(MyInfoActivity.this, "昵称太短", Toast.LENGTH_SHORT).show();
@@ -249,7 +255,11 @@ public class MyInfoActivity extends Activity{
 					break;
 				}
 				
-				
+				 MyApplication.getInstance().user.userName = nickname;
+				 MyApplication.getInstance().user.userIdentity = identity;
+				 MyApplication.getInstance().user.userOrganization = organization;
+				 MyApplication.getInstance().user.userArea = area;
+				 MyApplication.getInstance().user.userEmail = email;
 				
 				edit_info_url = Url.composeEditMyInfoUrl(nickname, identity, organization, area, email);
 				
@@ -300,11 +310,11 @@ public class MyInfoActivity extends Activity{
 				finish();
 				break;
 			case GET_MY_INFO_OK:
-				nickname_edit.setText(my_info.get("nickname").toString());
+				nickname_edit.setText(MyApplication.getInstance().user.userNickName);
 				int pos = 0;
 				for(int i = 0;i < identity_spinner.getCount();i++){
 					
-					if(identity_spinner.getItemAtPosition(i).toString().equals(my_info.get("identity").toString())){
+					if(identity_spinner.getItemAtPosition(i).toString().equals(MyApplication.getInstance().user.userIdentity)){
 						pos = i;
 						break;
 					}
@@ -312,14 +322,14 @@ public class MyInfoActivity extends Activity{
 				identity_spinner.setSelection(pos);
 				pos = 0;
 				
-				String organization = (String) my_info.get("organization");
+				String organization = MyApplication.getInstance().user.userOrganization;
 				if(organization == null)
 					organization = "";
 				organization_edit.setText(organization);
 				
 				for(int i = 0;i < area_spinner.getCount();i++){
 					
-					if(area_spinner.getItemAtPosition(i).toString().equals(my_info.get("area").toString())){
+					if(area_spinner.getItemAtPosition(i).toString().equals(MyApplication.getInstance().user.userArea)){
 						pos = i;
 						break;
 					}
@@ -328,7 +338,7 @@ public class MyInfoActivity extends Activity{
 				area_spinner.setSelection(pos);
 				pos = 0;
 				
-				email_edit.setText(my_info.get("email").toString());
+				email_edit.setText(MyApplication.getInstance().user.userEmail);
 				break;
 			default:
 				break;

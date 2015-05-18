@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
@@ -299,7 +300,8 @@ public class CommonContentActivity extends Activity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				//FunctionManage fm = new FunctionManage(CommonContentActivity.this);
-				fm.showShare();
+				fm.showShare(theme,theme,url);
+				//fm.share2PlatForm(theme, theme, BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher), url);
 			}
 	    	
 	    });

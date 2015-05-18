@@ -362,13 +362,23 @@ public class Android_DialogActivity extends Activity {
 		            if(name!=null&&pass!=null)
 		            {
 		            	//functionManage.SaveLoginInfo(name,pass);	
-		            	MyApplication.getInstance().changeUserInfo();
+		            	
+		            	//Toast.makeText(Android_DialogActivity.this, "正在下载用户信息", Toast.LENGTH_SHORT).show();
+		            	
+		                  p_dialog = ProgressDialog  
+		                          .show(Android_DialogActivity.this,  
+		                                  "请等待",  
+		                                  "正在加载用户信息...",  
+		                                  true);
+		            	
+		            	MyApplication.getInstance().initUserInfoFromRemote(this,9);
+		            	//MyApplication.getInstance().changeUserInfo();
 		            }
 		            functionManage.UpdataTags();
 		            //关闭掉这个Activity
 		            //Toast.makeText(Android_DialogActivity.this, "登陆成功", Toast.LENGTH_LONG).show();
 		           // MyApplication.changeUserInfo();
-		            finish();  
+		            
 				}
 				else if (msg.what==2) {
 					Intent data=new Intent();  
@@ -405,6 +415,9 @@ public class Android_DialogActivity extends Activity {
 				else if(msg.what== 8){
 					
 				   Toast.makeText(Android_DialogActivity.this, "发送失败，请检查注册邮箱是否填写正确或者网络是否已连接", Toast.LENGTH_SHORT).show();
+				}
+				else if(msg.what == 9){
+					finish();  
 				}
 			}
 

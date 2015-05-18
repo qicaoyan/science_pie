@@ -81,10 +81,12 @@ public class SettingManageActivity extends Activity{
 		
 		if(myApplication.IsLogin())
 		{
-			if(myApplication.nickname.isEmpty() || myApplication.nickname == null)
+			if(myApplication.user.userName == null || myApplication.user.userName.isEmpty())
 				my_nickname.setText("未设置昵称");
 			else
-		        my_nickname.setText(myApplication.user_name);
+		        my_nickname.setText(MyApplication.getInstance().user.userNickName);
+		}else{
+			my_nickname.setText("未登录");
 		}
 		
 		//Log.i("user_name",myApplication.user_name);
@@ -169,5 +171,16 @@ public class SettingManageActivity extends Activity{
 		}
 	};
 	
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		if(myApplication.IsLogin() && my_nickname != null){
+			if(myApplication.user.userNickName == null || myApplication.user.userNickName.isEmpty())
+				my_nickname.setText("未设置昵称");
+			else
+		        my_nickname.setText(MyApplication.getInstance().user.userNickName);
+		}
+	}
 
 }

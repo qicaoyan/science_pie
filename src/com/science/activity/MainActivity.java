@@ -186,9 +186,19 @@ public class MainActivity extends Activity {
         temp[0]=new Tag();
         temp[0].setName("test");
         PushManager.getInstance().initialize(this.getApplicationContext());
-        functionManage.UpdateCid();
+
+        
+        //上传eid和cid
+        MyApplication.getInstance().uploadDeviceId();
+        MyApplication.getInstance().uploadCid();
+        
+        
+        //functionManage.UpdateCid();
+ 
+
        // PushManager.getInstance().setTag(this,temp);
         //new FunctionManage(this).Login();
+
     }
 
 		@Override

@@ -8,6 +8,8 @@
 
 package cn.sharesdk.demo.wxapi;
 
+import com.science.activity.CommonContentActivity;
+
 import android.content.Intent;
 import android.widget.Toast;
 import cn.sharesdk.wechat.utils.WXAppExtendObject;
@@ -25,8 +27,9 @@ public class WXEntryActivity extends WechatHandlerActivity {
 	 * 做点其他的事情，包括根本不打开任何页面
 	 */
 	public void onGetMessageFromWXReq(WXMediaMessage msg) {
-		Intent iLaunchMyself = getPackageManager().getLaunchIntentForPackage(getPackageName());
-		startActivity(iLaunchMyself);
+		//Intent iLaunchMyself = getPackageManager().getLaunchIntentForPackage(getPackageName());
+		//startActivity(iLaunchMyself);
+		startActivity(new Intent(this,CommonContentActivity.class));
 	}
 
 	/**

@@ -433,6 +433,8 @@ public class CommentDetailActivity extends Activity {
 						}
 					});
 				}else{
+					holder.comment_delete_tv.setVisibility(View.GONE);
+					holder.comment_replay_view.setVisibility(View.VISIBLE);
 					holder.comment_replay_view.setOnClickListener(new OnClickListener(){
 
 						@Override
@@ -476,16 +478,7 @@ public class CommentDetailActivity extends Activity {
 				
 			}
 			
-			
-			
-			
-			
-			
-			
-			
-			
-	
-			
+
 			
 			return convertView;
 		}

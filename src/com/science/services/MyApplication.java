@@ -2,19 +2,28 @@ package com.science.services;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.SoftReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
+import com.igexin.sdk.PushManager;
+
 import com.science.activity.DocumentExpressActivity;
 import com.science.activity.MainActivity;
+
 import com.science.activity.Android_DialogActivity.MyThread;
+import com.science.database.FileAccess;
 import com.science.json.JsonCheckUpdateHandler;
+import com.science.json.JsonGetMyInfoHandler;
 import com.science.json.JsonLoginHandler;
 import com.science.model.ResourceDefine;
+import com.science.model.User;
 import com.science.util.DefaultUtil;
 import com.science.util.Url;
 
@@ -25,6 +34,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
@@ -45,11 +55,13 @@ public class MyApplication extends Application{
 	public static String user_name = DefaultUtil.EMPTY;	//存储当前的用户名
 	public static String password = "";//最后肯定要改成加密的形式
     public static String nickname = "";
+    public static User   user ;
 	public static SharedPreferences shared_prefs;
 	public static SharedPreferences user_info_prefs;
 	public static Editor            editor;
 	public static Editor            user_info_editor;
 	public static String eid;
+	public static String cid;
 	public  static List<StringBuffer> non_null_keywords_list = new ArrayList<StringBuffer>();
 	/*存储当前版本的号*/
 	public static int local_version = 1;
@@ -107,18 +119,19 @@ public class MyApplication extends Application{
 			
 		}
 		
-		
+
+        
+		//SharedPreferences mySharedPreferences= getSharedPreferences("LoginInfo", Activity.MODE_PRIVATE); 
+		//user_name = mySharedPreferences.getString("name", "");
+		//password = mySharedPreferences.getString("pass", "");
+
 		//user_info_prefs= getSharedPreferences("LoginInfo", Activity.MODE_PRIVATE); 
 		//user_info_editor = shared_prefs.edit();
 		user_name = shared_prefs.getString("name", "");
-		password = shared_prefs.getString("pass", "");
+		password = shared_prefs.getString("password", "");
 		sidString = shared_prefs.getString("sid", "");
-//		if(shared_prefs != null){
-//			
-//			editor = shared_prefs.edit();
-//			double version = shared_prefs.getFloat("localVersion", 0.1f);
-//			local_version = version;
-//		}
+
+		initUser();
 		
 		checkVersionUpdate();
 	}
@@ -146,6 +159,7 @@ public class MyApplication extends Application{
 				InputStream input = con.getInputStream();
 				sidString=jsonLoginHandler.getListItems(input);
 				user_name = name;	
+				password = pass;
 				editor.putString("sid", sidString);
 				return sidString;
 			} catch (MalformedURLException e) {
@@ -351,6 +365,68 @@ public class MyApplication extends Application{
 	}
 	
 	
+	public static void initUser(){
+		user = new User();
+		if(sidString != null && !sidString.isEmpty()){
+		     
+		     user.sidString = shared_prefs.getString("sid", "");
+		     user.userIdentity = shared_prefs.getString("userIdentity", "");
+		     user.userArea = shared_prefs.getString("userArea", "");
+		     user.userNickName = shared_prefs.getString("userNickName", "");
+		     user.userAvatar = new SoftReference<Drawable>(FileAccess.getDrawableByFolder("/sdcard/science_pie/", user.userName + ".png"));
+		     user.userEmail = shared_prefs.getString("userEmail", "");
+		     user.userOrganization = shared_prefs.getString("userOrganization", "");
+		}
+
+	}
+	
+	
+	
+	
+	
+	public static void initUserInfoFromRemote(final Handler handler,final int msg){
+		
+		new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				URL url;
+				String my_info_str_url = Url.composeGetMyInfoUrl();
+				try {
+					url = new URL(my_info_str_url);
+					URLConnection conn = url.openConnection();
+					conn.connect();
+					InputStream is = conn.getInputStream();
+					JsonGetMyInfoHandler json = new JsonGetMyInfoHandler();
+					List<Map<String,Object>> temp = json.getListItems(is);
+					if(temp != null){
+						Map<String,Object>  userInfo= temp.get(0);
+						user.userNickName = (String)userInfo.get("nickname");
+						user.userArea = (String) userInfo.get("area");
+						user.userIdentity = (String) userInfo.get("identity");
+						user.userOrganization = (String) userInfo.get("organization");
+						user.userEmail = (String) userInfo.get("email");
+						changeUserInfo();
+						handler.sendEmptyMessage(msg);
+					}
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+			
+		}).start();
+	}
+	
+	
+	
+	
+	
 	public static void changePlatform(){
 		
 		if(platform.equals(platform1)){
@@ -378,14 +454,67 @@ public class MyApplication extends Application{
 		editor.putString("name", user_name);
 		editor.putString("password", password);
 		editor.putString("sid", sidString);
-		editor.putString("nickname",nickname);
+		editor.putString("userNickName", user.userNickName);
+		editor.putString("userIdentity", user.userIdentity);
+		editor.putString("userOrganization", user.userOrganization);
+		editor.putString("userEmail", user.userEmail);
+		editor.putString("userArea", user.userArea);
 		editor.commit();
 	}
 	
 	
+	public  void uploadDeviceId(){
+		new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				String strUrl = Url.composeUploadDevideId(MyApplication.eid);
+				try {
+					URL url = new URL(strUrl);
+					URLConnection conn = url.openConnection();
+					conn.connect();
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		});
+	}
 	
 	
 	
+	public  void uploadCid(){
+		new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				try {
+					String cidString=PushManager.getInstance().getClientid(MyApplication.getInstance().getBaseContext());
+					MyApplication.cid = cidString;
+					URL url = new URL(Url.composeUploadCid(cidString));
+					URLConnection con = url.openConnection();
+					con.connect();
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		});
+	}
+	
+	
+	
+    
 	
 	
 }
