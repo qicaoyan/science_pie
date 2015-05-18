@@ -470,6 +470,7 @@ public class CommentDetailActivity extends Activity {
 						if(application.IsLogin()){
 							comment_list.get(index).like = true;
 							cu.comment_id = comment_list.get(index).comment_id;
+							comment_id = cu.comment_id;
 							new Thread(upload_like_thread).start();
 						}
 					}
@@ -751,9 +752,9 @@ public class CommentDetailActivity extends Activity {
     			break;
     			
     		case UPLOAD_LIKE_SUCCEED:
-    			if(comment_list != null)
-    			    comment_list.clear();
-    			//Toast.makeText(getBaseContext(), "点赞成功", Toast.LENGTH_SHORT).show();
+    			//if(comment_list != null)
+    			//    comment_list.clear();
+    			Toast.makeText(getBaseContext(), "点赞成功", Toast.LENGTH_SHORT).show();
     			requestData();
     			comment_list_adapter.notifyDataSetChanged();
     			break;
@@ -831,5 +832,10 @@ public boolean dispatchTouchEvent(MotionEvent event){
 }
     
 
+
+   interface Callback{
+	
+	   public void callback();
+  }
 
 }
